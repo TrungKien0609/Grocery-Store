@@ -68,4 +68,15 @@ button {
     fill: #4b5563;
   }
 }
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.3;
+  z-index: 99;
+  background-color: #000;
+  transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}
 </style>

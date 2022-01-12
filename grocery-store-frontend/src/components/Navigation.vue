@@ -12,7 +12,7 @@
           <Notifcation class="light-icon" />
           <div class="sub-info">1</div>
         </div>
-        <div class="cart signal-icon">
+        <div class="cart signal-icon" @click="toggleCart">
           <Cart class="light-icon" />
           <div class="sub-info">14</div>
         </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="side-bar">
         <div class="drawer" v-show="mobileSideBar" @click="toggleSideBar"></div>
-        <transition name="side-bar-show">
+        <transition name="side-bar">
           <div class="content" v-show="mobileSideBar">
             <div class="header">
               <div class="branding">
@@ -112,7 +112,7 @@
           <Notifcation class="light-icon" />
           <div class="sub-info">1</div>
         </div>
-        <div class="cart signal-icon">
+        <div class="cart signal-icon" @click="toggleCart">
           <Cart class="light-icon" />
           <div class="sub-info">14</div>
         </div>
@@ -158,6 +158,12 @@
         <router-link class="link-dark" to="#">Terms & Conditions </router-link>
       </div>
     </div>
+    <div class="cart">
+      <div class="drawer" v-show="showCart" @click="toggleCart"></div>
+      <transition name="cart">
+        <CartCheckOut @toggleCart="toggleCart" v-show="showCart" />
+      </transition>
+    </div>
   </div>
 </template>
 <script>
@@ -177,6 +183,7 @@ import RightArrow from "../assets/Icons/right-arrow.svg";
 import Policy from "../assets/Icons/guard.svg";
 import Terms from "../assets/Icons/terms.svg";
 import Category from "./Category.vue";
+import CartCheckOut from "./Cart.vue";
 export default {
   name: "Navigation",
   components: {
@@ -196,12 +203,14 @@ export default {
     Offers,
     RightArrow,
     Terms,
+    CartCheckOut,
   },
   data() {
     return {
       showCategories: null,
       mobile: null,
       mobileSideBar: null,
+      showCart: null,
     };
   },
   created() {
@@ -231,8 +240,13 @@ export default {
       }
       this.mobile = false;
       this.showCategories = false;
-      this.mobileSideBar = false; // reset all after responsive
+      this.mobileSideBar = false;
+      this.showCart = false;
+      // reset all after responsive
       return;
+    },
+    toggleCart() {
+      this.showCart = !this.showCart;
     },
   },
   mounted() {},
@@ -423,17 +437,6 @@ export default {
     border-top: 5px solid #fff;
   }
   .side-bar {
-    .drawer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      opacity: 0.3;
-      z-index: 99;
-      background-color: #000;
-      transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-    }
     .content {
       position: fixed;
       top: 0;
@@ -547,12 +550,21 @@ export default {
     transform: scale(1);
   }
 }
-.side-bar-show-enter-active,
-.side-bar-show-leave-active {
+.cart-enter-active,
+.cart-leave-active {
   transition: transform 0.5s ease-out;
 }
-.side-bar-show-enter,
-.side-bar-show-leave-to {
+.cart-enter,
+.cart-leave-to {
+  transform: translateX(100%);
+}
+
+.side-bar-enter-active,
+.side-bar-leave-active {
+  transition: transform 0.5s ease-out;
+}
+.side-bar-enter,
+.side-bar-leave-to {
   transform: translateX(-100%);
 }
 </style>
