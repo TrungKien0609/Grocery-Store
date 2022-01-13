@@ -1,15 +1,18 @@
 <template>
   <div class="app-container">
     <Navigation />
-    <router-view />
+    <router-view class="app-content" />
+    <Footer />
   </div>
 </template>
 <script>
 import Navigation from "./components/Navigation.vue";
+import Footer from "./components/Footer.vue";
 export default {
-  name: "navBar",
+  name: "Frame",
   components: {
     Navigation,
+    Footer,
   },
 };
 </script>
@@ -21,6 +24,14 @@ export default {
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+.app-container {
+  display: flex;
+  flex-direction: column;
+  .app-content {
+    flex: 1;
+  }
+}
+
 img {
   display: block;
   width: 100%;
@@ -31,6 +42,9 @@ input,
 button {
   outline: none;
   border: none;
+}
+a {
+  text-decoration: none;
 }
 .app-container {
   display: flex;

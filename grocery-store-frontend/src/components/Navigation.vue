@@ -164,6 +164,9 @@
         <CartCheckOut @toggleCart="toggleCart" v-show="showCart" />
       </transition>
     </div>
+    <div class="summary-cart" v-if="!mobile">
+      <SummaryCart @toggleCart="toggleCart" />
+    </div>
   </div>
 </template>
 <script>
@@ -184,6 +187,7 @@ import Policy from "../assets/Icons/guard.svg";
 import Terms from "../assets/Icons/terms.svg";
 import Category from "./Category.vue";
 import CartCheckOut from "./Cart.vue";
+import SummaryCart from "./SummaryCart.vue";
 export default {
   name: "Navigation",
   components: {
@@ -204,6 +208,7 @@ export default {
     RightArrow,
     Terms,
     CartCheckOut,
+    SummaryCart,
   },
   data() {
     return {
@@ -255,10 +260,10 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
   width: 100%;
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ddd;
   //common style
   .offer {
     color: #ef4444;
@@ -344,6 +349,7 @@ export default {
     margin: 0 auto;
     padding: 0.9rem 2.5rem;
     max-width: 1400px;
+    background-color: #fff;
     .nav-links {
       ul {
         display: flex;
@@ -538,6 +544,12 @@ export default {
         }
       }
     }
+  }
+  .summary-cart {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 50;
   }
 }
 @keyframes live {
