@@ -59,11 +59,7 @@
                     </span>
                   </div>
                   <div class="sub-menu" v-show="showCategories">
-                    <Category
-                      v-for="(category, index) in ListCategories"
-                      :key="index"
-                      :category="category"
-                    />
+                    <ListCategories />
                   </div>
                 </div>
                 <router-link class="link-dark" to="#">
@@ -125,11 +121,8 @@
               <span>Categories <DownArrow class="dark-arrow" /></span>
             </div>
             <div class="sub-menu" v-show="showCategories">
-              <Category
-                v-for="(category, index) in ListCategories"
-                :key="index"
-                :category="category"
-              />
+              <!-- <LoadingEffect /> -->
+              <ListCategories />
             </div>
           </div>
           <router-link class="link-dark" to="#"
@@ -175,9 +168,10 @@ import Offers from "../assets/Icons/giftbox.svg";
 import RightArrow from "../assets/Icons/right-arrow.svg";
 import Policy from "../assets/Icons/guard.svg";
 import Terms from "../assets/Icons/terms.svg";
-import Category from "./Category.vue";
+import ListCategories from "./ListCategories.vue";
 import CartCheckOut from "./Cart.vue";
 import SummaryCart from "./SummaryCart.vue";
+// import LoadingEffect from "./LoadingEffect.vue";
 export default {
   name: "Navigation",
   components: {
@@ -186,7 +180,7 @@ export default {
     User,
     Search,
     DownArrow,
-    Category,
+    ListCategories,
     Bar,
     Home,
     Times,
@@ -199,6 +193,7 @@ export default {
     Terms,
     CartCheckOut,
     SummaryCart,
+    // LoadingEffect,
   },
   data() {
     return {
@@ -206,148 +201,6 @@ export default {
       mobile: null,
       mobileSideBar: null,
       showCart: null,
-      ListCategories: [
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-      ],
     };
   },
   created() {
@@ -512,20 +365,15 @@ export default {
           }
           .sub-menu {
             position: absolute;
-            bottom: -450px;
+            bottom: -460px;
             left: 0;
             z-index: 10;
             height: 450px;
             width: 320px;
-            padding: 1rem 1.5rem;
-            background-color: #fff;
             border-radius: 7px;
             box-shadow: 0 2px 12px -1px rgba(0, 0, 0, 0.1),
-              0 2px 6px -1px rgba(0, 0, 0, 0.56);
-            overflow-y: auto;
-            &::-webkit-scrollbar {
-              display: none;
-            }
+              0 2px 12px -1px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
           }
           .dark-arrow {
             margin-left: 3px;
@@ -640,7 +488,6 @@ export default {
           display: flex;
           flex-direction: column;
           .sub-menu {
-            padding: 0 1.5rem;
             border-top: 1px solid #ccc;
           }
           .link-dark {
