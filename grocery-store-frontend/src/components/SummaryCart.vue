@@ -23,7 +23,7 @@ export default {
 .summary-container {
   width: 100px;
   background-color: rgb(238 242 255);
-  border-radius: 10px;
+  border-radius: 10px 0 0 10px;
   display: flex;
   align-items: center;
   flex-direction: column;

@@ -157,6 +157,22 @@ export default {
         font-family: sans-serif;
         margin-bottom: 0.5rem;
         font-weight: bolder;
+        @media (max-width: 1024px) {
+          font-size: 1.8rem;
+          width: 80%;
+        }
+        @media (max-width: 800px) {
+          font-size: 1.7rem;
+          width: 80%;
+        }
+        @media (max-width: 600px) {
+          font-size: 1.6rem;
+          width: 80%;
+        }
+        @media (max-width: 400px) {
+          font-size: 1.5rem;
+          width: 80%;
+        }
       }
       p {
         line-height: 1.7rem;

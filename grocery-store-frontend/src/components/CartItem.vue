@@ -23,7 +23,7 @@
 <script>
 import Plus from "../assets/Icons/plus.svg";
 import Delete from "../assets/Icons/delete.svg";
-import Dash from "../assets/Icons/dash.svg";
+import Dash from "../assets/Icons/minus.svg";
 export default {
   name: "CartItem",
   components: {
@@ -90,7 +90,7 @@ export default {
           margin: 0 0.7rem;
           padding: 0.1rem;
           path {
-            fill: #4b5563;
+            fill: #ccc;
           }
         }
         p {

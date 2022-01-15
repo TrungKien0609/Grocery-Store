@@ -8,14 +8,15 @@
             alt="category-avatar"
           />
         </div>
-        <div class="category-name">Fish & Meat</div>
+        <div class="category-name">{{ category.name }}</div>
       </div>
       <div v-if="!showDetail"><RightArrow class="dark-arrow" /></div>
       <div v-else><DownArrow class="dark-arrow" /></div>
     </div>
     <div class="detail-category" v-if="showDetail">
-      <p><span>&#x268A;</span> Fish</p>
-      <p><span>&#x268A;</span> Meat</p>
+      <router-link to="#" v-for="(item, index) in category.list" :key="index">
+        <p><span>&#x268A;</span> {{ item.name }}</p>
+      </router-link>
     </div>
   </div>
 </template>
@@ -28,6 +29,7 @@ export default {
     RightArrow,
     DownArrow,
   },
+  props: ["category"],
   data() {
     return {
       showDetail: null,

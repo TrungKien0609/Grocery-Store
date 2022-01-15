@@ -59,16 +59,11 @@
                     </span>
                   </div>
                   <div class="sub-menu" v-show="showCategories">
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
-                    <Category />
+                    <Category
+                      v-for="(category, index) in ListCategories"
+                      :key="index"
+                      :category="category"
+                    />
                   </div>
                 </div>
                 <router-link class="link-dark" to="#">
@@ -130,16 +125,11 @@
               <span>Categories <DownArrow class="dark-arrow" /></span>
             </div>
             <div class="sub-menu" v-show="showCategories">
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
+              <Category
+                v-for="(category, index) in ListCategories"
+                :key="index"
+                :category="category"
+              />
             </div>
           </div>
           <router-link class="link-dark" to="#"
@@ -216,6 +206,148 @@ export default {
       mobile: null,
       mobileSideBar: null,
       showCart: null,
+      ListCategories: [
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+        {
+          image: "",
+          name: "Fish & Meat",
+          list: [
+            {
+              link: "",
+              name: "Fish",
+            },
+            {
+              link: "",
+              name: "Meat",
+            },
+          ],
+        },
+      ],
     };
   },
   created() {
@@ -264,7 +396,7 @@ export default {
   top: 0;
   left: 0;
   border-bottom: 1px solid #ddd;
-  //common style
+  z-index: 99;
   .offer {
     color: #ef4444;
     border-radius: 5px;
@@ -325,19 +457,33 @@ export default {
     background-color: #10b981;
     margin: 0 auto;
     padding: 0.9rem 2.5rem;
-    @media (max-width: 1024px) {
-      padding: 0.9rem 0;
+    @media (max-width: 600px) {
+      padding: 0.9rem 1rem;
     }
     width: 100%;
     max-width: 1400px;
     .branding {
       width: 125px;
       min-width: 100px;
+      margin-left: -7px;
     }
     .user-feature {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+    }
+  }
+  .search-mobile {
+    width: 100%;
+    background-color: #10b981;
+    border-top: 5px solid #fff;
+    padding: 0 2.5rem;
+    @media (max-width: 600px) {
+      padding: 0 1rem;
+    }
+    .search {
+      max-width: none;
+      padding: 1rem 0;
     }
   }
   .footer {
@@ -356,11 +502,14 @@ export default {
         justify-content: flex-start;
         align-items: center;
         .link-dark {
-          padding: 0.3rem 0.5rem;
+          padding: 0.3rem 0;
           margin-right: 2.5rem;
           transition: 0.25s;
           position: relative;
           cursor: pointer;
+          &.offer {
+            padding: 0.3rem 0.6rem;
+          }
           .sub-menu {
             position: absolute;
             bottom: -450px;
@@ -407,13 +556,16 @@ export default {
       }
     }
   }
-  //common style
   .signal-icon {
-    padding: 1rem;
     margin: 0 1rem;
     cursor: pointer;
     padding: 0.5rem;
     position: relative;
+    @media (max-width: 1024px) {
+      margin-right: 1rem;
+      margin-left: 0;
+      padding: 0.5rem 0;
+    }
     &:last-child {
       margin-right: 0;
       @media (max-width: 1024px) {
@@ -436,11 +588,6 @@ export default {
       border-radius: 15px;
       border-radius: 50%;
     }
-  }
-  .search-mobile {
-    width: 100%;
-    background-color: #10b981;
-    border-top: 5px solid #fff;
   }
   .side-bar {
     .content {
