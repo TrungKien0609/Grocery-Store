@@ -62,9 +62,9 @@
                     <ListCategories />
                   </div>
                 </div>
-                <router-link class="link-dark" to="#">
+                <a class="link-dark" href="/about-us">
                   <span><Users class="dark-icon" />About us</span>
-                </router-link>
+                </a>
                 <router-link class="link-dark" to="#">
                   <span><Phone class="dark-icon" /> Contact Us</span>
                 </router-link>
@@ -125,7 +125,7 @@
               <ListCategories />
             </div>
           </div>
-          <router-link class="link-dark" to="#"
+          <router-link class="link-dark" :to="{ name: 'AboutUs' }"
             ><span>About us</span></router-link
           >
           <router-link class="link-dark" to="#"
@@ -239,7 +239,6 @@ export default {
       this.showCart = !this.showCart;
     },
   },
-  mounted() {},
 };
 </script>
 <style lang="scss" scoped>
