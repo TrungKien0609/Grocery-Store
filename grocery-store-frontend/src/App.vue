@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <Navigation />
+    <Navigation v-show="!error" />
     <router-view class="app-content" />
-    <Footer />
+    <Footer v-show="!error" />
   </div>
 </template>
 <script>
@@ -13,6 +13,17 @@ export default {
   components: {
     Navigation,
     Footer,
+  },
+  data() {
+    return {
+      error: null,
+    };
+  },
+  created() {
+    this.error = false;
+    if (this.$router.currentRoute.name === "NotFound") {
+      this.error = true;
+    }
   },
 };
 </script>
