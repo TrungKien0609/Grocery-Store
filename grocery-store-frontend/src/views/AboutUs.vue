@@ -137,7 +137,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "AboutUs",
+};
 </script>
 <style lang="scss" scoped>
 .about-us-container {
