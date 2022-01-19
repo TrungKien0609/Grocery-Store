@@ -16,7 +16,7 @@
           <Cart class="light-icon" />
           <div class="sub-info">14</div>
         </div>
-        <div class="account signal-icon">
+        <div class="account signal-icon" @click="toggleAccount">
           <router-link to="#"><User class="light-icon" /></router-link>
         </div>
       </div>
@@ -107,7 +107,9 @@
           <Cart class="light-icon" />
           <div class="sub-info">14</div>
         </div>
-        <div class="account signal-icon"><User class="light-icon" /></div>
+        <div class="account signal-icon" @click="toggleAccount">
+          <User class="light-icon" />
+        </div>
       </div>
     </div>
     <div class="footer" v-if="!mobile">
@@ -221,6 +223,7 @@ export default {
     },
     toggleSideBar() {
       this.mobileSideBar = !this.mobileSideBar;
+      this.$emit("toggleBlurBody");
     },
     checkScreenSize() {
       this.windowWidth = window.innerWidth;
@@ -237,6 +240,10 @@ export default {
     },
     toggleCart() {
       this.showCart = !this.showCart;
+      this.$emit("toggleBlurBody");
+    },
+    toggleAccount() {
+      this.$emit("toggleAccount");
     },
   },
 };
@@ -246,9 +253,8 @@ export default {
   width: 100%;
   position: sticky;
   top: 0;
-  left: 0;
   border-bottom: 1px solid #ddd;
-  z-index: 99;
+  z-index: 20;
   .offer {
     color: #ef4444;
     border-radius: 5px;

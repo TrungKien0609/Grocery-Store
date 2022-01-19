@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <Navigation v-show="!error" />
+    <Account v-show="account" @toggleAccount="toggleAccount" />
+    <Navigation
+      v-show="!error"
+      @toggleBlurBody="toggleBlurBody"
+      @toggleAccount="toggleAccount"
+    />
     <router-view class="app-content" />
     <Footer v-show="!error" />
   </div>
@@ -8,15 +13,18 @@
 <script>
 import Navigation from "./components/Navigation.vue";
 import Footer from "./components/Footer.vue";
+import Account from "./components/Account.vue";
 export default {
   name: "Frame",
   components: {
     Navigation,
     Footer,
+    Account,
   },
   data() {
     return {
       error: null,
+      account: null,
     };
   },
   created() {
@@ -24,6 +32,15 @@ export default {
     if (this.$router.currentRoute.name === "NotFound") {
       this.error = true;
     }
+  },
+  methods: {
+    toggleBlurBody() {
+      document.getElementsByTagName("html")[0].classList.toggle("overflow");
+    },
+    toggleAccount() {
+      this.account = !this.account;
+      this.toggleBlurBody();
+    },
   },
 };
 </script>
@@ -35,14 +52,10 @@ export default {
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
-.app-container {
-  display: flex;
-  flex-direction: column;
-  .app-content {
-    flex: 1;
-  }
+html.overflow {
+  overflow: hidden;
+  padding-right: 17px;
 }
-
 img {
   display: block;
   width: 100%;
@@ -60,7 +73,7 @@ a {
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  position: relative;
 }
 .link-light {
   text-decoration: none;
