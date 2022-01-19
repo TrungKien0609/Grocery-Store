@@ -19,6 +19,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page-not-found-container {
+  flex: none;
   display: flex;
   justify-content: center;
   flex-direction: column;
