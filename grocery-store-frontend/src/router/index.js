@@ -7,6 +7,12 @@ import PrivacyPolicy from "../views/PrivacyPolicy.vue";
 import TermCondition from "../views/TermCondition.vue";
 import Offer from "../views/Offer.vue";
 import NotFound from "../views/404.vue";
+import FAQ from "../views/FAQ.vue";
+import UserDashBoard from "../views/UserDashBoard.vue";
+import CommonInfo from "../views/User/CommonInfo.vue";
+import MyOrders from "../views/User/MyOrders.vue";
+import UpdateProfile from "../views/User/UpdateProfile.vue";
+import ChangePassword from "../views/User/ChangePassword.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,6 +50,38 @@ const routes = [
     path: "*",
     name: "NotFound",
     component: NotFound,
+  },
+  {
+    path: "/faq",
+    name: "FAQ",
+    component: FAQ,
+  },
+  {
+    path: "/user",
+    name: "UserDashBoard",
+    component: UserDashBoard,
+    children: [
+      {
+        path: "dashboard",
+        name: "CommonInfo",
+        component: CommonInfo,
+      },
+      {
+        path: "my-orders",
+        name: "MyOrders",
+        component: MyOrders,
+      },
+      {
+        path: "update-profile",
+        name: "UpdateProfile",
+        component: UpdateProfile,
+      },
+      {
+        path: "change-password",
+        name: "ChangePassword",
+        component: ChangePassword,
+      },
+    ],
   },
 ];
 const router = new VueRouter({
