@@ -3,10 +3,7 @@
     <Product
       v-for="(product, index) in products"
       :key="index"
-      :unit="product.unit"
-      :name="product.name"
-      :price="product.price"
-      :buyAmount="product.buyAmount"
+      :product="product"
     />
   </div>
 </template>
@@ -24,28 +21,28 @@ export default {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
         {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
         {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
         {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
 
@@ -53,21 +50,21 @@ export default {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
         {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
         {
           link: "",
           unit: "each",
           name: "Green Leaf Lettuce",
-          price: "$14",
+          price: "14",
           buyAmount: "0",
         },
       ],

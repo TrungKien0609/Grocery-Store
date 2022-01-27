@@ -117,6 +117,10 @@ export default {
     align-items: center;
     background-color: #10b981;
     border-radius: 10px;
+    transition: 0.25s;
+    &:hover {
+      background-color: rgba(5, 150, 105, 1);
+    }
     p {
       &:last-child {
         font-family: sans-serif;

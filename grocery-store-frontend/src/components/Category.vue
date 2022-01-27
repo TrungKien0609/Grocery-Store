@@ -14,7 +14,12 @@
       <div v-else><DownArrow class="dark-arrow" /></div>
     </div>
     <div class="detail-category" v-if="showDetail">
-      <router-link to="#" v-for="(item, index) in category.list" :key="index">
+      <router-link
+        to="#"
+        class="link-dark"
+        v-for="(item, index) in category.list"
+        :key="index"
+      >
         <p><span>&#x268A;</span> {{ item.name }}</p>
       </router-link>
     </div>
@@ -54,9 +59,6 @@ export default {
     margin: 0.8rem 0;
     border-radius: 7px;
     cursor: pointer;
-    &:hover {
-      background-color: #f9fafb;
-    }
     .submenu {
       display: flex;
       justify-content: flex-start;
@@ -69,6 +71,12 @@ export default {
         font-size: 15px;
         font-weight: 550;
         color: #000;
+      }
+    }
+    &:hover {
+      background-color: #f9fafb;
+      .category-name {
+        color: #10b981;
       }
     }
     .dark-arrow {
@@ -85,6 +93,7 @@ export default {
       margin-left: 2rem;
       transition: 0.25s;
       cursor: pointer;
+      font-size: 0.9rem;
       &:hover {
         color: #10b981;
       }

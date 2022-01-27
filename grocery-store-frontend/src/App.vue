@@ -52,6 +52,9 @@ export default {
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+html {
+  scroll-behavior: smooth;
+}
 html.overflow {
   overflow: hidden;
   padding-right: 17px;

@@ -1,23 +1,21 @@
 <template>
   <div class="user-container">
     <div class="dash-board">
-      <router-link to="" class="link-dark">
+      <router-link :to="{ name: 'CommonInfo' }" class="link-dark">
         <div class="name"><DashBoard class="dark-icon" /> Dashboard</div>
       </router-link>
-      <router-link to="" class="link-dark">
+      <router-link :to="{ name: 'MyOrders' }" class="link-dark">
         <div class="name">
           <Orders class="dark-icon" viewBox="0 0 550 550" /> My Orders
         </div>
       </router-link>
-      <router-link to="" class="link-dark">
+      <router-link :to="{ name: 'UpdateProfile' }" class="link-dark">
         <div class="name"><Setting class="dark-icon" /> Update Profile</div>
       </router-link>
-      <router-link to="" class="link-dark">
+      <router-link :to="{ name: 'ChangePassword' }" class="link-dark">
         <div class="name"><ChangePass class="dark-icon" /> Change Password</div>
       </router-link>
-      <router-link to="" class="link-dark">
-        <div class="name"><Logout class="dark-icon" /> Logout</div>
-      </router-link>
+      <div class="name"><Logout class="dark-icon" /> Logout</div>
     </div>
     <div class="content">
       <router-view> </router-view>
@@ -83,6 +81,7 @@ export default {
       color: #000;
       border-radius: 5px;
       transition: 0.25s;
+      cursor: pointer;
       .dark-icon {
         width: 16px;
         height: auto;

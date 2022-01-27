@@ -6,7 +6,9 @@
           <Bar class="light-icon" />
         </div>
         <div class="home signal-icon">
-          <router-link to="#"> <Home class="light-icon" /> </router-link>
+          <router-link :to="{ name: 'Home' }">
+            <Home class="light-icon" />
+          </router-link>
         </div>
         <div class="notification signal-icon">
           <Notifcation class="light-icon" />
@@ -47,7 +49,7 @@
             </div>
             <div class="body">
               <ul>
-                <router-link class="link-dark" to="#">
+                <router-link class="link-dark" :to="{ name: 'Home' }">
                   <span> <Home class="dark-icon" />Home</span>
                 </router-link>
                 <div class="link-dark categories">
@@ -62,19 +64,19 @@
                     <ListCategories />
                   </div>
                 </div>
-                <a class="link-dark" href="/about-us">
+                <router-link class="link-dark" :to="{ name: 'AboutUs' }">
                   <span><Users class="dark-icon" />About us</span>
-                </a>
-                <router-link class="link-dark" to="#">
+                </router-link>
+                <router-link class="link-dark" :to="{ name: 'ContactUs' }">
                   <span><Phone class="dark-icon" /> Contact Us</span>
                 </router-link>
-                <router-link class="link-dark offer" to="#">
+                <router-link class="link-dark offer" :to="{ name: 'Offer' }">
                   <span><Offers class="dark-icon" />Offers</span>
                 </router-link>
-                <router-link class="link-dark" to="#">
+                <router-link class="link-dark" :to="{ name: 'PrivacyPolicy' }">
                   <span><Policy class="dark-icon" />Privacy Policy</span>
                 </router-link>
-                <router-link class="link-dark" to="#">
+                <router-link class="link-dark" :to="{ name: 'TermCondition' }">
                   <span><Terms class="dark-icon" />Terms & Conditions</span>
                 </router-link>
               </ul>
@@ -115,7 +117,7 @@
     <div class="footer" v-if="!mobile">
       <div class="nav-links">
         <ul>
-          <router-link class="link-dark" to="#">
+          <router-link class="link-dark" :to="{ name: 'Home' }">
             <span>Home</span>
           </router-link>
           <div class="link-dark categories" ref="dekstopCategories">
@@ -130,17 +132,21 @@
           <router-link class="link-dark" :to="{ name: 'AboutUs' }"
             ><span>About us</span></router-link
           >
-          <router-link class="link-dark" to="#"
-            ><span>Contact Us</span></router-link
+          <router-link class="link-dark" :to="{ name: 'ContactUs' }">
+            <span>Contact Us</span></router-link
           >
-          <router-link class="link-dark offer" to="#"
-            ><span>Offers</span></router-link
-          >
+          <router-link class="link-dark offer" :to="{ name: 'Offer' }">
+            <span>Offers</span>
+          </router-link>
         </ul>
       </div>
       <div class="more-info">
-        <router-link class="link-dark" to="#">Privacy Policy </router-link>
-        <router-link class="link-dark" to="#">Terms & Conditions </router-link>
+        <router-link class="link-dark" :to="{ name: 'PrivacyPolicy' }"
+          >Privacy Policy
+        </router-link>
+        <router-link class="link-dark" :to="{ name: 'TermCondition' }"
+          >Terms & Conditions
+        </router-link>
       </div>
     </div>
     <div class="cart">
