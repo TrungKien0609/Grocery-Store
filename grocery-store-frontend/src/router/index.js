@@ -13,6 +13,8 @@ import CommonInfo from "../views/User/CommonInfo.vue";
 import MyOrders from "../views/User/MyOrders.vue";
 import UpdateProfile from "../views/User/UpdateProfile.vue";
 import ChangePassword from "../views/User/ChangePassword.vue";
+import Search from "../views/Search.vue";
+import Product from "../views/Product.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -58,6 +60,7 @@ const routes = [
   },
   {
     path: "/user",
+    redirect: { name: "CommonInfo" },
     name: "UserDashBoard",
     component: UserDashBoard,
     children: [
@@ -82,6 +85,16 @@ const routes = [
         component: ChangePassword,
       },
     ],
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search,
+  },
+  {
+    path: "/product",
+    name: "Product",
+    component: Product,
   },
 ];
 const router = new VueRouter({
