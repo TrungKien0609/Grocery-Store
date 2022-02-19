@@ -11,7 +11,5 @@ require('laravel-mix-svg-vue');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue().svgVue()
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ])
+mix.js('resources/js/app.js', 'public/js').js('resources/AdminJs/app.js', 'public/AdminJs').vue().svgVue()
+    .postCss('resources/css/app.css', 'public/css')
