@@ -17,14 +17,14 @@
         </div>
       </div>
       <div class="image">
-        <img src="images/common-fruit.png" alt="" />
+        <img src="/images/common-fruit.png" alt="" />
       </div>
     </div>
     <div class="footer-info">
       <div class="col-1">
         <div class="image header">
           <router-link to="#">
-            <img src="images/dark-logo.png" alt="logo" />
+            <img src="/images/dark-logo.png" alt="logo" />
           </router-link>
         </div>
         <p>
@@ -106,7 +106,7 @@
     <div class="copy-right">
       <p>Copyright 2022 <a href="#">@Trung Kien</a>, All rights reserved.</p>
       <div class="payment-logo">
-        <img src="images/payment-logo.png" alt="payment-logo" />
+        <img src="/images/payment-logo.png" alt="payment-logo" />
       </div>
     </div>
   </div>
