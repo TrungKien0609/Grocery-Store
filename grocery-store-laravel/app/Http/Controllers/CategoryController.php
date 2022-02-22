@@ -17,6 +17,17 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $category;
+
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
+    public function getAll()
+    {
+        return $this->category->all();
+    }
+
     public function index(Request $request)
     {
         $request->validate([
@@ -36,17 +47,16 @@ class CategoryController extends Controller
             'name' => 'required|string|unique:categories,name|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
             'image' => 'required|image|mimes:jpeg,png|max:2048',
         ]);
-        if ($request->hasFile('image') && $request->has('name')) {
-            $path = $request->file('image')->store('uploads', 'public');
-            $image = Image::make(public_path("storage/{$path}"))->resize(48, 48);
-            $image->save();
-            Category::create([
-                'name' => $request->name,
-                'image' => $path,
-            ]);
-            return true;
-        }
-        return false;
+        $path = $request->file('image')->store('uploads', 'public');
+        $image = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+        $image->save();
+        Category::create([
+            'name' => $request->name,
+            'image' => $path,
+        ]);
+        return response([
+            'message' => 'Add sub category successfully'
+        ], 201);
     }
 
     /**
@@ -70,11 +80,14 @@ class CategoryController extends Controller
     public function update(Request $request, $category_id)
     {
         $fields = $request->validate([
-            'name' => 'required|string|unique:categories,name|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
+            'name' => 'required|string|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
             'image' => 'image|mimes:jpeg,png|max:2048',
         ]);
         $category = Category::where('id', $category_id)->firstOrFail();
-        $category->name = $request->name;
+        $checkUniqueName = Category::where('name', $request->name)->first();
+        if (!$checkUniqueName) {
+            $category->name =  $request->name;
+        }
         if ($request->hasFile('image')) {
             Storage::delete('public/' . $category->image);
             $path = $request->file('image')->store('uploads', 'public');

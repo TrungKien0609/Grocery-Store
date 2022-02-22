@@ -76,7 +76,11 @@
                 </label>
               </td>
               <td class="text-center">
-                <button @click.prevent="add" class="btn btn-success btn-sm">
+                <button
+                  @click.prevent="add"
+                  class="btn btn-success btn-sm"
+                  style="margin: 0"
+                >
                   Add
                 </button>
               </td>
@@ -241,7 +245,10 @@ export default {
         config: CATEGORY_CONFIG,
       };
       // call api
-      this.addData(obj);
+      this.addData(obj).then((response) => {
+        // load option in select categories
+        this.$store.dispatch("getSelectCategories");
+      });
       //reset data in component
       for (var key in this.input) {
         this.input[key] = "";
@@ -325,12 +332,7 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-    ...mapActions([
-      "addData",
-      "showData",
-      "updateData",
-      "deleteData",
-    ]),
+    ...mapActions(["addData", "showData", "updateData", "deleteData"]),
     paginate(pageNum) {
       this.start = CATEGORY_CONFIG.perPage * (pageNum - 1);
       this.$store.dispatch("getData", {

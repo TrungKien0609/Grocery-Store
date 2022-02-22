@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
@@ -105,7 +104,7 @@ class UserController extends Controller
             'address' => 'nullable|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
             'phone' => 'nullable|numeric'
         ]);
-        $path = "uploads/avatar.png";
+        $path = "uploads/default/avatar.png";
         if (isset($fields['image'])) {
             $path = $fields['image']->store('uploads', 'public');
             $image = Image::make(public_path("storage/{$path}"))->resize(100, 100);
@@ -155,7 +154,7 @@ class UserController extends Controller
             $user->phone = $fields['phone'];
         }
         if (isset($fields['image'])) {
-            if ($user->image !== "uploads/avatar.png") {
+            if ($user->image !== "uploads/default/avatar.png") {
                 Storage::delete('public/' . $user->image);
             }
             $path = $fields['image']->store('uploads', 'public');
@@ -170,7 +169,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($user_id);
         if ($user) {
-            if ($user->image !== "uploads/avatar.png") {
+            if ($user->image !== "uploads/default/avatar.png") {
                 Storage::delete('public/' . $user->image);
             }
             $user->delete();

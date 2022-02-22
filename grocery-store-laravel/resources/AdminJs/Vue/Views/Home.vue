@@ -122,5 +122,9 @@ export default {
     Product,
     User,
   },
+  created() {
+    this.$store.dispatch("getSelectCategories");
+  },
+  methods: {},
 };
 </script>

@@ -3,10 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../Views/Home.vue"
 import NotFound from "../Views/NotFound.vue";
 import Login from "../Views/Login.vue";
-import Signup from "../Views/Signup.vue";
 import ForgotPassword from "../Views/ForgotPassword.vue";
 import store from '../store/index.js'
-import axios from "axios";
 Vue.use(VueRouter)
 const routes = [
     {
@@ -21,11 +19,6 @@ const routes = [
         path: "/admin/user/login",
         name: "Login",
         component: Login
-    },
-    {
-        path: "/admin/user/signup",
-        name: "Signup",
-        component: Signup
     },
     {
         path: "/admin/user/forgot-password",

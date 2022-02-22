@@ -3,13 +3,19 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from '../router/index.js'
 Vue.use(Vuex);
+import {
+    CATEGORY_CONFIG
+} from "../Config/index.js";
 export default new Vuex.Store({
     state: {
-        userName: "",
+        userName: "", // for admin 
         token: "",
         categories: {},
         users: {},
         products: {},
+        subCategories: {},
+        //
+        selectCategories: [],
     },
     mutations: {
         setCookie(state, payload) {
@@ -97,13 +103,11 @@ export default new Vuex.Store({
                     },
                 })
                 .then((response) => {
-                    if (response.statusText == "OK") {
-                        dispatch('getData', {
-                            page: 1,
-                            config: payload.config
-                        });
-                        alert("Thêm " + payload.config.name + " thành công");
-                    }
+                    dispatch('getData', {
+                        page: 1,
+                        config: payload.config
+                    });
+                    alert("Thêm " + payload.config.name + " thành công");
                 })
                 .catch(function (error) {
                     alert(error.response.data.message);
@@ -121,7 +125,7 @@ export default new Vuex.Store({
         },
         async updateData({ commit, dispatch, state }, payload) {
             let formData = new FormData();
-            if (payload.form.image.files.length > 0) {
+            if (typeof payload.form.image !== 'undefined' && payload.form.image.files.length > 0) {
                 formData.append("image", payload.form.image.files[0]);
             }
             for (let key in payload.form) {
@@ -157,6 +161,18 @@ export default new Vuex.Store({
                 })
                 .catch(function (error) {
                     alert(error.response.data.message);
+                });
+        },
+        async getSelectCategories({ commit, dispatch, state }) {
+            await axios
+                .get(
+                    CATEGORY_CONFIG.link + 'all'
+                )
+                .then((response) => {
+                    state.selectCategories = response.data;
+                })
+                .catch(function (error) {
+                    alert("Có lỗi");
                 });
         },
     },

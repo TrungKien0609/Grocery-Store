@@ -457,7 +457,7 @@ export default {
       this.isSort = !this.isSort;
     },
     deleteField: function (id) {
-      if (confirm("Xóa danh mục")) {
+      if (confirm("Press OK for deletting ?")) {
         let obj = {
           id: id,
           config: USER_CONFIG,
