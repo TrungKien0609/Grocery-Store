@@ -25,12 +25,12 @@
       <div class="static-banner">
         <router-link to="#">
           <div class="image first">
-            <img src="images/banner/banner-1.jpg" alt="banner1" />
+            <img src="/images/banner/banner-1.jpg" alt="banner1" />
           </div>
         </router-link>
         <router-link to="#">
           <div class="image">
-            <img src="images/banner/banner-2.jpg" alt="banner2" />
+            <img src="/images/banner/banner-2.jpg" alt="banner2" />
           </div>
         </router-link>
       </div>

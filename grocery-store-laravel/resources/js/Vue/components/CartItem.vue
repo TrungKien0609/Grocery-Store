@@ -1,7 +1,7 @@
 <template>
   <div class="item-container">
     <div class="img">
-      <img src="images/categories/carp-fish.png" alt="item" />
+      <img src="/images/categories/carp-fish.png" alt="item" />
     </div>
     <div class="item">
       <p class="item-name">Fresh Rainbow Trout</p>

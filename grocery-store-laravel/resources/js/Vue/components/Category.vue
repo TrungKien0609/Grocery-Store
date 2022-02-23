@@ -3,7 +3,7 @@
     <div class="header" @click="toggleShowDetail">
       <div class="submenu">
         <div class="category-avatar">
-          <img src="images/categories/carp-fish.png" alt="category-avatar" />
+          <img src="/images/categories/carp-fish.png" alt="category-avatar" />
         </div>
         <div class="category-name">{{ category.name }}</div>
       </div>

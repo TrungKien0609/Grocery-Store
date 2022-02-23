@@ -5,7 +5,7 @@
         <div class="category">
           <div class="image">
             <img
-              src="images/categories/carp-fish.png"
+              src="/images/categories/carp-fish.png"
               alt="Category"
             />
           </div>

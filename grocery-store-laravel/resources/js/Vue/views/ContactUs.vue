@@ -2,7 +2,7 @@
   <div class="contact-us-container">
     <div class="header">
       <div class="image">
-        <img src="images/banner/page-header-bg.jpg" alt="page-header" />
+        <img src="/images/banner/page-header-bg.jpg" alt="page-header" />
       </div>
       <h1 class="page-header">Contact Us</h1>
     </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="support">
       <div class="image">
-        <img src="images/banner/contact-us.png" alt="contact-us" />
+        <img src="/images/banner/contact-us.png" alt="contact-us" />
       </div>
       <div class="form">
         <h2 class="title">For any support just send your query</h2>

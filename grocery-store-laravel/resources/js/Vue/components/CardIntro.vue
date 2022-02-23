@@ -1,7 +1,7 @@
 <template>
   <div class="card-intro-container">
     <div class="image">
-      <img src="images/banner/role1.jpg" alt="card-intro" />
+      <img src="/images/banner/role1.jpg" alt="card-intro" />
     </div>
     <div class="card-intro-content">
       <p class="taste">Taste of</p>

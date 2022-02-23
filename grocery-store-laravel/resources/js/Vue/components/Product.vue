@@ -2,7 +2,7 @@
   <div class="product-container">
     <div class="first-look">
       <div class="image" @click="toggleShowFullProduct">
-        <img src="images/products/Green-Leaf.jpg" alt="product" />
+        <img src="/images/products/Green-Leaf.jpg" alt="product" />
       </div>
       <p class="unit">{{ product.unit }}</p>
       <p class="name">{{ product.name }}</p>
@@ -42,7 +42,7 @@
         <div class="content">
           <div class="image">
             <router-link to="">
-              <img src="images/products/Green-Leaf.jpg" alt="image" />
+              <img src="/images/products/Green-Leaf.jpg" alt="image" />
             </router-link>
           </div>
           <div class="product-info">

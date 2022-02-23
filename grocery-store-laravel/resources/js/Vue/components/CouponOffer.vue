@@ -2,7 +2,7 @@
   <div class="coupon-offer-container">
     <div class="left">
       <div class="image">
-        <img src="images/productOffer/offer1.jpg" alt="Offer" />
+        <img src="/images/productOffer/offer1.jpg" alt="Offer" />
       </div>
       <div class="info">
         <div class="time-for-expired">

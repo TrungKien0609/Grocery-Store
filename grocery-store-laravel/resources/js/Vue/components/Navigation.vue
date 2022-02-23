@@ -42,7 +42,7 @@
             <div class="header">
               <div class="branding">
                 <router-link class="logo" :to="{ name: 'Home' }"
-                  ><img src="images/light-logo.png" alt="logo"
+                  ><img src="/images/light-logo.png" alt="logo"
                 /></router-link>
               </div>
               <div class="close-side-bar-btn" @click="toggleSideBar">

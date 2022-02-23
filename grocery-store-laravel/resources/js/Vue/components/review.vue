@@ -3,7 +3,7 @@
     <div class="header">
       <div class="image">
         <img
-          src="images/products/Green-Leaf.jpg"
+          src="/images/products/Green-Leaf.jpg"
           alt="image"
           style="display: none"
         />
@@ -44,16 +44,16 @@
       </p>
       <div class="images">
         <div class="image">
-          <img src="images/products/Green-Leaf.jpg" alt="" />
+          <img src="/images/products/Green-Leaf.jpg" alt="" />
         </div>
         <div class="image">
-          <img src="images/products/Green-Leaf.jpg" alt="" />
+          <img src="/images/products/Green-Leaf.jpg" alt="" />
         </div>
         <div class="image">
-          <img src="images/products/Green-Leaf.jpg" alt="" />
+          <img src="/images/products/Green-Leaf.jpg" alt="" />
         </div>
         <div class="image">
-          <img src="images/products/Green-Leaf.jpg" alt="" />
+          <img src="/images/products/Green-Leaf.jpg" alt="" />
         </div>
       </div>
       <div class="time">Review <span>a month ago</span></div>

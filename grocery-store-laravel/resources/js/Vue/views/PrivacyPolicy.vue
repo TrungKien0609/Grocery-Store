@@ -3,7 +3,7 @@
     <div class="header">
       <div class="image">
         <img
-          src="images/banner/page-header-bg.jpg"
+          src="/images/banner/page-header-bg.jpg"
           alt="page-header"
         />
       </div>

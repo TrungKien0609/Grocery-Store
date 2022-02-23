@@ -3,7 +3,7 @@
     <div class="header">
       <div class="image">
         <img
-          src="images/banner/page-header-bg.jpg"
+          src="/images/banner/page-header-bg.jpg"
           alt="page-header"
         />
       </div>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="image">
-          <img src="images/banner/about-us.jpg" alt="about-us" />
+          <img src="/images/banner/about-us.jpg" alt="about-us" />
         </div>
       </div>
       <article>
@@ -79,7 +79,7 @@
         </p>
       </article>
       <div class="image">
-        <img src="images/banner/about-banner.jpg" alt="about-banner" />
+        <img src="/images/banner/about-banner.jpg" alt="about-banner" />
       </div>
     </div>
     <div class="partner">
@@ -91,42 +91,42 @@
       <div class="partner-info">
         <div class="every">
           <div class="image">
-            <img src="images/founders/team-1.jpg" alt="Trung Kien" />
+            <img src="/images/founders/team-1.jpg" alt="Trung Kien" />
           </div>
           <h3 class="name">Trung Kien</h3>
           <p class="level">Co-founder & Executive</p>
         </div>
         <div class="every">
           <div class="image">
-            <img src="images/founders/team-2.jpg" alt="Trung Kien" />
+            <img src="/images/founders/team-2.jpg" alt="Trung Kien" />
           </div>
           <h3 class="name">Orla Dwyer</h3>
           <p class="level">Chief Executive</p>
         </div>
         <div class="every">
           <div class="image">
-            <img src="images/founders/team-3.jpg" alt="Trung Kien" />
+            <img src="/images/founders/team-3.jpg" alt="Trung Kien" />
           </div>
           <h3 class="name">Dara Frazier</h3>
           <p class="level">Chief Strategy Officer</p>
         </div>
         <div class="every">
           <div class="image">
-            <img src="images/founders/team-4.jpg" alt="Trung Kien" />
+            <img src="/images/founders/team-4.jpg" alt="Trung Kien" />
           </div>
           <h3 class="name">Glenda Arvidson</h3>
           <p class="level">HR Officer</p>
         </div>
         <div class="every">
           <div class="image">
-            <img src="images/founders/team-5.jpg" alt="Trung Kien" />
+            <img src="/images/founders/team-5.jpg" alt="Trung Kien" />
           </div>
           <h3 class="name">Melvin Davis</h3>
           <p class="level">Lead Developer</p>
         </div>
         <div class="every">
           <div class="image">
-            <img src="images/founders/team-6.jpg" alt="Trung Kien" />
+            <img src="/images/founders/team-6.jpg" alt="Trung Kien" />
           </div>
           <h3 class="name">Niamh Shea</h3>
           <p class="level">Co-founder, Chairman</p>

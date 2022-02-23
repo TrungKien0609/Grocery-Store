@@ -11,11 +11,20 @@
       </div>
     </div>
     <div class="body">
+      <!-- <CartItem />
       <CartItem />
       <CartItem />
       <CartItem />
-      <CartItem />
-      <CartItem />
+      <CartItem /> -->
+      <div class="cart-empty">
+        <div class="icon">
+          <svg-vue icon="solid-cart"></svg-vue>
+        </div>
+        <h3 class="title">Your cart is empty</h3>
+        <p class="note">
+          No items added in your cart. Please add product to your cart list.
+        </p>
+      </div>
     </div>
     <router-link to="#" class="link-light">
       <div class="footer">
@@ -70,7 +79,7 @@ export default {
         margin-right: 10px;
         width: 19px;
         height: 25px;
-        ::v-deep path{
+        ::v-deep path {
           fill: none;
         }
       }
@@ -107,6 +116,44 @@ export default {
     overflow-y: auto;
     &::-webkit-scrollbar {
       display: none;
+    }
+    .cart-empty {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .icon {
+        font-size: 2.25rem;
+        line-height: 2.25rem;
+        color: rgb(5 150 105);
+        width: 5rem;
+        height: 5rem;
+        border-radius: 9999px;
+        background-color: rgb(209 250 229);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        svg {
+          display: block;
+          width: 1em;
+          height: 1em;
+        }
+        // CSS FOR SVGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+      }
+      .title {
+        color: rgb(55 65 81);
+        font-family: sans-serif;
+        margin-top: 1.5rem;
+      }
+      .note {
+        font-size: 0.875rem;
+        color: rgb(107 114 128);
+        line-height: 1.25rem;
+        text-align: center;
+        padding: 0 3rem;
+        margin-top: 1rem;
+      }
     }
   }
   .footer {

@@ -24,8 +24,8 @@
             Reset Password
           </button>
           <div class="sign-up">
-            Don't have an account?
-            <router-link :to="{ name: 'Signup' }">Create one</router-link>
+            Have an account?
+            <router-link :to="{ name: 'Login' }">Login</router-link>
           </div>
         </form>
       </div>

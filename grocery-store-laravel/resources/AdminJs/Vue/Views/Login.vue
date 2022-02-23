@@ -36,10 +36,6 @@
           >
             Sign in
           </button>
-          <div class="sign-up">
-            Don't have an account?
-            <router-link :to="{ name: 'Signup' }">Create one</router-link>
-          </div>
         </form>
       </div>
     </div>

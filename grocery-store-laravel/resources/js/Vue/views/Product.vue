@@ -10,7 +10,7 @@
     <div class="content">
       <div class="product-info">
         <div class="image">
-          <img src="images/products/Green-Leaf.jpg" alt="image" />
+          <img src="/images/products/Green-Leaf.jpg" alt="image" />
           <div class="discount-info">17% Off</div>
         </div>
         <div class="text-info">

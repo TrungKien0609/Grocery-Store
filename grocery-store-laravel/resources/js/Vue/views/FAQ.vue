@@ -2,7 +2,7 @@
   <div class="faq-container">
     <div class="header">
       <div class="image">
-        <img src="images/banner/page-header-bg.jpg" alt="page-header" />
+        <img src="/images/banner/page-header-bg.jpg" alt="page-header" />
       </div>
       <h1 class="page-header">Frequently Asked Questions</h1>
     </div>
