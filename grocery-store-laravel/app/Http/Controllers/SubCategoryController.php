@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 
 class SubCategoryController extends Controller
 {
@@ -39,9 +40,11 @@ class SubCategoryController extends Controller
             'name' => 'required|string|unique:sub_categories,name|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
             'category_id' => 'required|numeric|min:1'
         ]);
+        $slug = Str::slug($fields['name']);
         $sub = $this->subCategory->create([
             'name' => $fields['name'],
             'category_id' => $fields['category_id'],
+            'slug' => $slug
         ]);
         return response([
             'message' => 'Add sub-category completely'
@@ -76,6 +79,8 @@ class SubCategoryController extends Controller
         $checkUniqueName = $this->subCategory->where('name', $fields['name'])->first();
         if (!$checkUniqueName) {
             $subCategory->name =  $fields['name'];
+            $slug = Str::slug($fields['name']);
+            $subCategory->slug = $slug;
         }
         $subCategory->category_id = $fields['category_id'];
         $subCategory->save();

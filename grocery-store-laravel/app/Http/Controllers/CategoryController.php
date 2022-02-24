@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -23,6 +24,7 @@ class CategoryController extends Controller
     {
         $this->category = $category;
     }
+
     public function getAll()
     {
         return $this->category->all();
@@ -48,11 +50,16 @@ class CategoryController extends Controller
             'image' => 'required|image|mimes:jpeg,png|max:2048',
         ]);
         $path = $request->file('image')->store('uploads', 'public');
-        $image = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+        $slug = Str::slug($request->name);
+        $image = Image::make(public_path("storage/{$path}"));
+        // $newImage = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+        // I got image from the clone website ( had resized ( compress) one times)
+        // if resize again so that The image quality lost a lot of.
         $image->save();
         Category::create([
             'name' => $request->name,
             'image' => $path,
+            'slug' =>  $slug
         ]);
         return response([
             'message' => 'Add sub category successfully'
@@ -86,12 +93,17 @@ class CategoryController extends Controller
         $category = Category::where('id', $category_id)->firstOrFail();
         $checkUniqueName = Category::where('name', $request->name)->first();
         if (!$checkUniqueName) {
+            $slug = Str::slug($request->name);
+            $category->slug = $slug;
             $category->name =  $request->name;
         }
         if ($request->hasFile('image')) {
             Storage::delete('public/' . $category->image);
             $path = $request->file('image')->store('uploads', 'public');
-            $newImage = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+            $newImage = Image::make(public_path("storage/{$path}"));
+            // $newImage = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+            // I got image from the clone website ( had resized ( compress) one times)
+            // if resize again so that The image quality lost a lot of.
             $newImage->save();
             $category->image = $path;
         }

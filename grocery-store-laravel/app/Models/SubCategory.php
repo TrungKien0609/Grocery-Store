@@ -11,12 +11,12 @@ class SubCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id'];
+    protected $fillable = ['name', 'category_id', 'slug'];
     protected $appends = ['category'];
 
     public function category()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
         // belongsTo(class,foreinkey of current table , primarykey of parant table)
     }
     public function product()

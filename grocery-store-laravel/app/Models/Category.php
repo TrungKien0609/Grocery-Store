@@ -9,7 +9,7 @@ use App\Models\SubCategory;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'image'];
+    protected $fillable = ['name', 'image','slug'];
     protected $appends = ['subCategory'];
     /**
      * Get all of the subCategories for the Category

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -50,9 +51,13 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png|max:2048',
         ]);
         $path = $fields['image']->store('uploads', 'public');
-        $image = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+        $image = Image::make(public_path("storage/{$path}"));
+        // $newImage = Image::make(public_path("storage/{$path}"))->resize(100, 100);
+        // I got image from the clone website ( had resized ( compress) one times)
+        // if resize again so that The image quality lost a lot of.
         $image->save();
         $price = round((int)$fields['original_price'] * (1 - (int)$fields['discount'] * 0.01));
+        $slug =  Str::slug($fields['name']);
         $product = $this->product->create([
             'name' => $fields['name'],
             'sub_category_id' => $fields['sub_category_id'],
@@ -61,6 +66,7 @@ class ProductController extends Controller
             'discount' =>  $fields['discount'],
             'description' =>  $fields['description'],
             'unit' =>  $fields['unit'],
+            'slug' =>  $slug,
             'quantity' =>  $fields['quantity'],
             'status' =>  $fields['status'],
             'stock_info' => 'in stock',
@@ -105,11 +111,14 @@ class ProductController extends Controller
 
         $product = $this->product->where('id', $product_id)->firstOrFail();
         $price = round((int)$fields['original_price'] * (1 - (int)$fields['discount'] * 0.01));
-
+        $slug =  Str::slug($fields['name']);
         if (isset($fields['image'])) {
             Storage::delete('public/' . $fields['image']);
             $path = $request->file('image')->store('uploads', 'public');
-            $newImage = Image::make(public_path("storage/{$path}"))->resize(48, 48);
+            $newImage = Image::make(public_path("storage/{$path}"));
+            // $newImage = Image::make(public_path("storage/{$path}"))->resize(100, 100);
+            // I got image from the clone website ( had resized ( compress) one times)
+            // if resize again so that The image quality lost a lot of.
             $newImage->save();
             $product->image = $path;
         }
@@ -121,6 +130,7 @@ class ProductController extends Controller
         $product->original_price = $fields['original_price'];
         $product->discount = $fields['discount'];
         $product->price =  $price;
+        $product->slug = $slug;
         $product->description = $fields['description'];
         $product->unit = $fields['unit'];
         $product->status = $fields['status'];
