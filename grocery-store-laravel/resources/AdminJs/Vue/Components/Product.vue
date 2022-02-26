@@ -594,7 +594,6 @@ export default {
         this.editInput.subCategory_id == "" ||
         this.editInput.name == "" ||
         this.editInput.originalPrice == "" ||
-        this.editInput.discount == "" ||
         this.editInput.stock == "" ||
         this.editInput.description == "" ||
         this.editInput.unit == "" ||
@@ -611,17 +610,17 @@ export default {
           id: this.editInput.id,
           image: imageEdit,
           name: this.editInput.name,
-          original_price :this.editInput.originalPrice,
-          discount : this.editInput.discount,
-          description : this.editInput.description,
-          unit : this.editInput.unit,
-          quantity :this.editInput.quantity,
-          status : this.editInput.status,
-          sub_category_id : this.editInput.subCategory_id,
+          original_price: this.editInput.originalPrice,
+          discount: this.editInput.discount,
+          description: this.editInput.description,
+          unit: this.editInput.unit,
+          quantity: this.editInput.quantity,
+          status: this.editInput.status,
+          sub_category_id: this.editInput.subCategory_id,
         },
         config: PRODUCT_CONFIG,
       };
-            this.updateData(obj);
+      this.updateData(obj);
       for (var key in this.editInput) {
         this.editInput[key] = "";
       }
