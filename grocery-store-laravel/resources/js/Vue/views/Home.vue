@@ -11,11 +11,10 @@
       <CategoriesBanner />
     </div>
     <div class="show-products">
-      <h2 class="section-name">Popular Products for Daily Shopping</h2>
+      <h2 class="section-name">New Products for Daily Shopping</h2>
       <p class="text">
-        See all our popular products in this week. You can choose your daily
-        needs products from this list and get some special offer with free
-        shipping.
+        See all our new products in this week. You can choose your daily needs
+        products from this list and get some special offer with free shipping.
       </p>
       <ListProduct />
     </div>

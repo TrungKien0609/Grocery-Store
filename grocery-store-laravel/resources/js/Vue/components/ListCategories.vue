@@ -1,7 +1,7 @@
 <template>
   <div class="list-categories-container">
     <Category
-      v-for="(category, index) in ListCategories"
+      v-for="(category, index) in categories"
       :key="index"
       :category="category"
     />
@@ -9,156 +9,17 @@
 </template>
 <script>
 import Category from "./Category.vue";
+import { mapState } from "vuex";
 export default {
   name: "ListCategories",
   components: {
     Category,
   },
   data() {
-    return {
-      ListCategories: [
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-      ],
-    };
+    return {};
+  },
+  computed: {
+    ...mapState(["categories"]),
   },
 };
 </script>

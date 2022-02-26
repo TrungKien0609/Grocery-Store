@@ -31,7 +31,7 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{product}', [ProductController::class, 'show']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/category', CategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show']);
+    Route::apiResource('/category', CategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show', 'getAll']);
     Route::apiResource('/user', UserController::class)->middleware('ensure.isadmin');
     Route::apiResource('/sub-category', SubCategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show']);
     Route::apiResource('/product', ProductController::class)->middleware('ensure.isadmin')->except(['index', 'show']);

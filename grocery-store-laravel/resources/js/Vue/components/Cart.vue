@@ -11,12 +11,8 @@
       </div>
     </div>
     <div class="body">
-      <!-- <CartItem />
-      <CartItem />
-      <CartItem />
-      <CartItem />
-      <CartItem /> -->
-      <div class="cart-empty">
+      <CartItem v-for="(item, index) in items" :key="index" :item="item" />
+      <div class="cart-empty" v-if="isEmpty">
         <div class="icon">
           <svg-vue icon="solid-cart"></svg-vue>
         </div>
@@ -29,13 +25,14 @@
     <router-link to="#" class="link-light">
       <div class="footer">
         <p>Proceed To Checkout</p>
-        <p>$169.00</p>
+        <p>${{ cartTotal }}</p>
       </div>
     </router-link>
   </div>
 </template>
 <script>
 import CartItem from "./CartItem.vue";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Cart",
   components: {
@@ -45,6 +42,9 @@ export default {
     toggleCart() {
       this.$emit("toggleCart");
     },
+  },
+  computed: {
+    ...mapState(["items", "isEmpty", "cartTotal"]),
   },
 };
 </script>

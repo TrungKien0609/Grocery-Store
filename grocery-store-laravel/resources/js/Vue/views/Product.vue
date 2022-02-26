@@ -64,7 +64,7 @@
         <div class="introduce">
           <div class="item">
             <svg-vue
-              icon="truct"
+              icon="truck"
               viewBox="20 0 550 550"
               class="dark-icon"
             ></svg-vue>
@@ -433,7 +433,7 @@
 <script>
 import StarRating from "vue-star-rating";
 import Review from "../components/review.vue";
-import Pagination from "../components/PaginationComponent.vue";
+import Pagination from "../components/Pagination.vue";
 export default {
   name: "ProductView",
   components: {

@@ -3,7 +3,7 @@
     <div class="header" @click="toggleShowDetail">
       <div class="submenu">
         <div class="category-avatar">
-          <img src="/images/categories/carp-fish.png" alt="category-avatar" />
+          <img :src="'/storage/' + category.image" alt="category" />
         </div>
         <div class="category-name">{{ category.name }}</div>
       </div>
@@ -16,9 +16,9 @@
     </div>
     <div class="detail-category" v-if="showDetail">
       <router-link
-        to="#"
+        :to="{ name: 'Search', query: { subCategory: item.slug } }"
         class="link-dark"
-        v-for="(item, index) in category.list"
+        v-for="(item, index) in category.subCategory"
         :key="index"
       >
         <p><span>&#x268A;</span> {{ item.name }}</p>

@@ -16,7 +16,7 @@
         </div>
         <div class="cart signal-icon" @click="toggleCart">
           <svg-vue icon="cart" class="light-icon"></svg-vue>
-          <div class="sub-info">14</div>
+          <div class="sub-info">{{ totalItems }}</div>
         </div>
         <div class="account signal-icon" @click="toggleAccount">
           <router-link to="#">
@@ -135,7 +135,7 @@
         </div>
         <div class="cart signal-icon" @click="toggleCart">
           <svg-vue icon="cart" class="light-icon"></svg-vue>
-          <div class="sub-info">14</div>
+          <div class="sub-info">{{ totalItems }}</div>
         </div>
         <div class="account signal-icon" @click="toggleAccount">
           <svg-vue icon="user" class="light-icon"></svg-vue>
@@ -194,6 +194,7 @@ import ListCategories from "./ListCategories.vue";
 import CartCheckOut from "./Cart.vue";
 import SummaryCart from "./SummaryCart.vue";
 // import LoadingEffect from "./LoadingEffect.vue";
+import { mapState } from "vuex";
 export default {
   name: "Navigation",
   components: {
@@ -250,6 +251,9 @@ export default {
     toggleAccount() {
       this.$emit("toggleAccount");
     },
+  },
+  computed: {
+    ...mapState(["totalItems"]),
   },
 };
 </script>

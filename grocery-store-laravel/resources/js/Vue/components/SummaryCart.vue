@@ -1,17 +1,21 @@
 <template>
   <div class="summary-container" @click="toggleCart">
     <svg-vue icon="bag2" class="dark-icon"></svg-vue>
-    <p class="amount-item">13 Items</p>
-    <p class="total-price">$169.00</p>
+    <p class="amount-item">{{ totalItems }} Items</p>
+    <p class="total-price">${{ cartTotal }}</p>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "summaryCart",
   methods: {
     toggleCart() {
       this.$emit("toggleCart");
     },
+  },
+  computed: {
+    ...mapState(["cartTotal", "totalItems"]),
   },
 };
 </script>

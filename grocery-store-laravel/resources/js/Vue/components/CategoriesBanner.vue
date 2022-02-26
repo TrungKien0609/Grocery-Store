@@ -1,13 +1,10 @@
 <template>
   <div class="categories-banner-container">
-    <div v-for="(item, index) in listCategoriesBanner" :key="index">
-      <router-link to="">
+    <div v-for="(item, index) in categories" :key="index">
+      <router-link :to="{ name: 'Search', query: { category: item.slug } }">
         <div class="category">
           <div class="image">
-            <img
-              src="/images/categories/carp-fish.png"
-              alt="Category"
-            />
+            <img :src="'/storage/' + item.image" alt="Category" />
           </div>
           <p class="name">{{ item.name }}</p>
         </div>
@@ -16,74 +13,14 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "CategoriesBanner",
   data() {
-    return {
-      listCategoriesBanner: [
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-
-        {
-          link: "",
-          image: "",
-          name: "Fish & Meat",
-        },
-      ],
-    };
+    return {};
+  },
+  computed: {
+    ...mapState(["categories"]),
   },
 };
 </script>

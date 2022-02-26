@@ -2,7 +2,7 @@
   <div class="product-container">
     <div class="first-look">
       <div class="image" @click="toggleShowFullProduct">
-        <img src="/images/products/Green-Leaf.jpg" alt="product" />
+        <img :src="'/storage/' + product.image" alt="product" />
       </div>
       <p class="unit">{{ product.unit }}</p>
       <p class="name">{{ product.name }}</p>
@@ -21,16 +21,20 @@
           ${{ product.discountPrice }}</span
         >
       </p>
-      <div class="action" v-show="startBuy">
-        <svg-vue icon="minus" class="dark-icon"></svg-vue>
-        {{ product.buyAmount }}
-        <svg-vue icon="plus" class="dark-icon"></svg-vue>
+      <div class="action" v-if="startBuy && hasAdd > 0">
+        <div @click="subtract">
+          <svg-vue icon="minus" class="dark-icon"></svg-vue>
+        </div>
+        {{ result }}
+        <div @click="add">
+          <svg-vue icon="plus" class="dark-icon"></svg-vue>
+        </div>
       </div>
-      <div class="add-product" @click="start" v-show="!startBuy">
+      <div class="add-product" @click="start" v-if="!startBuy">
         <svg-vue icon="hand-bag" class="dark-icon"></svg-vue>
       </div>
       <div class="discount-info" v-show="product.discount">
-        {{ product.discount }}
+        {{ product.discount }}% Off
       </div>
       <div class="stock-info" v-show="product.stockInfo">
         {{ product.stockInfo }}
@@ -41,15 +45,20 @@
       <div class="content-container">
         <div class="content">
           <div class="image">
-            <router-link to="">
-              <img src="/images/products/Green-Leaf.jpg" alt="image" />
+            <router-link
+              :to="{ name: 'Product', params: { slug: product.slug } }"
+            >
+              <img :src="'/storage/' + product.image" alt="image" />
             </router-link>
           </div>
           <div class="product-info">
-            <router-link to="" class="dark-link">
-              <h3 class="title">Green Leaf Lettuce</h3>
+            <router-link
+              :to="{ name: 'Product', params: { slug: product.slug } }"
+              class="dark-link"
+            >
+              <h3 class="title">{{ product.name }}</h3>
             </router-link>
-            <div class="stock-info">In Stock</div>
+            <div class="stock-info">{{ product.stock_info }}</div>
             <div class="rating">
               <star-rating
                 :rating="3.8"
@@ -60,28 +69,32 @@
               />
             </div>
             <p class="description">
-              Most fresh vegetables are low in calories and have a water content
-              in excess of 70 percent, with only about 3.5 percent protein and
-              less than 1 percent fat. ... The root vegetables include beets,
-              carrots, radishes, sweet potatoes, and turnips. Stem vegetables
-              include asparagus and kohlrabi.
+              {{ product.description }}
             </p>
             <div class="price">
-              $15
-              <span class="dicount-price">$12</span>
+              ${{ product.price }}
+              <span class="dicount-price" v-if="product.discount"
+                >${{ product.original_price }}</span
+              >
             </div>
             <div class="action">
               <div class="math">
-                <svg-vue icon="minus" class="dark-icon"></svg-vue>
-                1
-                <svg-vue icon="plus" class="dark-icon"></svg-vue>
+                <div @click="checkWillAdd">
+                  <svg-vue icon="minus" class="dark-icon"></svg-vue>
+                </div>
+                {{ willAdd }}
+                <div @click="willAdd++">
+                  <svg-vue icon="plus" class="dark-icon"></svg-vue>
+                </div>
               </div>
-              <button>Add To Cart</button>
+              <button @click="addMutipleProduct">Add To Cart</button>
             </div>
-            <p class="category">Category: <span> Organic Food</span></p>
+            <p class="category">
+              Category: <span> {{ product.category }}</span>
+            </p>
             <div class="list-key">
-              <small>Organic Food</small>
-              <small>orange</small>
+              <small>{{ product.subCategory }}</small>
+              <small>{{ product.name }}</small>
             </div>
           </div>
         </div>
@@ -98,6 +111,7 @@
 </template>
 <script>
 import StarRating from "vue-star-rating";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "product",
   props: ["product"],
@@ -108,12 +122,19 @@ export default {
     return {
       startBuy: null,
       FullProduct: null,
+      hasAdd: 0,
+      willAdd: 1,
     };
   },
+  created() {
+    this.hasAdd = this.result;
+    this.startBuy = this.result === 0 ? false : true;
+  },
+  updated() {
+    this.hasAdd = this.result;
+    this.startBuy = this.result === 0 ? false : true;
+  },
   methods: {
-    start() {
-      this.startBuy = true;
-    },
     toggleBlurBody() {
       document.getElementsByTagName("html")[0].classList.toggle("overflow");
     },
@@ -121,6 +142,96 @@ export default {
       console.log("Trung Kien");
       this.FullProduct = !this.FullProduct;
       this.toggleBlurBody();
+    },
+    ...mapMutations([
+      "setItems",
+      "setQuantityItem",
+      "setTotalItems",
+      "deleteCartItem",
+    ]),
+    start() {
+      this.add();
+      this.startBuy = true;
+    },
+    add() {
+      if (this.hasAdd < this.product.quantity) {
+        this.hasAdd++;
+        this.action(true);
+      } else {
+        this.$toaster.error("No more quantity available for this product");
+      }
+    },
+    subtract() {
+      this.hasAdd--;
+      this.startBuy = this.hasAdd === 0 ? false : true;
+      this.action(false);
+      if (this.hasAdd === 0) {
+        this.deleteCartItem(this.product.id);
+      }
+    },
+    checkExist(product_id) {
+      return this.items.findIndex((item) => {
+        return item.id === product_id;
+      });
+    },
+    action(math) {
+      if (this.checkExist(this.product.id) !== -1) {
+        let index = this.checkExist(this.product.id);
+        this.setQuantityItem({
+          index: index,
+          hasAdd: this.hasAdd,
+          math: math, // add or subtract
+          price: this.product.price,
+        });
+      } else {
+        this.setItems({
+          items: [
+            ...this.items,
+            {
+              ...this.product,
+              hasAdd: this.hasAdd,
+              itemTotal: this.product.price,
+            },
+          ],
+          price: this.product.price,
+        });
+      }
+    },
+    addMutipleProduct() {
+      for (let i = 0; i < this.willAdd; i++) {
+        if (this.hasAdd < this.product.quantity) {
+          this.hasAdd++;
+          this.action(true);
+          if (i === this.willAdd - 1) {
+            this.$toaster.success(
+              this.willAdd + " " + this.product.name + " has added to cart"
+            );
+          }
+        } else {
+          this.$toaster.error("No more quantity available for this product");
+          break;
+        }
+      }
+    },
+    checkWillAdd() {
+      if (this.willAdd > 1) this.willAdd--;
+    },
+  },
+  computed: {
+    ...mapState([
+      "items",
+      "totalItems",
+      "totalUniqueItems",
+      "cartTotal",
+      "isEmpty",
+    ]),
+    result() {
+      let index = this.items.findIndex((item) => {
+        return item.id === this.product.id;
+      });
+      if (index !== -1) {
+        return this.$store.state.items[index].hasAdd;
+      } else return 0;
     },
   },
 };

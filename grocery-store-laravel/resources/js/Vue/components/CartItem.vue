@@ -1,19 +1,25 @@
 <template>
   <div class="item-container">
     <div class="img">
-      <img src="/images/categories/carp-fish.png" alt="item" />
+      <img :src="'/storage/' + item.image" alt="item" />
     </div>
     <div class="item">
-      <p class="item-name">Fresh Rainbow Trout</p>
-      <p class="item-price">Item Price $12</p>
+      <router-link :to="{ name: 'Product', params: { slug: item.slug } }">
+        <p class="item-name">{{ item.name }}</p>
+        <p class="item-price">Item Price ${{ item.price }}</p>
+      </router-link>
       <div class="bot-tem">
-        <p class="item-total">$72.00</p>
+        <p class="item-total">${{ item.itemTotal }}</p>
         <div class="action">
-          <svg-vue icon="minus" class="dark-icon"></svg-vue>
-          <p>5</p>
-          <svg-vue icon="plus" class="dark-icon"></svg-vue>
+          <div @click="subtract">
+            <svg-vue icon="minus" class="dark-icon"></svg-vue>
+          </div>
+          <p>{{ hasAdd }}</p>
+          <div @click="add">
+            <svg-vue icon="plus" class="dark-icon"></svg-vue>
+          </div>
         </div>
-        <div class="delete-item">
+        <div class="delete-item" @click="deleteOne">
           <svg-vue icon="delete" class="dark-icon"></svg-vue>
         </div>
       </div>
@@ -21,8 +27,80 @@
   </div>
 </template>
 <script>
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "CartItem",
+  props: ["item"],
+  data() {
+    return {
+      hasAdd: null,
+    };
+  },
+  created() {
+    this.hasAdd = this.item.hasAdd;
+  },
+  updated() {
+    this.hasAdd = this.item.hasAdd;
+  },
+  methods: {
+    ...mapMutations([
+      "setItems",
+      "setQuantityItem",
+      "setTotalItems",
+      "deleteCartItem",
+    ]),
+    add() {
+      if (this.hasAdd < this.item.quantity) {
+        this.hasAdd++;
+        this.action(true);
+      } else {
+        this.$toaster.error("No more quantity available for this product");
+      }
+    },
+    subtract() {
+      this.hasAdd--;
+      this.action(false);
+      if (this.hasAdd === 0) {
+        this.deleteCartItem(this.item.id);
+      }
+    },
+    deleteOne() {
+      while (this.hasAdd > 0) {
+        this.subtract();
+      }
+    },
+    checkExist(product_id) {
+      return this.items.findIndex((item) => {
+        return item.id === product_id;
+      });
+    },
+    action(math) {
+      if (this.checkExist(this.item.id) !== -1) {
+        let index = this.checkExist(this.item.id);
+        this.setQuantityItem({
+          index: index,
+          hasAdd: this.hasAdd,
+          math: math, // add or subtract
+          price: this.item.price,
+        });
+      } else {
+        this.setItems({
+          items: [
+            ...this.items,
+            {
+              ...this.item,
+              hasAdd: this.hasAdd,
+              itemTotal: this.item.price,
+            },
+          ],
+          price: this.item.price,
+        });
+      }
+    },
+  },
+  computed: {
+    ...mapState(["items"]),
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -70,6 +148,7 @@ export default {
         font-weight: 600;
         font-family: sans-serif;
         font-size: 1rem;
+        color: #000;
       }
       .action {
         display: flex;

@@ -92,7 +92,7 @@ const routes = [
     component: Search,
   },
   {
-    path: "/product",
+    path: "/product/:slug?",
     name: "Product",
     component: Product,
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="pagination-container">
     <Paginate
-      :page-count="10"
+      :page-count="pageNumber"
       :page-range="3"
       :margin-pages="2"
       :click-handler="clickCallback"
@@ -15,7 +15,6 @@
       :next-link-class="'next-link'"
       :disabled-class="'disabled'"
     >
-      >>
     </Paginate>
   </div>
 </template>
@@ -25,9 +24,10 @@ export default {
   components: {
     Paginate,
   },
+  props: ["pageNumber"],
   methods: {
-    clickCallback: (pageNum) => {
-      console.log(pageNum);
+    clickCallback(pageNum) {
+      this.$emit("paginate", pageNum);
     },
   },
 };
