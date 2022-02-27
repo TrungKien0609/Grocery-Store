@@ -81,15 +81,15 @@ export default new Vuex.Store({
       localStorage.setItem('isEmpty', state.isEmpty);
     },
     setCartOnLoad(state) {
-      state.items = typeof (localStorage.getItem('items')) !== undefined ? JSON.parse(localStorage.getItem('items')) : [];
+      state.items = localStorage.getItem('items') !== null ? JSON.parse(localStorage.getItem('items')) : [];
 
-      state.isEmpty = typeof (localStorage.getItem('isEmpty')) !== undefined ? JSON.parse(localStorage.getItem('isEmpty')) : true;
+      state.isEmpty = localStorage.getItem('isEmpty') !== null ? JSON.parse(localStorage.getItem('isEmpty')) : true;
 
-      state.totalItems = typeof (localStorage.getItem('totalItems')) !== undefined ? JSON.parse(localStorage.getItem('totalItems')) : 0;
+      state.totalItems = localStorage.getItem('totalItems') !== null ? JSON.parse(localStorage.getItem('totalItems')) : 0;
 
-      state.totalUniqueItems = typeof (localStorage.getItem('totalUniqueItems')) !== undefined ? JSON.parse(localStorage.getItem('totalUniqueItems')) : 0;
+      state.totalUniqueItems = localStorage.getItem('totalUniqueItems') !== null ? JSON.parse(localStorage.getItem('totalUniqueItems')) : 0;
 
-      state.cartTotal = typeof (localStorage.getItem('cartTotal')) !== undefined ? JSON.parse(localStorage.getItem('cartTotal')) : 0;
+      state.cartTotal = localStorage.getItem('cartTotal') !== null ? JSON.parse(localStorage.getItem('cartTotal')) : 0;
     }
   },
   actions: {

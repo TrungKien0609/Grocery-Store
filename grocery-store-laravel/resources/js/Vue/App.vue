@@ -29,6 +29,7 @@ export default {
     };
   },
   created() {
+    // localStorage.clear()
     this.checkError();
     this.getAllCategories();
     this.getProducts(1);

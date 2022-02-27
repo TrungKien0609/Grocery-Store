@@ -10,8 +10,8 @@ use App\Models\Category;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['sub_category_id', 'name', 'original_price', 'discount', 'description', 'unit', 'quantity', 'status', 'image','slug'];
-    protected $appends = ['category', 'subCategory','category_id'];
+    protected $fillable = ['sub_category_id', 'name', 'original_price', 'discount', 'price', 'description', 'unit', 'quantity', 'status', 'image', 'slug', 'stock_info'];
+    protected $appends = ['category', 'subCategory', 'category_id'];
 
     public function subCategory()
     {
