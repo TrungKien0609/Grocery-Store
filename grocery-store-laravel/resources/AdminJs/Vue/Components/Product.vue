@@ -134,10 +134,10 @@
               </td>
               <td>
                 <div class="imageWrapper">
-                  <img class="image" :src="'/storage/' + product.image" />
+                  <img class="image" :src="product.image" />
                   <img
                     class="hover-image"
-                    :src="'/storage/' + product.image"
+                    :src="product.image"
                     alt="image"
                   />
                 </div>
@@ -575,7 +575,7 @@ export default {
       this.showData(obj).then((response) => {
         this.editInput.id = response.id;
         this.editInput.category_id = response.category_id;
-        this.editInput.image = "/storage/" + response.image;
+        this.editInput.image = response.image;
         this.editInput.name = response.name;
         this.editInput.originalPrice = response.original_price;
         this.editInput.discount = response.discount;

@@ -18,10 +18,17 @@
           <svg-vue icon="cart" class="light-icon"></svg-vue>
           <div class="sub-info">{{ totalItems }}</div>
         </div>
-        <div class="account signal-icon" @click="toggleAccount">
-          <router-link to="#">
+        <div class="account signal-icon">
+          <div v-if="!isLogin" @click="toggleAccount">
             <svg-vue icon="user" class="light-icon"></svg-vue>
-          </router-link>
+          </div>
+          <div class="hasLogin" v-if="isLogin">
+            <router-link :to="{ name: 'UserDashBoard' }">
+              <div class="image">
+                <img :src="userAvatar" alt="user" />
+              </div>
+            </router-link>
+          </div>
         </div>
       </div>
       <div class="search-mobile">
@@ -137,8 +144,17 @@
           <svg-vue icon="cart" class="light-icon"></svg-vue>
           <div class="sub-info">{{ totalItems }}</div>
         </div>
-        <div class="account signal-icon" @click="toggleAccount">
-          <svg-vue icon="user" class="light-icon"></svg-vue>
+        <div class="account signal-icon">
+          <div v-if="!isLogin" @click="toggleAccount">
+            <svg-vue icon="user" class="light-icon"></svg-vue>
+          </div>
+          <div class="hasLogin" v-if="isLogin">
+            <router-link :to="{ name: 'UserDashBoard' }">
+              <div class="image">
+                <img :src="userAvatar" alt="user" />
+              </div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -253,7 +269,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["totalItems"]),
+    ...mapState(["totalItems", "isLogin", "userAvatar"]),
   },
 };
 </script>
@@ -314,6 +330,15 @@ export default {
         margin-bottom: -3px;
         background-color: transparent;
       }
+    }
+  }
+  .image {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      object-fit: cover;
     }
   }
   .header,
@@ -384,10 +409,14 @@ export default {
             z-index: 10;
             height: 450px;
             width: 320px;
+            background-color: #fff;
             border-radius: 7px;
             box-shadow: 0 2px 12px -1px rgba(0, 0, 0, 0.1),
               0 2px 12px -1px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            overflow-y: auto;
+            &::-webkit-scrollbar {
+              display: none;
+            }
           }
           .dark-arrow {
             margin-left: 3px;

@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'Search', query: { category: item.slug } }">
         <div class="category">
           <div class="image">
-            <img :src="'/storage/' + item.image" alt="Category" />
+            <img :src="item.image" alt="Category" />
           </div>
           <p class="name">{{ item.name }}</p>
         </div>

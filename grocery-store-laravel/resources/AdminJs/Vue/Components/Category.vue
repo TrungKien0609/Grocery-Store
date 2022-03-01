@@ -22,10 +22,10 @@
               </td>
               <td>
                 <div class="imageWrapper">
-                  <img class="image" :src="'/storage/' + category.image" />
+                  <img class="image" :src="category.image" />
                   <img
                     class="hover-image"
-                    :src="'/storage/' + category.image"
+                    :src="category.image"
                     alt="image"
                   />
                 </div>
@@ -262,7 +262,7 @@ export default {
       this.showData(obj).then((response) => {
         this.editInput.id = response.id;
         this.editInput.name = response.name;
-        this.editInput.image = "/storage/" + response.image;
+        this.editInput.image = response.image;
         this.editError = false;
         this.showModal = true;
       });

@@ -48,10 +48,10 @@
               </td>
               <td class="image-data">
                 <div class="imageWrapper">
-                  <img class="image" :src="'/storage/' + user.image" />
+                  <img class="image" :src="user.image" />
                   <img
                     class="hover-image"
-                    :src="'/storage/' + user.image"
+                    :src="user.image"
                     alt="image"
                   />
                 </div>
@@ -405,7 +405,7 @@ export default {
         this.editInput.password = response.password;
         this.editInput.phone = response.phone;
         this.editInput.role = response.role;
-        this.editInput.image = "/storage/" + response.image;
+        this.editInput.image = response.image;
         this.editError = false;
         this.showModal = true;
       });

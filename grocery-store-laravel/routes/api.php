@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\ProductController;
+use Laravel\Socialite\Facades\Socialite;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +31,8 @@ Route::get('/sub-category/{subCategory}', [SubCategoryController::class, 'show']
 
 Route::get('/product', [ProductController::class, 'index']);
 Route::get('/product/{product}', [ProductController::class, 'show']);
+
+Route::post('/login/socialite/{provider}', [UserController::class, 'SocialSignup']); // login with google and facebook
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/category', CategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show', 'getAll']);

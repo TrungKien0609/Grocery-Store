@@ -55,10 +55,11 @@ class CategoryController extends Controller
         // $newImage = Image::make(public_path("storage/{$path}"))->resize(48, 48);
         // I got image from the clone website ( had resized ( compress) one times)
         // if resize again so that The image quality lost a lot of.
+        $newPath = '/storage/' . $path;
         $image->save();
         Category::create([
             'name' => $request->name,
-            'image' => $path,
+            'image' => $newPath,
             'slug' =>  $slug
         ]);
         return response([
@@ -101,11 +102,12 @@ class CategoryController extends Controller
             Storage::delete('public/' . $category->image);
             $path = $request->file('image')->store('uploads', 'public');
             $newImage = Image::make(public_path("storage/{$path}"));
+            $newPath = '/storage/' . $path;
             // $newImage = Image::make(public_path("storage/{$path}"))->resize(48, 48);
             // I got image from the clone website ( had resized ( compress) one times)
             // if resize again so that The image quality lost a lot of.
             $newImage->save();
-            $category->image = $path;
+            $category->image = $newPath;
         }
         $category->save();
         return true;

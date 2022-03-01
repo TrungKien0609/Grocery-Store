@@ -14,7 +14,7 @@
 import Navigation from "./components/Navigation.vue";
 import Footer from "./components/Footer.vue";
 import Account from "./components/Account.vue";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "Frame",
   components: {
@@ -34,6 +34,7 @@ export default {
     this.getAllCategories();
     this.getProducts(1);
     this.setCartOnLoad();
+    this.firstLoadUserData();
   },
   updated() {
     this.checkError();
@@ -53,8 +54,11 @@ export default {
       this.account = !this.account;
       this.toggleBlurBody();
     },
-    ...mapActions(["getAllCategories", "getProducts"]),
+    ...mapActions(["getAllCategories", "getProducts", "firstLoadUserData"]),
     ...mapMutations(["setCartOnLoad"]),
+  },
+  computed: {
+    ...mapState(["isLogin"]),
   },
 };
 </script>

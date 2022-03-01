@@ -1,7 +1,7 @@
 <template>
   <div class="item-container">
     <div class="img">
-      <img :src="'/storage/' + item.image" alt="item" />
+      <img :src="item.image" alt="item" />
     </div>
     <div class="item">
       <router-link :to="{ name: 'Product', params: { slug: item.slug } }">

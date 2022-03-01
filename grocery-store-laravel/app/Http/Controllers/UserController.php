@@ -11,9 +11,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
 {
@@ -40,6 +39,7 @@ class UserController extends Controller
             'password' => bcrypt($fields['password']),
             'role' => $fields['role']
         ]);
+        $user->image = '/storage/uploads/default/avatar.png';
         $token = $user->createToken('user-token')->plainTextToken;
         $respone = [
             'user' => $user,
@@ -53,7 +53,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-        $user = User::where('email', $fields['email'])->firstOrFail();
+        $user = User::where('email', $fields['email'])->first();
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             // throw ValidationException::withMessages([
             //     'email' => ['The provided credentials are incorrect.'],
@@ -104,17 +104,18 @@ class UserController extends Controller
             'address' => 'nullable|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
             'phone' => 'nullable|numeric'
         ]);
-        $path = "uploads/default/avatar.png";
+        $path = "/storage/uploads/default/avatar.png";
         if (isset($fields['image'])) {
             $path = $fields['image']->store('uploads', 'public');
             $image = Image::make(public_path("storage/{$path}"))->resize(100, 100);
+            $newPath = '/storage/' . $path;
             $image->save();
         }
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
             'password' => bcrypt($fields['password']),
-            'image' => $path,
+            'image' => $newPath,
             'role' => $fields['role'],
             'address' => $fields['address'],
             'phone' => $fields['phone']
@@ -160,7 +161,7 @@ class UserController extends Controller
             $path = $fields['image']->store('uploads', 'public');
             $newImage = Image::make(public_path("storage/{$path}"))->resize(100, 100);
             $newImage->save();
-            $user->image = $path;
+            $user->image = '/storage/' . $path;
         }
         $user->save();
         return true;
@@ -175,5 +176,34 @@ class UserController extends Controller
             $user->delete();
             return true;
         }
+    }
+    public function SocialSignup($provider)
+    {
+        // Socialite will pick response data automatic 
+        $userSocialite = Socialite::driver($provider)->stateless()->user();
+        $checkUser = User::where('email', $userSocialite->email)->first();
+        if (!$checkUser) {
+            $newUser = User::create([
+                'email' => $userSocialite->email,
+                'name' => $userSocialite->name,
+                'role' => 'user',
+                'image' => $userSocialite->avatar,
+                'provider' => $provider,
+                'password' => null
+            ]);
+            $token = $newUser->createToken('user-token')->plainTextToken;
+            $respone = [
+                'user' => $newUser,
+                'token' => $token
+            ];
+        } else {
+            $user = User::where('email', $userSocialite->email)->first();
+            $token = $user->createToken('user-token')->plainTextToken;
+            $respone = [
+                'user' => $user,
+                'token' => $token
+            ];
+        }
+        return response($respone, 200);
     }
 }

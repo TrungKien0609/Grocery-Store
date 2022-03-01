@@ -15,6 +15,7 @@ import UpdateProfile from "../views/User/UpdateProfile.vue";
 import ChangePassword from "../views/User/ChangePassword.vue";
 import Search from "../views/Search.vue";
 import Product from "../views/Product.vue";
+import store from '../store/index.js'
 Vue.use(VueRouter);
 
 const routes = [
@@ -63,26 +64,41 @@ const routes = [
     redirect: { name: "CommonInfo" },
     name: "UserDashBoard",
     component: UserDashBoard,
+    meta: {
+      requiresAuth: true,
+    },
     children: [
       {
         path: "dashboard",
         name: "CommonInfo",
         component: CommonInfo,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "my-orders",
         name: "MyOrders",
         component: MyOrders,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "update-profile",
         name: "UpdateProfile",
         component: UpdateProfile,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "change-password",
         name: "ChangePassword",
         component: ChangePassword,
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },
@@ -102,5 +118,18 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    store.dispatch('getCookie', 'usertoken').then(response => {
+      if (response !== "") {
+        next();
+      }
+      else {
+        router.push({ name: 'Home' });
+      }
+    });
+  } else {
+    next();
+  }
+});
 export default router;

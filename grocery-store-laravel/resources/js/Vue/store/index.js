@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import router from '../router/index.js'
 Vue.use(Vuex);
 import { PRODUCT_CONFIG } from '../config/index.js'
 export default new Vuex.Store({
@@ -16,6 +16,10 @@ export default new Vuex.Store({
     categories: [],
     // products list
     products: {},
+
+    //user
+    isLogin: false,
+    userAvatar: "",
   },
   mutations: {
     setCookie(state, payload) {
@@ -90,6 +94,13 @@ export default new Vuex.Store({
       state.totalUniqueItems = localStorage.getItem('totalUniqueItems') !== null ? JSON.parse(localStorage.getItem('totalUniqueItems')) : 0;
 
       state.cartTotal = localStorage.getItem('cartTotal') !== null ? JSON.parse(localStorage.getItem('cartTotal')) : 0;
+    },
+    setDataAfterAuth(state, res) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
+      state.isLogin = true;
+      state.userAvatar = res.data.user.image
+      router.push({ name: 'Home' }).catch(err => {
+      });
     }
   },
   actions: {
@@ -107,27 +118,34 @@ export default new Vuex.Store({
       }
       return "";
     },
-    login({ commit, dispatch, state }, inputs) {
-      axios.post('/api/user/login', inputs).then(response => {
-        if (response.statusText === "OK" && response.data.user.role === 'admin') {
-          commit('setCookie', {
-            name: 'usertoken',
-            value: response.data.token,
-            date: 30
-          });
-          commit('setCookie', {
-            name: 'username',
-            value: response.data.user.name,
-            date: 30
-          });
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
-          state.userName = response.data.user.name;
-          router.push({ name: 'Home' });
-        }
-        else
-          alert('Bạn không đủ quyền hạn để vào trang này');
-      }).catch(err => {
-        alert(err.response.data.message);
+    async login({ commit, dispatch, state }, inputs) {
+      return await axios.post('/api/user/login', inputs).then(response => {
+        commit('setCookie', {
+          name: 'usertoken',
+          value: response.data.token,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'useravatar',
+          value: response.data.user.image,
+          date: 30
+        });
+        commit('setDataAfterAuth', response);
+      })
+    },
+    async register({ commit, dispatch, state }, inputs) {
+      return await axios.post('/api/user/register', inputs).then(res => {
+        commit('setCookie', {
+          name: 'usertoken',
+          value: res.data.token,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'useravatar',
+          value: res.data.user.image,
+          date: 30
+        });
+        commit('setDataAfterAuth', res);
       })
     },
     logout({ commit, dispatch, state }) {
@@ -139,6 +157,20 @@ export default new Vuex.Store({
       }).catch(err => {
         alert(err.respone.message);
       });
+    },
+    firstLoadUserData({ commit, dispatch, state }) {
+      dispatch('getCookie', 'usertoken').then(res => {
+        let userToken = res
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + res;
+        return dispatch('getCookie', 'useravatar').then(res => {
+          let userAvatar = res;
+          if (userToken !== "" && userAvatar !== "") {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + userToken;
+            state.userAvatar = userAvatar;
+            state.isLogin = true;
+          }
+        })
+      })
     },
     async getAllCategories({ commit, state }) {
       // Vue.set(state.data, payload.saveWith, {}) // not working

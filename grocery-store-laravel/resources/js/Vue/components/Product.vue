@@ -2,7 +2,7 @@
   <div class="product-container">
     <div class="first-look">
       <div class="image" @click="toggleShowFullProduct">
-        <img :src="'/storage/' + product.image" alt="product" />
+        <img :src="product.image" alt="product" />
       </div>
       <p class="unit">{{ product.unit }}</p>
       <p class="name">{{ product.name }}</p>
@@ -48,7 +48,7 @@
             <router-link
               :to="{ name: 'Product', params: { slug: product.slug } }"
             >
-              <img :src="'/storage/' + product.image" alt="image" />
+              <img :src="product.image" alt="image" />
             </router-link>
           </div>
           <div class="product-info">

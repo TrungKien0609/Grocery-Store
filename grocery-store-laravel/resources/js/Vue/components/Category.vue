@@ -3,7 +3,7 @@
     <div class="header" @click="toggleShowDetail">
       <div class="submenu">
         <div class="category-avatar">
-          <img :src="'/storage/' + category.image" alt="category" />
+          <img :src="category.image" alt="category" />
         </div>
         <div class="category-name">{{ category.name }}</div>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="account-container">
+  <div class="account-container" v-if="!isLogin">
     <div class="drawer" @click="toggleAccount">Trung Kien</div>
     <div class="close" @click="toggleAccount">
       <svg-vue icon="times" class="dark-icon" viewBox=" 7 7  10 10"></svg-vue>
@@ -16,7 +16,7 @@
               class="dark-icon"
               viewBox="0 -10 100 100"
             ></svg-vue>
-            <input type="email" placeholder="Email" />
+            <input type="email" v-model="loginEmail" placeholder="Email" />
           </div>
           <p>Password</p>
           <div class="input">
@@ -25,7 +25,11 @@
               class="dark-icon"
               viewBox="0 0 550 550"
             ></svg-vue>
-            <input type="password" placeholder="Password" />
+            <input
+              type="password"
+              v-model="loginPassword"
+              placeholder="Password"
+            />
           </div>
           <div class="action">
             <div class="remember">
@@ -37,17 +41,17 @@
               Forgot Password ?
             </router-link>
           </div>
-          <div class="submit">
+          <div class="submit" @click.prevent="normalLogin">
             <button type="submit">Login</button>
           </div>
         </form>
         <small>or</small>
         <div class="others">
-          <div class="facebook">
+          <div class="facebook" @click="AuthProvider('facebook')">
             <svg-vue icon="facebook-nocolor" class="icon"></svg-vue>
             Login with Facebook
           </div>
-          <div class="google">
+          <div class="google" @click="AuthProvider('google')">
             <svg-vue
               icon="google-nocolor"
               class="icon"
@@ -67,7 +71,11 @@
           <p>Name</p>
           <div class="input">
             <svg-vue icon="user-nocolor" class="dark-icon"></svg-vue>
-            <input type="text" placeholder="Full name" />
+            <input
+              type="text"
+              v-model="signupUserName"
+              placeholder="Full name"
+            />
           </div>
           <p>Email</p>
           <div class="input">
@@ -76,7 +84,7 @@
               class="dark-icon"
               viewBox="0 -10 100 100"
             ></svg-vue>
-            <input type="email" placeholder="Email" />
+            <input type="email" v-model="signupEmail" placeholder="Email" />
           </div>
           <p>Password</p>
           <div class="input">
@@ -85,7 +93,24 @@
               class="dark-icon"
               viewBox="0 0 550 550"
             ></svg-vue>
-            <input type="password" placeholder="Password" />
+            <input
+              type="password"
+              v-model="signupPassword"
+              placeholder="Password"
+            />
+          </div>
+          <p>Confimation</p>
+          <div class="input">
+            <svg-vue
+              icon="lock"
+              class="dark-icon"
+              viewBox="0 0 550 550"
+            ></svg-vue>
+            <input
+              type="password"
+              v-model="signupConfimation"
+              placeholder="Password Confimation"
+            />
           </div>
           <div class="action">
             <div class="remember">
@@ -98,33 +123,44 @@
             </router-link>
           </div>
           <div class="submit">
-            <button type="submit">Login</button>
+            <button type="submit" @click.prevent="signup">Register</button>
           </div>
         </form>
         <small>or</small>
         <div class="others">
-          <div class="facebook">
+          <div class="facebook" @click="AuthProvider('facebook')">
             <svg-vue icon="facebook-nocolor" class="icon"></svg-vue>
             Login with Facebook
           </div>
-          <div class="google">
-            <svg-vue icon="google-nocolor" class="icon" viewBox="0 -5 24 24" ></svg-vue>
+          <div class="google" @click="AuthProvider('google')">
+            <svg-vue
+              icon="google-nocolor"
+              class="icon"
+              viewBox="0 -5 24 24"
+            ></svg-vue>
             Login with google
           </div>
         </div>
         <p class="suggest" @click="toggleShowLogin">
-          Not have a accout ? <span>Register now</span>
+          Already have a accout ? <span>Login now</span>
         </p>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "Account",
   data() {
     return {
       showLogin: null,
+      loginEmail: "",
+      loginPassword: "",
+      signupUserName: "",
+      signupEmail: "",
+      signupPassword: "",
+      signupConfimation: "",
     };
   },
   methods: {
@@ -134,6 +170,82 @@ export default {
     toggleShowLogin() {
       this.showLogin = !this.showLogin;
     },
+    onSuccess(googleUser) {
+      console.log(googleUser);
+
+      // This only gets the user information: id, name, imageUrl and email
+      console.log(googleUser.getBasicProfile());
+    },
+    AuthProvider(provider) {
+      var self = this;
+
+      this.$auth
+        .authenticate(provider)
+        .then((response) => {
+          self.SocialLogin(provider, response);
+        })
+        .catch((err) => {
+          console.log({ err: err });
+        });
+    },
+    SocialLogin(provider, response) {
+      this.$http
+        .post("/api/login/socialite/" + provider, response)
+        .then((response) => {
+          this.toggleAccount();
+          this.setCookie({
+            name: "usertoken",
+            value: response.data.token,
+            date: 30,
+          });
+          this.setCookie({
+            name: "useravatar",
+            value: response.data.user.image,
+            date: 30,
+          });
+          this.setDataAfterAuth(response);
+          this.$toaster.success("Successfully login");
+        })
+        .catch((err) => {
+          this.$toaster.error("Error login");
+        });
+    },
+    normalLogin() {
+      let obj = {
+        email: this.loginEmail,
+        password: this.loginPassword,
+      };
+      this.login(obj)
+        .then((res) => {
+          this.toggleAccount();
+          this.$toaster.success("Successfully login");
+        })
+        .catch((err) => {
+          this.$toaster.error("Email or Password not correct!");
+        });
+    },
+    signup() {
+      let obj = {
+        name: this.signupUserName,
+        email: this.signupEmail,
+        password: this.signupPassword,
+        password_confirmation: this.signupConfimation,
+        role: "user",
+      };
+      this.register(obj)
+        .then((res) => {
+          this.toggleAccount();
+          this.$toaster.success("Successfully register");
+        })
+        .catch((err) => {
+          this.$toaster.error("Please check carefully all information !");
+        });
+    },
+    ...mapMutations(["setDataAfterAuth", "setCookie"]),
+    ...mapActions(["login", "register"]),
+  },
+  computed: {
+    ...mapState(["isLogin"]),
   },
 };
 </script>

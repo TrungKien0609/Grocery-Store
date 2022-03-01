@@ -52,6 +52,7 @@ class ProductController extends Controller
         ]);
         $path = $fields['image']->store('uploads', 'public');
         $image = Image::make(public_path("storage/{$path}"));
+        $newPath = '/storage/' . $path;
         // $newImage = Image::make(public_path("storage/{$path}"))->resize(100, 100);
         // I got image from the clone website ( had resized ( compress) one times)
         // if resize again so that The image quality lost a lot of.
@@ -70,7 +71,7 @@ class ProductController extends Controller
             'quantity' =>  $fields['quantity'],
             'status' =>  $fields['status'],
             'stock_info' => 'in stock',
-            'image' =>   $path
+            'image' =>   $newPath
         ]);
         return response([
             'message' => 'Thêm sản phẩm thành công'
@@ -116,11 +117,12 @@ class ProductController extends Controller
             Storage::delete('public/' . $fields['image']);
             $path = $request->file('image')->store('uploads', 'public');
             $newImage = Image::make(public_path("storage/{$path}"));
+            $newPath = '/storage/' . $path;
             // $newImage = Image::make(public_path("storage/{$path}"))->resize(100, 100);
             // I got image from the clone website ( had resized ( compress) one times)
             // if resize again so that The image quality lost a lot of.
             $newImage->save();
-            $product->image = $path;
+            $product->image = $newPath;
         }
         $product->sub_category_id = $fields['sub_category_id'];
         $checkUniqueName = $this->product->where('name', $fields['name'])->first();
