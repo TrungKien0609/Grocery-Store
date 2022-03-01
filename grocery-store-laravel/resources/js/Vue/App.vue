@@ -32,7 +32,6 @@ export default {
     // localStorage.clear()
     this.checkError();
     this.getAllCategories();
-    this.getProducts(1);
     this.setCartOnLoad();
     this.firstLoadUserData();
   },
@@ -54,7 +53,10 @@ export default {
       this.account = !this.account;
       this.toggleBlurBody();
     },
-    ...mapActions(["getAllCategories", "getProducts", "firstLoadUserData"]),
+    ...mapActions([
+      "getAllCategories",
+      "firstLoadUserData",
+    ]),
     ...mapMutations(["setCartOnLoad"]),
   },
   computed: {

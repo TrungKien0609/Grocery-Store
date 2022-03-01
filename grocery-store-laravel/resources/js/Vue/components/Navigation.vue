@@ -37,8 +37,11 @@
             <input
               type="text"
               placeholder="Search for products ( e.g. fish, oil )"
+              v-model="searchText"
             />
-            <button><svg-vue icon="search" class="dark-icon"></svg-vue></button>
+            <button @click.prevent="submitSearch">
+              <svg-vue icon="search" class="dark-icon"></svg-vue>
+            </button>
           </form>
         </div>
       </div>
@@ -81,7 +84,7 @@
                     </span>
                   </div>
                   <div class="sub-menu" v-show="showCategories">
-                    <ListCategories />
+                    <ListCategories @toggleSideBar="toggleSideBar" />
                   </div>
                 </div>
                 <router-link class="link-dark" :to="{ name: 'AboutUs' }">
@@ -131,8 +134,11 @@
           <input
             type="text"
             placeholder="Search for products ( e.g. fish, oil )"
+            v-model="searchText"
           />
-          <button><svg-vue icon="search" class="dark-icon"></svg-vue></button>
+          <button @click.prevent="submitSearch">
+            <svg-vue icon="search" class="dark-icon"></svg-vue>
+          </button>
         </form>
       </div>
       <div class="user-feature">
@@ -171,7 +177,7 @@
             </div>
             <div class="sub-menu" v-show="showCategories">
               <!-- <LoadingEffect /> -->
-              <ListCategories />
+              <ListCategories @toggleCategories="toggleCategories" />
             </div>
           </div>
           <router-link class="link-dark" :to="{ name: 'AboutUs' }"
@@ -210,7 +216,8 @@ import ListCategories from "./ListCategories.vue";
 import CartCheckOut from "./Cart.vue";
 import SummaryCart from "./SummaryCart.vue";
 // import LoadingEffect from "./LoadingEffect.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import router from "../router/index.js";
 export default {
   name: "Navigation",
   components: {
@@ -225,6 +232,7 @@ export default {
       mobile: null,
       mobileSideBar: null,
       showCart: null,
+      searchText: "",
     };
   },
   created() {
@@ -267,6 +275,15 @@ export default {
     toggleAccount() {
       this.$emit("toggleAccount");
     },
+    submitSearch() {
+      this.search({
+        page: 1,
+        data: "product=" + this.searchText,
+      }).then(
+        router.push({ name: "Search", query: { product: this.searchText } })
+      );
+    },
+    ...mapActions(["search"]),
   },
   computed: {
     ...mapState(["totalItems", "isLogin", "userAvatar"]),

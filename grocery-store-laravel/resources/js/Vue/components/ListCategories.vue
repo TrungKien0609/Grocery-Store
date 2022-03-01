@@ -4,6 +4,8 @@
       v-for="(category, index) in categories"
       :key="index"
       :category="category"
+      @toggleCategories="toggleCategories"
+      @toggleSideBar="toggleSideBar"
     />
   </div>
 </template>
@@ -20,6 +22,14 @@ export default {
   },
   computed: {
     ...mapState(["categories"]),
+  },
+  methods: {
+    toggleCategories() {
+      this.$emit("toggleCategories");
+    },
+    toggleSideBar() {
+      this.$emit("toggleSideBar");
+    },
   },
 };
 </script>

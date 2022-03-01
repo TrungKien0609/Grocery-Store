@@ -44,7 +44,7 @@
       <div class="drawer" @click="toggleShowFullProduct"></div>
       <div class="content-container">
         <div class="content">
-          <div class="image">
+          <div class="image" @click="toggleShowFullProduct">
             <router-link
               :to="{ name: 'Product', params: { slug: product.slug } }"
             >
@@ -52,12 +52,14 @@
             </router-link>
           </div>
           <div class="product-info">
-            <router-link
-              :to="{ name: 'Product', params: { slug: product.slug } }"
-              class="dark-link"
-            >
-              <h3 class="title">{{ product.name }}</h3>
-            </router-link>
+            <div @click="toggleShowFullProduct">
+              <router-link
+                :to="{ name: 'Product', params: { slug: product.slug } }"
+                class="dark-link"
+              >
+                <h3 class="title">{{ product.name }}</h3>
+              </router-link>
+            </div>
             <div class="stock-info">{{ product.stock_info }}</div>
             <div class="rating">
               <star-rating
@@ -139,7 +141,6 @@ export default {
       document.getElementsByTagName("html")[0].classList.toggle("overflow");
     },
     toggleShowFullProduct() {
-      console.log("Trung Kien");
       this.FullProduct = !this.FullProduct;
       this.toggleBlurBody();
     },

@@ -8,7 +8,11 @@
       />
       <loading v-if="isShowLoading" />
     </div>
-    <Paginate @paginate="paginate" :pageNumber="Number(products.last_page)" />
+    <Paginate
+      v-if="moreThanOnePage"
+      @paginate="paginate"
+      :pageNumber="Number(products.last_page)"
+    />
   </div>
 </template>
 <script>
@@ -26,10 +30,16 @@ export default {
   data() {
     return {
       isShowLoading: null,
+      moreThanOnePage: false,
     };
   },
   computed: {
     ...mapState(["products"]),
+  },
+  created() {
+    this.getProducts(1).then((res) => {
+      this.moreThanOnePage = this.products.last_page > 1 ? true : false;
+    });
   },
   methods: {
     ...mapActions(["getProducts"]),
@@ -37,6 +47,7 @@ export default {
       this.isShowLoading = true;
       this.getProducts(pageNum).then((res) => {
         this.isShowLoading = false;
+        this.moreThanOnePage = this.products.last_page > 1 ? true : false;
       });
     },
   },

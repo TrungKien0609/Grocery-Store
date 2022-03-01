@@ -1,18 +1,10 @@
 <template>
   <div class="search-container">
-    <div class="categories">
-      <h3 class="title">Categories</h3>
-      <div class="list-categories">
-        <Category
-          v-for="(category, index) in categories"
-          :key="index"
-          :category="category"
-        />
-      </div>
-    </div>
     <div class="results">
       <div class="header" v-show="result">
-        <p>Total <span> 7</span> items Found</p>
+        <p>
+          Total <span> {{ searchResult.total }}</span> items Found
+        </p>
         <div class="sort">
           <select ref="select" @change="sortAction">
             <option value="0" v-show="!sort">Sort by price</option>
@@ -23,11 +15,17 @@
       </div>
       <div class="body" v-show="result">
         <Product
-          v-for="(product, index) in products"
+          v-for="(product, index) in searchResult.data"
           :key="index"
           :product="product"
         />
+        <loading v-if="isShowLoading" />
       </div>
+      <Paginate
+        v-if="moreThanOnePage"
+        @paginate="paginate"
+        :pageNumber="Number(searchResult.last_page)"
+      />
       <div class="no-result" v-show="!result">
         <svg-vue icon="no-result" viewBox="0 0 862 644"></svg-vue>
         <h3 class="title">Sorry, we can not find this product 😞</h3>
@@ -38,284 +36,78 @@
 <script>
 import Category from "../components/Category.vue";
 import Product from "../components/Product.vue";
+import Paginate from "../components/Pagination.vue";
+import Loading from "../components/LoadingEffect.vue";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Search",
   components: {
     Category,
     Product,
+    Paginate,
+    Loading,
   },
   data() {
     return {
-      categories: [
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-        {
-          image: "",
-          name: "Fish & Meat",
-          list: [
-            {
-              link: "",
-              name: "Fish",
-            },
-            {
-              link: "",
-              name: "Meat",
-            },
-          ],
-        },
-      ],
-      products: [
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 14,
-          buyAmount: "0",
-          stockInfo: "Stock Out",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 12,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 11,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 10,
-          buyAmount: "0",
-        },
-
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 19,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 8,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 25,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 90,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 1,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 5,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 7,
-          buyAmount: "0",
-        },
-
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 112,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 3,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Green Leaf Lettuce",
-          price: 60,
-          buyAmount: "0",
-        },
-        {
-          link: "",
-          unit: "each",
-          name: "Trung Kien",
-          price: 0,
-          buyAmount: "0",
-        },
-      ],
       sort: null,
       result: true,
+      isShowLoading: null,
+      moreThanOnePage: false,
     };
   },
   created() {
-    if (this.products.length === 0) {
-      this.result = false;
-    }
+    this.search({
+      page: 1,
+      data: this.$route.query,
+    }).then((res) => {
+      if (this.searchResult.data.length === 0) {
+        this.result = false;
+      }
+      this.moreThanOnePage = this.searchResult.last_page > 1 ? true : false;
+    });
   },
   methods: {
     sortAction() {
       this.sort = true;
       if (this.$refs.select.value == 2) {
-        this.products = [...this.products].sort((a, b) => b.price - a.price);
+        this.searchResult.data = [...this.searchResult.data].sort(
+          (a, b) => b.price - a.price
+        );
       }
       if (this.$refs.select.value == 1) {
-        this.products = [...this.products].sort((a, b) => a.price - b.price);
+        this.searchResult.data = [...this.searchResult.data].sort(
+          (a, b) => a.price - b.price
+        );
       }
+    },
+    paginate(pageNum) {
+      this.isShowLoading = true;
+      this.search({
+        page: pageNum,
+        data: this.$route.query,
+      }).then((res) => {
+        this.isShowLoading = false;
+        this.moreThanOnePage = this.searchResult.data.length > 1 ? true : false;
+      });
+    },
+    ...mapActions(["search"]),
+  },
+  computed: {
+    ...mapState(["categories", "products", "searchResult"]),
+  },
+  watch: {
+    $route(to, from) {
+      this.search({
+        page: 1,
+        data: this.$route.query,
+      }).then((res) => {
+        if (this.searchResult.last_page === 0) {
+          this.result = false;
+        } else {
+          this.result = true;
+        }
+        this.moreThanOnePage = this.searchResult.last_page > 1 ? true : false;
+      });
     },
   },
 };
@@ -332,26 +124,6 @@ export default {
   }
   @media (max-width: 600px) {
     padding: 2.5rem 1rem;
-  }
-  .categories {
-    min-width: 250px;
-    @media (max-width: 1024px) {
-      display: none;
-    }
-    .title {
-      font-weight: 550;
-      font-size: 1rem;
-      line-height: 1.75rem;
-      padding-bottom: 0.5rem;
-    }
-    .list-categories {
-      padding: 1rem 1.5rem;
-      border-radius: 7px;
-      @media (max-width: 1024px) {
-        padding: 0 1.5rem;
-      }
-      background-color: #fff;
-    }
   }
   .results {
     flex: 1;
@@ -380,9 +152,13 @@ export default {
     }
     .body {
       width: 100%;
+      position: relative;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       @media (max-width: 1024px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      @media (max-width: 760px) {
         grid-template-columns: repeat(2, 1fr);
       }
       grid-gap: 0.5rem;

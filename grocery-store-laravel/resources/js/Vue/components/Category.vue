@@ -21,7 +21,14 @@
         v-for="(item, index) in category.subCategory"
         :key="index"
       >
-        <p><span>&#x268A;</span> {{ item.name }}</p>
+        <p
+          @click="
+            toggleCategories();
+            toggleSideBar();
+          "
+        >
+          <span>&#x268A;</span> {{ item.name }}
+        </p>
       </router-link>
     </div>
   </div>
@@ -38,6 +45,12 @@ export default {
   methods: {
     toggleShowDetail() {
       this.showDetail = !this.showDetail;
+    },
+    toggleCategories() {
+      this.$emit("toggleCategories");
+    },
+    toggleSideBar() {
+      this.$emit("toggleSideBar");
     },
   },
 };

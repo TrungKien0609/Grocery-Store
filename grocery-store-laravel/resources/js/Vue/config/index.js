@@ -10,9 +10,19 @@ const CATEGORIES_CONFIG = {
     name: 'Category'
 }
 const PRODUCT_CONFIG = {
-    link: '/api/product/',
+    link: '/api/product/get',
     perPage: 5,
     name: 'Product',
+}
+const DISCOUNT_PRODUCT_CONFIG = {
+    link: '/api/product/discount/get',
+    perPage: 5,
+    name: 'DiscountProduct',
+}
+const SEARCH_PRODUCT_CONFIG = {
+    link: '/api/product/search',
+    perPage: 5,
+    name: 'SearchProduct',
 }
 const CART = {
     items: [],
@@ -20,4 +30,4 @@ const CART = {
     totalUniqueItems: 0,
     cartTotal: 0,
 }
-export { CATEGORIES_CONFIG, PRODUCT_CONFIG, CART, SOCIALITE }
+export { CATEGORIES_CONFIG, PRODUCT_CONFIG, CART, SOCIALITE, DISCOUNT_PRODUCT_CONFIG,SEARCH_PRODUCT_CONFIG }

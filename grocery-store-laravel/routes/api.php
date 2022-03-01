@@ -29,7 +29,9 @@ Route::get('/category/{category}', [CategoryController::class, 'show']);
 Route::get('/sub-category', [SubCategoryController::class, 'index']);
 Route::get('/sub-category/{subCategory}', [SubCategoryController::class, 'show']);
 
-Route::get('/product', [ProductController::class, 'index']);
+Route::get('/product/search', [ProductController::class, 'search']);
+Route::get('/product/get', [ProductController::class, 'getOnlyProductsShowed']);
+Route::get('/product/discount/get', [ProductController::class, 'getOnlyDiscountProductsShowed']);
 Route::get('/product/{product}', [ProductController::class, 'show']);
 
 Route::post('/login/socialite/{provider}', [UserController::class, 'SocialSignup']); // login with google and facebook
@@ -38,6 +40,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/category', CategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show', 'getAll']);
     Route::apiResource('/user', UserController::class)->middleware('ensure.isadmin');
     Route::apiResource('/sub-category', SubCategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show']);
-    Route::apiResource('/product', ProductController::class)->middleware('ensure.isadmin')->except(['index', 'show']);
+    Route::apiResource('/product', ProductController::class)->middleware('ensure.isadmin')->except(['show']);
     Route::post('user/logout', [UserController::class, 'logout']);
 });

@@ -23,6 +23,40 @@ class ProductController extends Controller
         $this->product = $product;
     }
 
+    public function search(Request $request)
+    {
+        $fields = $request->validate([
+            'per_page' => "numeric|min:1",
+            'category' => 'string|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
+            'subCategory' => 'string|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
+            'product' => 'string|regex:/([- ,\/0-9a-zA-Z]+)/|max:150'
+        ]);
+        $subCategory = isset($fields['subCategory']) ? Str::slug($fields['subCategory']) : null;
+        $category = isset($fields['category']) ? Str::slug($fields['category']) : null;
+        $product = isset($fields['product']) ? Str::slug($fields['product']) : null;
+
+        // Use whereHas() to make and query: stackoverflow
+
+        return $this->product->where('slug', 'LIKE', '%' . $product . '%')->whereHas('subCategory', function ($q) use ($subCategory) {
+            $q->where('slug', 'LIKE', '%' . $subCategory . '%');
+        })->whereHas('subCategory.category', function ($query) use ($category) {
+            $query->where('slug', 'LIKE', '%' . $category . '%');
+        })->orderByDesc('updated_at')->orderByDesc('created_at')->paginate($request->per_page);
+    }
+    public function getOnlyProductsShowed(Request $request)
+    {
+        $request->validate([
+            'per_page' => "numeric|min:1"
+        ]);
+        return $this->product->where('status', 'show')->where('discount', '0')->orderByDesc('updated_at')->orderByDesc('created_at')->paginate($request->per_page);
+    }
+    public function getOnlyDiscountProductsShowed(Request $request)
+    {
+        $request->validate([
+            'per_page' => "numeric|min:1"
+        ]);
+        return $this->product->where('status', 'show')->where('discount', '<>', '0')->orderByDesc('updated_at')->orderByDesc('created_at')->paginate($request->per_page);
+    }
     public function index(Request $request)
     {
         $request->validate([

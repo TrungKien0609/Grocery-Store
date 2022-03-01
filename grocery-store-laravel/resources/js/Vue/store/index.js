@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from '../router/index.js'
 Vue.use(Vuex);
-import { PRODUCT_CONFIG } from '../config/index.js'
+import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG } from '../config/index.js'
 export default new Vuex.Store({
   state: {
     // cart
@@ -16,7 +16,8 @@ export default new Vuex.Store({
     categories: [],
     // products list
     products: {},
-
+    discountProducts: {},
+    searchResult: {},
     //user
     isLogin: false,
     userAvatar: "",
@@ -192,6 +193,25 @@ export default new Vuex.Store({
         .catch(function (error) {
           alert("Có lỗi");
         });
+    },
+    async getDiscountProducts({ commit, state }, page) {
+      await axios
+        .get(DISCOUNT_PRODUCT_CONFIG.link + "?page=" + page + '&per_page=' + DISCOUNT_PRODUCT_CONFIG.perPage)
+        .then((response) => {
+          state.discountProducts = response.data;
+        })
+        .catch(function (error) {
+          alert("Có lỗi");
+        });
+    },
+    async search({ commit, state }, payload) {
+      await axios
+        .get(SEARCH_PRODUCT_CONFIG.link + "?page=" + payload.page + '&per_page=' + SEARCH_PRODUCT_CONFIG.perPage, {
+          params: payload.data
+        })
+        .then((response) => {
+          state.searchResult = response.data;
+        })
     }
   },
   modules: {},
