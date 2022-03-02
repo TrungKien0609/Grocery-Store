@@ -28,7 +28,7 @@
           Change Password
         </div>
       </router-link>
-      <div class="name">
+      <div class="name" @click="logoutUser">
         <svg-vue icon="unlock" class="dark-icon"></svg-vue> Logout
       </div>
     </div>
@@ -38,8 +38,17 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "UserDashBoard",
+  methods: {
+    ...mapActions(["logout"]),
+    logoutUser() {
+      this.logout().catch((err) => {
+        this.$toaster.error("Some thing went wrong. Try again later on");
+      });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

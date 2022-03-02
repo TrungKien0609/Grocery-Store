@@ -203,6 +203,31 @@ export default {
             value: response.data.user.image,
             date: 30,
           });
+          this.setCookie({
+            name: "useremail",
+            value: response.data.user.email,
+            date: 30,
+          });
+          this.setCookie({
+            name: "userid",
+            value: response.data.user.id,
+            date: 30,
+          });
+          this.setCookie({
+            name: "username",
+            value: response.data.user.name,
+            date: 30,
+          });
+          this.setCookie({
+            name: "userphone",
+            value: response.data.user.phone,
+            date: 30,
+          });
+          this.setCookie({
+            name: "useraddress",
+            value: response.data.user.address,
+            date: 30,
+          });
           this.setDataAfterAuth(response);
           this.$toaster.success("Successfully login");
         })
@@ -238,6 +263,7 @@ export default {
           this.$toaster.success("Successfully register");
         })
         .catch((err) => {
+          console.log(err)
           this.$toaster.error("Please check carefully all information !");
         });
     },

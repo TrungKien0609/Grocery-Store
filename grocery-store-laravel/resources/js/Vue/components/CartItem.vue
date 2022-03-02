@@ -4,10 +4,12 @@
       <img :src="item.image" alt="item" />
     </div>
     <div class="item">
-      <router-link :to="{ name: 'Product', params: { slug: item.slug } }">
-        <p class="item-name">{{ item.name }}</p>
-        <p class="item-price">Item Price ${{ item.price }}</p>
-      </router-link>
+      <div @click="toggleCart">
+        <router-link :to="{ name: 'Product', params: { slug: item.slug } }">
+          <p class="item-name">{{ item.name }}</p>
+          <p class="item-price">Item Price ${{ item.price }}</p>
+        </router-link>
+      </div>
       <div class="bot-tem">
         <p class="item-total">${{ item.itemTotal }}</p>
         <div class="action">
@@ -49,6 +51,9 @@ export default {
       "setTotalItems",
       "deleteCartItem",
     ]),
+    toggleCart() {
+      this.$emit("toggleCart");
+    },
     add() {
       if (this.hasAdd < this.item.quantity) {
         this.hasAdd++;

@@ -50,7 +50,7 @@
         <transition name="side-bar">
           <div class="content" v-show="mobileSideBar">
             <div class="header">
-              <div class="branding">
+              <div class="branding" @click="toggleSideBar">
                 <router-link class="logo" :to="{ name: 'Home' }"
                   ><img src="/images/light-logo.png" alt="logo"
                 /></router-link>
@@ -61,11 +61,14 @@
             </div>
             <div class="body">
               <ul>
-                <router-link class="link-dark" :to="{ name: 'Home' }">
-                  <span
-                    ><svg-vue icon="home" class="dark-icon"></svg-vue>Home</span
-                  >
-                </router-link>
+                <div @click="toggleSideBar">
+                  <router-link class="link-dark" :to="{ name: 'Home' }">
+                    <span
+                      ><svg-vue icon="home" class="dark-icon"></svg-vue
+                      >Home</span
+                    >
+                  </router-link>
+                </div>
                 <div class="link-dark categories">
                   <div @click="toggleCategories">
                     <span
@@ -87,36 +90,52 @@
                     <ListCategories @toggleSideBar="toggleSideBar" />
                   </div>
                 </div>
-                <router-link class="link-dark" :to="{ name: 'AboutUs' }">
-                  <span
-                    ><svg-vue icon="users" class="dark-icon"></svg-vue>About
-                    us</span
+                <div @click="toggleSideBar">
+                  <router-link class="link-dark" :to="{ name: 'AboutUs' }">
+                    <span
+                      ><svg-vue icon="users" class="dark-icon"></svg-vue>About
+                      us</span
+                    >
+                  </router-link>
+                </div>
+                <div @click="toggleSideBar">
+                  <router-link class="link-dark" :to="{ name: 'ContactUs' }">
+                    <span
+                      ><svg-vue icon="phone-go" class="dark-icon"></svg-vue>
+                      Contact Us</span
+                    >
+                  </router-link>
+                </div>
+                <div @click="toggleSideBar">
+                  <router-link class="link-dark offer" :to="{ name: 'Offer' }">
+                    <span
+                      ><svg-vue icon="giftbox" class="dark-icon"></svg-vue
+                      >Offers</span
+                    >
+                  </router-link>
+                </div>
+                <div @click="toggleSideBar">
+                  <router-link
+                    class="link-dark"
+                    :to="{ name: 'PrivacyPolicy' }"
                   >
-                </router-link>
-                <router-link class="link-dark" :to="{ name: 'ContactUs' }">
-                  <span
-                    ><svg-vue icon="phone-go" class="dark-icon"></svg-vue>
-                    Contact Us</span
+                    <span
+                      ><svg-vue icon="guard" class="dark-icon"></svg-vue>Privacy
+                      Policy</span
+                    >
+                  </router-link>
+                </div>
+                <div @click="toggleSideBar">
+                  <router-link
+                    class="link-dark"
+                    :to="{ name: 'TermCondition' }"
                   >
-                </router-link>
-                <router-link class="link-dark offer" :to="{ name: 'Offer' }">
-                  <span
-                    ><svg-vue icon="giftbox" class="dark-icon"></svg-vue
-                    >Offers</span
-                  >
-                </router-link>
-                <router-link class="link-dark" :to="{ name: 'PrivacyPolicy' }">
-                  <span
-                    ><svg-vue icon="guard" class="dark-icon"></svg-vue>Privacy
-                    Policy</span
-                  >
-                </router-link>
-                <router-link class="link-dark" :to="{ name: 'TermCondition' }">
-                  <span
-                    ><svg-vue icon="terms" class="dark-icon"></svg-vue>Terms &
-                    Conditions</span
-                  >
-                </router-link>
+                    <span
+                      ><svg-vue icon="terms" class="dark-icon"></svg-vue>Terms &
+                      Conditions</span
+                    >
+                  </router-link>
+                </div>
               </ul>
             </div>
           </div>

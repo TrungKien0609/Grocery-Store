@@ -13,22 +13,80 @@
       </div>
       <div class="input">
         <p>Current Password</p>
-        <input type="password" placeholder="Your current password" />
+        <input
+          type="password"
+          required
+          v-model="password"
+          placeholder="Your current password"
+        />
       </div>
       <div class="input">
         <p>New Password</p>
-        <input type="password" placeholder="Your new password" />
+        <input
+          type="password"
+          required
+          v-model="newPassword"
+          placeholder="Your new password"
+        />
+      </div>
+      <div class="input">
+        <p>Confim New Password</p>
+        <input
+          type="password"
+          required
+          v-model="newPasswordConfirmation"
+          placeholder="Confirm your new password"
+        />
       </div>
       <div class="submit">
-        <button type="submit">Change Password</button>
+        <button type="submit" @click.prevent="submit">Change Password</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   name: "ChangePassword",
+  data() {
+    return {
+      password: "",
+      newPassword: "",
+      newPasswordConfirmation: "",
+    };
+  },
+  methods: {
+    ...mapActions(["changePassword", "logout"]),
+    submit() {
+      if (this.newPassword !== this.newPasswordConfirmation) {
+        this.$toaster.error("Password confimation not match!");
+      } else {
+        this.changePassword({
+          id: this.userId,
+          form: {
+            password: this.password,
+            new_password: this.newPassword,
+            new_password_confirmation: this.newPasswordConfirmation,
+          },
+        })
+          .then((res) => {
+            this.$toaster.success(
+              "Change password successfully. Please Login again to see the change!"
+            );
+            this.logout().catch((err) => {
+              this.$toaster.error("Some thing went wrong. Try again later on");
+            });
+          })
+          .catch((err) => {
+            this.$toaster.error(err.response.data.message);
+          });
+      }
+    },
+  },
+  computed: {
+    ...mapState(["userId"]),
+  },
 };
 </script>
 <style lang="scss" scoped>

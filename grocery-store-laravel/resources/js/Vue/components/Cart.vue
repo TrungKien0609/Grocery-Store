@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="body">
-      <CartItem v-for="(item, index) in items" :key="index" :item="item" />
+      <CartItem v-for="(item, index) in items" :key="index" :item="item" @toggleCart="toggleCart"/>
       <div class="cart-empty" v-if="isEmpty">
         <div class="icon">
           <svg-vue icon="solid-cart"></svg-vue>

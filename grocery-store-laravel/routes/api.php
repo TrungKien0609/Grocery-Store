@@ -39,8 +39,13 @@ Route::get('/product/info/{slug}', [ProductController::class, 'showWithSlug']);
 Route::post('/login/socialite/{provider}', [UserController::class, 'SocialSignup']); // login with google and facebook
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::put('/user/update/{user}', [UserController::class, 'seflUpdate']);
+    Route::delete('/user/logout ', [UserController::class, 'logout']);
+    Route::post('/user/change-password/{user}', [UserController::class, 'changePassword']);
+
     Route::apiResource('/category', CategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show', 'getAll']);
-    Route::apiResource('/user', UserController::class)->middleware('ensure.isadmin');
+    Route::apiResource('/user', UserController::class)->middleware('ensure.isadmin')->except(['logout']);
     Route::apiResource('/sub-category', SubCategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show']);
     Route::apiResource('/product', ProductController::class)->middleware('ensure.isadmin')->except(['show']);
     Route::post('user/logout', [UserController::class, 'logout']);

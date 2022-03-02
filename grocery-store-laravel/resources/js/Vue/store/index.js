@@ -2,7 +2,22 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from '../router/index.js'
 Vue.use(Vuex);
-import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG } from '../config/index.js'
+import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG, UPDATE_USER_CONFIG } from '../config/index.js'
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 export default new Vuex.Store({
   state: {
     // cart
@@ -21,6 +36,11 @@ export default new Vuex.Store({
     specificProduct: {},
     //user
     isLogin: false,
+    userId: "",
+    userName: "",
+    userEmail: "",
+    userPhone: "",
+    userAddress: "",
     userAvatar: "",
   },
   mutations: {
@@ -100,26 +120,17 @@ export default new Vuex.Store({
     setDataAfterAuth(state, res) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
       state.isLogin = true;
-      state.userAvatar = res.data.user.image
-      router.push({ name: 'Home' }).catch(err => {
-      });
+      state.userId = res.data.user.id,
+        state.userName = res.data.user.name,
+        state.userEmail = res.data.user.email,
+        state.userPhone = res.data.user.phone,
+        state.userAddress = res.data.user.address,
+        state.userAvatar = res.data.user.image,
+        router.push({ name: 'Home' }).catch(err => {
+        });
     }
   },
   actions: {
-    getCookie({ commit, state }, cname) {
-      let name = cname + "=";
-      let ca = document.cookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
-      }
-      return "";
-    },
     async login({ commit, dispatch, state }, inputs) {
       return await axios.post('/api/user/login', inputs).then(response => {
         commit('setCookie', {
@@ -132,47 +143,109 @@ export default new Vuex.Store({
           value: response.data.user.image,
           date: 30
         });
+        commit('setCookie', {
+          name: 'useremail',
+          value: response.data.user.email,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'userid',
+          value: response.data.user.id,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'username',
+          value: response.data.user.name,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'userphone',
+          value: response.data.user.phone,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'useraddress',
+          value: response.data.user.address,
+          date: 30
+        });
         commit('setDataAfterAuth', response);
       })
     },
     async register({ commit, dispatch, state }, inputs) {
-      return await axios.post('/api/user/register', inputs).then(res => {
+      return await axios.post('/api/user/register', inputs).then(response => {
         commit('setCookie', {
           name: 'usertoken',
-          value: res.data.token,
+          value: response.data.token,
           date: 30
         });
         commit('setCookie', {
           name: 'useravatar',
-          value: res.data.user.image,
+          value: response.data.user.image,
           date: 30
         });
-        commit('setDataAfterAuth', res);
+        commit('setCookie', {
+          name: 'useremail',
+          value: response.data.user.email,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'userid',
+          value: response.data.user.id,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'username',
+          value: response.data.user.name,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'userphone',
+          value: response.data.user.phone,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'useraddress',
+          value: response.data.user.address,
+          date: 30
+        });
+        commit('setDataAfterAuth', response);
       })
     },
-    logout({ commit, dispatch, state }) {
-      axios.post('/api/user/logout').then(respone => {
+    async logout({ commit, dispatch, state }) {
+      return await axios.post('/api/user/logout').then(respone => {
         delete axios.defaults.headers.common["Authorization"];
         commit('eraseCookie', 'usertoken');
+        commit('eraseCookie', 'useravatar');
         commit('eraseCookie', 'username');
-        router.go();
-      }).catch(err => {
-        alert(err.respone.message);
-      });
-    },
-    firstLoadUserData({ commit, dispatch, state }) {
-      dispatch('getCookie', 'usertoken').then(res => {
-        let userToken = res
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + res;
-        return dispatch('getCookie', 'useravatar').then(res => {
-          let userAvatar = res;
-          if (userToken !== "" && userAvatar !== "") {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + userToken;
-            state.userAvatar = userAvatar;
-            state.isLogin = true;
-          }
-        })
+        commit('eraseCookie', 'useremail');
+        commit('eraseCookie', 'userphone');
+        commit('eraseCookie', 'useraddress');
+        commit('eraseCookie', 'userid');
+        state.isLogin = true,
+          router.go();
       })
+    },
+    async firstLoadUserData({ commit, dispatch, state }) {
+      let userToken = getCookie('usertoken');
+      let userAvatar = getCookie('useravatar');
+      let userEmail = getCookie('useremail');
+      let userPhone = getCookie('userphone');
+      let userAddress = getCookie('useraddress');
+      let userName = getCookie('username');
+      let userId = getCookie('userid');
+      if (userToken !== "" && userAvatar !== "" && userEmail !== "" && userName !== "") {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + userToken;
+        state.userEmail = userEmail;
+        state.userAvatar = userAvatar;
+        state.userAddress = userAddress;
+        state.userId = userId;
+        state.userName = userName;
+        state.userPhone = userPhone;
+        state.isLogin = true;
+      }
+    },
+    async changePassword({ commit, dispatch, state }, payload) {
+      return axios.post('/api/user/change-password/' + payload.id, payload.form);
     },
     async getAllCategories({ commit, state }) {
       // Vue.set(state.data, payload.saveWith, {}) // not working
@@ -220,7 +293,25 @@ export default new Vuex.Store({
         .then((response) => {
           state.specificProduct = response.data;
         })
-    }
+    },
+    async updateUser({ commit, dispatch, state }, payload) {
+      let formData = new FormData();
+      if (typeof payload.image !== 'undefined' && payload.image.files.length > 0) {
+        formData.append("image", payload.image.files[0]);
+      }
+      for (let key in payload) {
+        if (key === "image") { continue; }
+        formData.append(key, payload[key]);
+      }
+      formData.append("_method", "PUT");
+      return axios
+        .post(UPDATE_USER_CONFIG.link + payload.id, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+    },
+
   },
   modules: {},
 });

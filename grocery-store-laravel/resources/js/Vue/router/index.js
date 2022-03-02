@@ -15,7 +15,6 @@ import UpdateProfile from "../views/User/UpdateProfile.vue";
 import ChangePassword from "../views/User/ChangePassword.vue";
 import Search from "../views/Search.vue";
 import Product from "../views/Product.vue";
-import store from '../store/index.js'
 Vue.use(VueRouter);
 
 const routes = [
@@ -118,16 +117,28 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    store.dispatch('getCookie', 'usertoken').then(response => {
-      if (response !== "") {
-        next();
-      }
-      else {
-        router.push({ name: 'Home' });
-      }
-    });
+    if (getCookie('usertoken') !== "") {
+      next();
+    }
+    else {
+      router.push({ name: 'Home' });
+    }
   } else {
     next();
   }

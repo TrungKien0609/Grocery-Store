@@ -2,64 +2,122 @@
   <div class="update-profile-container">
     <h3 class="title">Update Profile</h3>
     <form>
-      <label class="upload-image" id="image">
-        <input type="file" id="image" accept="image/*" @change="imageChange" />
+      <label class="upload-image" id="update_user_image">
+        <input
+          type="file"
+          id="update_user_image"
+          accept="image/*"
+          ref="update"
+          @change.prevent="inputFileChange('update')"
+        />
         <svg-vue icon="upload" class="dark-icon"></svg-vue>
         <p>Upload image here</p>
         <span>(Only *.jpeg and *.png images will be accepted)</span>
       </label>
       <div class="image-uploaded">
-        <img :src="imageData" alt="image" ref="image" />
+        <img :src="imageData" alt="image" />
       </div>
       <div class="inputs">
         <div class="input">
           <p>Full Name</p>
-          <input type="text" placeholder="Full name" />
+          <input type="text" placeholder="Full Name" v-model="updateUserName" />
         </div>
         <div class="input">
           <p>Your Address</p>
-          <input type="text" placeholder="Your address" />
+          <input
+            type="text"
+            placeholder="Your Address"
+            v-model="updateUserAddress"
+          />
         </div>
         <div class="input">
           <p>Phone/Mobile</p>
-          <input type="number" placeholder="Your phone number" />
+          <input
+            type="number"
+            placeholder="Your Phone"
+            v-model="updateUserPhone"
+          />
         </div>
         <div class="input">
           <p>Your Email</p>
           <input
             type="email"
-            placeholder="Your email"
-            value="Trungkien7300@gmail.com"
+            placeholder="Your Email"
             disabled
+            :value="updateUserEmail"
           />
         </div>
       </div>
       <div class="submit">
-        <button type="submit">Update Profile</button>
+        <button type="submit" @click.prevent="submit">Update Profile</button>
       </div>
     </form>
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   name: "UpdateProfile",
   data() {
     return {
       imageData: "",
+      updateUserName: "",
+      updateUserEmail: "",
+      updateUserPhone: "",
+      updateUserAddress: "",
     };
   },
+  created() {
+    this.imageData = this.userAvatar;
+    this.updateUserName = this.userName;
+    this.updateUserEmail = this.userEmail;
+    this.updateUserPhone = this.userPhone;
+    this.updateUserAddress = this.userAddress;
+  },
   methods: {
-    imageChange(e) {
-      const input = e.target;
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
+    inputFileChange(ref) {
+      let input = this.$refs[ref];
+      if (input.files) {
+        var reader = new FileReader();
         reader.onload = (e) => {
           this.imageData = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
-        this.$refs.image.style.display = "block";
       }
     },
+    ...mapActions(["updateUser", "logout"]),
+    submit() {
+      let obj = {
+        id: this.userId,
+        email: this.updateUserEmail,
+        name: this.updateUserName,
+        image: this.$refs.update,
+      };
+      this.updateUser(obj)
+        .then((res) => {
+          this.$toaster.success(
+            "Update successfully. Please login again to see the change!"
+          );
+          this.logout().catch((err) => {
+            this.$toaster.error("Some thing went wrong. Try again later on");
+          });
+        })
+        .catch((err) => {
+          this.$toaster.error(
+            "Update failed. Please check carefully all the information!. Name must be uniqued and not emty."
+          );
+        });
+    },
+  },
+  computed: {
+    ...mapState([
+      "userId",
+      "userName",
+      "userEmail",
+      "userPhone",
+      "userAddress",
+      "userAvatar",
+    ]),
   },
 };
 </script>
@@ -108,9 +166,6 @@ export default {
       padding: 0.5rem;
       border: 1px solid #eee;
       border-radius: 5px;
-      img {
-        display: none;
-      }
     }
     p {
       text-align: left;

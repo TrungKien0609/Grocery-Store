@@ -76,6 +76,54 @@ class UserController extends Controller
             'message' => 'logged out'
         ];
     }
+    public function changePassword(Request $request, $user_id)
+    {
+        $fields = $request->validate([
+            'password' => [
+                'required',
+                'string',
+                Password::min(4)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
+            'new_password' => [
+                'required',
+                'string',
+                Password::min(4)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+                'confirmed'
+            ],
+        ]);
+        if (auth()->user()->id == $user_id) {
+            // 'password' => bcrypt($fields['password']),
+            $user = User::where('id', $user_id)->first();
+            if (Hash::check($fields['password'], $user->password)) {
+                if (Hash::check($fields['new_password'], $user->password)) {
+                    return response([
+                        'message' => "New password must be different from previous password!"
+                    ], 400);
+                } else {
+                    $user->password = bcrypt($fields['new_password']);
+                    $user->save();
+                    return response([
+                        'message' => 'Update successfully!'
+                    ], 200);
+                }
+            } else {
+                return response([
+                    'message' => "password not correct!"
+                ], 400);
+            }
+        } else
+            return response([
+                'message' => 'Bad idea'
+            ], 400);
+    }
     public function index(Request $request)
     {
         $request->validate([
@@ -126,6 +174,46 @@ class UserController extends Controller
             'token' => $token
         ];
         return true;
+    }
+    public function seflUpdate(Request $request, $user_id) // for user update
+    {
+        if (auth()->user()->id == $user_id) {
+            $fields = $request->validate([
+                'name' => 'required|string|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
+                'image' => 'image|mimes:jpeg,png|max:2048',
+                'address' => 'nullable|regex:/([- ,\/0-9a-zA-Z]+)/|max:50',
+                'phone' => 'nullable|numeric'
+            ]);
+            $user = User::where('id', $user_id)->firstOrFail();
+            $user->name = $fields['name'];
+            if (!isset($fields['address'])) {
+                $user->address = NULL;
+            } else {
+                $user->address = $fields['address'];
+            }
+            if (!isset($fields['phone'])) {
+                $user->phone = null;
+            } else {
+                $user->phone = $fields['phone'];
+            }
+            if (isset($fields['image'])) {
+                if ($user->image !== "uploads/default/avatar.png") {
+                    Storage::delete('public/' . $user->image);
+                }
+                $path = $fields['image']->store('uploads', 'public');
+                $newImage = Image::make(public_path("storage/{$path}"))->resize(100, 100);
+                $newImage->save();
+                $user->image = '/storage/' . $path;
+            }
+            $user->save();
+            return response([
+                'message' => 'update succesfully'
+            ], 200);
+        } else {
+            return  response([
+                'message' => 'User not found'
+            ], 404);
+        }
     }
     public function show($user_id)
     {
