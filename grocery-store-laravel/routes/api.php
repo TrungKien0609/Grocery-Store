@@ -33,6 +33,8 @@ Route::get('/product/search', [ProductController::class, 'search']);
 Route::get('/product/get', [ProductController::class, 'getOnlyProductsShowed']);
 Route::get('/product/discount/get', [ProductController::class, 'getOnlyDiscountProductsShowed']);
 Route::get('/product/{product}', [ProductController::class, 'show']);
+Route::get('/product/info/{slug}', [ProductController::class, 'showWithSlug']);
+
 
 Route::post('/login/socialite/{provider}', [UserController::class, 'SocialSignup']); // login with google and facebook
 

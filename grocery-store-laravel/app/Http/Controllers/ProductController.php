@@ -22,7 +22,10 @@ class ProductController extends Controller
     {
         $this->product = $product;
     }
-
+    public function showWithSlug($slug)
+    {
+        return $this->product->where('slug', $slug)->firstOrFail();
+    }
     public function search(Request $request)
     {
         $fields = $request->validate([

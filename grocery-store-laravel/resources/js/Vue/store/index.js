@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from '../router/index.js'
 Vue.use(Vuex);
-import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG } from '../config/index.js'
+import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG } from '../config/index.js'
 export default new Vuex.Store({
   state: {
     // cart
@@ -18,6 +18,7 @@ export default new Vuex.Store({
     products: {},
     discountProducts: {},
     searchResult: {},
+    specificProduct: {},
     //user
     isLogin: false,
     userAvatar: "",
@@ -211,6 +212,13 @@ export default new Vuex.Store({
         })
         .then((response) => {
           state.searchResult = response.data;
+        })
+    },
+    async showSpecificProduct({ commit, state }, payload) {
+      await axios
+        .get(SHOW_PRODUCT_CONFIG.link + payload.slug)
+        .then((response) => {
+          state.specificProduct = response.data;
         })
     }
   },

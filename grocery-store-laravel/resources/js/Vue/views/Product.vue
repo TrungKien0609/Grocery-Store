@@ -3,18 +3,20 @@
     <p class="link">
       <span>Home </span>
       <svg-vue icon="right-chevron" class="dark-icon"></svg-vue>
-      <span>Fresh Vegetable Organic</span>
+      <span>{{ specificProduct.subCategory }}</span>
       <svg-vue icon="right-chevron" class="dark-icon"></svg-vue>
-      Purple Cauliflower
+      {{ specificProduct.name }}
     </p>
     <div class="content">
       <div class="product-info">
         <div class="image">
-          <img src="/images/products/Green-Leaf.jpg" alt="image" />
-          <div class="discount-info">17% Off</div>
+          <img :src="specificProduct.image" alt="image" />
+          <div class="discount-info" v-if="specificProduct.discount">
+            17% Off
+          </div>
         </div>
         <div class="text-info">
-          <h3 class="title">Organic Broccoli</h3>
+          <h3 class="title">{{ specificProduct.name }}</h3>
           <div class="ratting">
             <star-rating
               :rating="3.5"
@@ -25,20 +27,23 @@
             />
             <a href="#scroll-to-replies">( watch 4 reviews )</a>
           </div>
-          <div class="price">$12 <span>$10</span></div>
-          <div class="stock">In Stock</div>
-          <div class="description">
-            Most fresh vegetables are low in calories and have a water content
-            in excess of 70 percent, with only about 3.5 percent protein and
-            less than 1 percent fat. ... The root vegetables include beets,
-            carrots, radishes, sweet potatoes, and turnips. Stem vegetables
-            include asparagus and kohlrabi.
+          <div class="price">
+            ${{ specificProduct.price }}
+            <span v-if="specificProduct.discount"
+              >${{ specificProduct.original_price }}</span
+            >
           </div>
-          <button class="add-btn">Add To Cart</button>
-          <div class="category">Category: <span>Fresh Vegetable</span></div>
+          <div class="stock">{{ specificProduct.stock_info }}</div>
+          <div class="description">
+            {{ specificProduct.description }}
+          </div>
+          <button class="add-btn" @click="add">Add To Cart</button>
+          <div class="category">
+            Category: <span>{{ specificProduct.category }}</span>
+          </div>
           <div class="list-key">
-            <small>broccoli </small>
-            <small>fresh vegetable</small>
+            <small>{{ specificProduct.name }} </small>
+            <small>{{ specificProduct.category }}</small>
           </div>
           <div class="share" id="scroll-to-replies">
             <p class="title">Share your social network</p>
@@ -46,16 +51,32 @@
               For get lots of traffic from social network share this product
             </p>
             <div class="social-icon">
-              <a href="#" target="blank" class="follow-link">
+              <a
+                href="https://www.facebook.com/"
+                target="blank"
+                class="follow-link"
+              >
                 <svg-vue icon="facebook" class="dark-icon"></svg-vue>
               </a>
-              <a href="#" target="blank" class="follow-link">
+              <a
+                href="https://twitter.com/?lang=vi"
+                target="blank"
+                class="follow-link"
+              >
                 <svg-vue icon="twitter" class="dark-icon"></svg-vue>
               </a>
-              <a href="#" target="blank" class="follow-link">
+              <a
+                href="https://www.youtube.com/"
+                target="blank"
+                class="follow-link"
+              >
                 <svg-vue icon="youtube" class="dark-icon"></svg-vue>
               </a>
-              <a href="#" target="blank" class="follow-link">
+              <a
+                href="https://www.linkedin.com/"
+                target="blank"
+                class="follow-link"
+              >
                 <svg-vue icon="linkedin" class="dark-icon"></svg-vue>
               </a>
             </div>
@@ -434,6 +455,7 @@
 import StarRating from "vue-star-rating";
 import Review from "../components/review.vue";
 import Pagination from "../components/Pagination.vue";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "ProductView",
   components: {
@@ -451,7 +473,17 @@ export default {
       twoStars: null,
       oneStars: null,
       hasReviews: true,
+      hasAdd: 0,
     };
+  },
+  created() {
+    this.showSpecificProduct(this.$route.params);
+    this.hasAdd = this.result;
+    this.startBuy = this.result === 0 ? false : true;
+  },
+  updated() {
+    this.hasAdd = this.result;
+    this.startBuy = this.result === 0 ? false : true;
   },
   methods: {
     toggleLatest() {
@@ -471,6 +503,58 @@ export default {
     },
     toggleOneStars() {
       this.oneStars = !this.oneStars;
+    },
+    ...mapMutations(["setItems", "setQuantityItem"]),
+    ...mapActions(["showSpecificProduct"]),
+    add() {
+      if (this.hasAdd < this.specificProduct.quantity) {
+        this.hasAdd++;
+        this.action(true);
+        this.$toaster.success(
+          "1" + this.specificProduct.name + "added to cart!"
+        );
+      } else {
+        this.$toaster.error("No more quantity available for this product");
+      }
+    },
+    checkExist(product_id) {
+      return this.items.findIndex((item) => {
+        return item.id === product_id;
+      });
+    },
+    action(math) {
+      if (this.checkExist(this.specificProduct.id) !== -1) {
+        let index = this.checkExist(this.specificProduct.id);
+        this.setQuantityItem({
+          index: index,
+          hasAdd: this.hasAdd,
+          math: math, // add or subtract
+          price: this.specificProduct.price,
+        });
+      } else {
+        this.setItems({
+          items: [
+            ...this.items,
+            {
+              ...this.specificProduct,
+              hasAdd: this.hasAdd,
+              itemTotal: this.specificProduct.price,
+            },
+          ],
+          price: this.specificProduct.price,
+        });
+      }
+    },
+  },
+  computed: {
+    ...mapState(["specificProduct", "items"]),
+    result() {
+      let index = this.items.findIndex((item) => {
+        return item.id === this.specificProduct.id;
+      });
+      if (index !== -1) {
+        return this.$store.state.items[index].hasAdd;
+      } else return 0;
     },
   },
 };

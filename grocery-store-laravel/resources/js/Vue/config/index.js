@@ -24,10 +24,14 @@ const SEARCH_PRODUCT_CONFIG = {
     perPage: 5,
     name: 'SearchProduct',
 }
+const SHOW_PRODUCT_CONFIG = {
+    link: '/api/product/info/',
+    name: 'ShowProduct',
+}
 const CART = {
     items: [],
     totalItems: 0,
     totalUniqueItems: 0,
     cartTotal: 0,
 }
-export { CATEGORIES_CONFIG, PRODUCT_CONFIG, CART, SOCIALITE, DISCOUNT_PRODUCT_CONFIG,SEARCH_PRODUCT_CONFIG }
+export { CATEGORIES_CONFIG, PRODUCT_CONFIG, CART, SOCIALITE, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG }
