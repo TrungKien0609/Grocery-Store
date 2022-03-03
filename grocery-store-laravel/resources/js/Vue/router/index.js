@@ -15,6 +15,7 @@ import UpdateProfile from "../views/User/UpdateProfile.vue";
 import ChangePassword from "../views/User/ChangePassword.vue";
 import Search from "../views/Search.vue";
 import Product from "../views/Product.vue";
+import Checkout from "../views/Checkout.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -110,6 +111,14 @@ const routes = [
     path: "/product/:slug?",
     name: "Product",
     component: Product,
+  },
+  {
+    path: "/checkout",
+    name: "Checkout",
+    component: Checkout,
+    // meta: {
+    //   requiresAuth: true,
+    // },
   },
 ];
 const router = new VueRouter({
