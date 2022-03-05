@@ -14,4 +14,8 @@ class User extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
     protected $fillable = ['email', 'password', 'role', 'name', 'image', 'address', 'phone', "provider"];
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
 }

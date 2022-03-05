@@ -11,12 +11,16 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = ['sub_category_id', 'name', 'original_price', 'discount', 'price', 'description', 'unit', 'quantity', 'status', 'image', 'slug', 'stock_info'];
-    protected $appends = ['category', 'subCategory', 'category_id'];
+    protected $appends = ['category', 'subCategory', 'category_id', 'reviews'];
 
     public function subCategory()
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
         // belongsTo(class,foreinkey of current table , primarykey of parant table)
+    }
+    public function review()
+    {
+        return $this->hasMany(Review::class, 'product_id', 'id');
     }
     public function getCategoryAttribute()
     {
@@ -29,5 +33,9 @@ class Product extends Model
     public function getCategoryIdAttribute()
     {
         return $this->subCategory()->first()->category()->first()->id;
+    }
+    public function getReviewsAttribute()
+    {
+        return $this->review()->get();
     }
 }
