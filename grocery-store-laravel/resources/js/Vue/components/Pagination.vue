@@ -19,10 +19,10 @@
   </div>
 </template>
 <script>
-import Paginate from "vuejs-paginate";
+
 export default {
   components: {
-    Paginate,
+    Paginate : () => import('vuejs-paginate')
   },
   props: ["pageNumber"],
   methods: {

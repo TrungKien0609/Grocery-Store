@@ -177,12 +177,11 @@
 </template>
 
 <script>
-import CartItem from "../components/CartItem.vue";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "Checkout",
   components: {
-    CartItem,
+    CartItem: () => import("../components/CartItem.vue"),
   },
   computed: {
     ...mapState(["items", "isEmpty", "cartTotal"]),

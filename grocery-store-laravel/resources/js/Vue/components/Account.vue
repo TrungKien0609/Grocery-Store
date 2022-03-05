@@ -228,6 +228,11 @@ export default {
             value: response.data.user.address,
             date: 30,
           });
+          this.setCookie({
+            name: "userprovider",
+            value: response.data.user.provider,
+            date: 30,
+          });
           this.setDataAfterAuth(response);
           this.$toaster.success("Successfully login");
         })
@@ -263,7 +268,7 @@ export default {
           this.$toaster.success("Successfully register");
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           this.$toaster.error("Please check carefully all information !");
         });
     },

@@ -11,16 +11,13 @@
   </div>
 </template>
 <script>
-import Navigation from "./components/Navigation.vue";
-import Footer from "./components/Footer.vue";
-import Account from "./components/Account.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "Frame",
   components: {
-    Navigation,
-    Footer,
-    Account,
+    Navigation: () => import("./components/Navigation.vue"),
+    Footer: () => import("./components/Footer.vue"),
+    Account: () => import("./components/Account.vue"),
   },
   data() {
     return {
@@ -53,10 +50,7 @@ export default {
       this.account = !this.account;
       this.toggleBlurBody();
     },
-    ...mapActions([
-      "getAllCategories",
-      "firstLoadUserData",
-    ]),
+    ...mapActions(["getAllCategories", "firstLoadUserData"]),
     ...mapMutations(["setCartOnLoad"]),
   },
   computed: {

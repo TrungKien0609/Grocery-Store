@@ -19,11 +19,10 @@
   </div>
 </template>
 <script>
-import Question from "../components/question.vue";
 export default {
   name: "AskAndAnswer",
   components: {
-    Question,
+    Question : () => import('../components/question.vue')
   },
   data() {
     return {

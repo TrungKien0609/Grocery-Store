@@ -231,18 +231,15 @@
   </div>
 </template>
 <script>
-import ListCategories from "./ListCategories.vue";
-import CartCheckOut from "./Cart.vue";
-import SummaryCart from "./SummaryCart.vue";
 // import LoadingEffect from "./LoadingEffect.vue";
 import { mapState, mapActions } from "vuex";
 import router from "../router/index.js";
 export default {
   name: "Navigation",
   components: {
-    ListCategories,
-    CartCheckOut,
-    SummaryCart,
+    ListCategories : () => import('./ListCategories.vue'),
+    CartCheckOut: () => import('./Cart.vue'),
+    SummaryCart: () => import('./SummaryCart.vue'),
     // LoadingEffect,
   },
   data() {

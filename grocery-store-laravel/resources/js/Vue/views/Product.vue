@@ -452,16 +452,13 @@
   </div>
 </template>
 <script>
-import StarRating from "vue-star-rating";
-import Review from "../components/review.vue";
-import Pagination from "../components/Pagination.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "ProductView",
   components: {
-    StarRating,
-    Review,
-    Pagination,
+    StarRating: () => import("vue-star-rating"),
+    Review: () => import("../components/review.vue"),
+    Pagination: () => import("../components/Pagination.vue"),
   },
   data() {
     return {
@@ -621,7 +618,9 @@ export default {
         max-height: 500px;
       }
       img {
-        transform: scale(0.8);
+        width: 100%;
+        max-height: 200px;
+        margin-top: 3rem;
         @media (max-width: 1200px) {
           transform: scale(1);
         }

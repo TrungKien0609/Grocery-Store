@@ -8,7 +8,7 @@
       <p class="description">
         {{ description }}
       </p>
-      <router-link :to="link">
+      <router-link :to="{ name: 'Search', query: { category: keyword } }">
         <button class="">Shop Now</button>
       </router-link>
     </div>
@@ -21,7 +21,7 @@ export default {
     "image",
     "title",
     "description",
-    "link",
+    "keyword",
     "visibility",
     "index",
     "direction",

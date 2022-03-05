@@ -34,11 +34,10 @@
   </div>
 </template>
 <script>
-import TimeExpired from "../components/TimeExpired.vue";
 export default {
   name: "CouponOffer",
   components: {
-    TimeExpired,
+    TimeExpired : () => import('../components/TimeExpired.vue')
   },
   props: ["date"],
   data() {

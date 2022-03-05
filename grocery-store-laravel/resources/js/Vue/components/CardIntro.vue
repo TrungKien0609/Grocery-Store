@@ -1,13 +1,13 @@
 <template>
   <div class="card-intro-container">
     <div class="image">
-      <img src="/images/banner/role1.jpg" alt="card-intro" />
+      <img :src="item.image" alt="card-intro" />
     </div>
     <div class="card-intro-content">
       <p class="taste">Taste of</p>
-      <h3 class="title">Fresh & Natural</h3>
+      <h3 class="title">{{ item.name }}</h3>
       <p class="discount">Weekend discount offer</p>
-      <router-link to="#">
+      <router-link :to="{ name: 'Search', query: { category: item.key } }">
         <button class="btn">Shop Now</button>
       </router-link>
     </div>
@@ -16,6 +16,7 @@
 <script>
 export default {
   name: "cartIntro",
+  props: ["item"],
 };
 </script>
 <style lang="scss" scoped>

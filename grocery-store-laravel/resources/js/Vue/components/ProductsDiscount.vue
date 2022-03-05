@@ -17,15 +17,12 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
-import Paginate from "../components/Pagination.vue";
-import Loading from "../components/LoadingEffect.vue";
-import Product from "./Product.vue";
 export default {
   name: "ProductsDiscount",
   components: {
-    Product,
-    Paginate,
-    Loading,
+    Product : () => import('./Product.vue'),
+    Paginate : () => import('../components/Pagination.vue'),
+    Loading: () => import('../components/LoadingEffect.vue')
   },
   data() {
     return {

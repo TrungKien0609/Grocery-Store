@@ -112,13 +112,12 @@
   </div>
 </template>
 <script>
-import StarRating from "vue-star-rating";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "product",
   props: ["product"],
   components: {
-    StarRating,
+    StarRating: () => import("vue-star-rating"),
   },
   data() {
     return {
@@ -252,6 +251,7 @@ export default {
     overflow: hidden;
     .image {
       width: 100%;
+      min-height: 5rem;
       cursor: pointer;
       img {
         width: 70%;

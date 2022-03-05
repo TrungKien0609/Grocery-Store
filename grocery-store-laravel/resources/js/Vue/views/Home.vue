@@ -19,9 +19,7 @@
       <ListProduct />
     </div>
     <div class="card-intro">
-      <CartIntro />
-      <CartIntro />
-      <CartIntro />
+      <CartIntro v-for="(item, index) in banners" :key="index" :item="item" />
     </div>
     <div class="products-discount">
       <h2 class="section-name">Latest Discounted Products</h2>
@@ -35,19 +33,35 @@
 </template>
 
 <script>
-import Landing from "../components/Landing.vue";
-import CategoriesBanner from "../components/CategoriesBanner.vue";
-import ListProduct from "../components/ListProduct.vue";
-import CartIntro from "../components/CardIntro.vue";
-import ProductsDiscount from "../components/ProductsDiscount.vue";
 export default {
   name: "Home",
   components: {
-    Landing,
-    CategoriesBanner,
-    ListProduct,
-    CartIntro,
-    ProductsDiscount,
+    Landing: () => import("../components/Landing.vue"),
+    CategoriesBanner: () => import("../components/CategoriesBanner.vue"),
+    ListProduct: () => import("../components/ListProduct.vue"),
+    CartIntro: () => import("../components/CardIntro.vue"),
+    ProductsDiscount: () => import("../components/ProductsDiscount.vue"),
+  },
+  data() {
+    return {
+      banners: [
+        {
+          name: "Fresh & Natural",
+          image: "/images/banner/role1.jpg",
+          key: "fresh-vegetable",
+        },
+        {
+          name: "Fish & Meat",
+          image: "/images/banner/role2.jpg",
+          key: "fish-meat",
+        },
+        {
+          name: "Bread & Bakery",
+          image: "/images/banner/role3.jpg",
+          key: "biscuits--cakes",
+        },
+      ],
+    };
   },
 };
 </script>

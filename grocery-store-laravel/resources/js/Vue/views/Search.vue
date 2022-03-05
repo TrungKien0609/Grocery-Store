@@ -1,6 +1,9 @@
 <template>
   <div class="search-container">
     <div class="results">
+      <div class="banner">
+        <CartIntro v-for="(item, index) in banners" :key="index" :item="item" />
+      </div>
       <div class="header" v-show="result">
         <p>
           Total <span> {{ searchResult.total }}</span> items Found
@@ -34,18 +37,15 @@
   </div>
 </template>
 <script>
-import Category from "../components/Category.vue";
-import Product from "../components/Product.vue";
-import Paginate from "../components/Pagination.vue";
-import Loading from "../components/LoadingEffect.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "Search",
   components: {
-    Category,
-    Product,
-    Paginate,
-    Loading,
+    Category: () => import("../components/Category.vue"),
+    Product: () => import("../components/Product.vue"),
+    Paginate: () => import("../components/Pagination.vue"),
+    Loading: () => import("../components/LoadingEffect.vue"),
+    CartIntro: () => import("../components/CardIntro.vue"),
   },
   data() {
     return {
@@ -53,6 +53,23 @@ export default {
       result: true,
       isShowLoading: null,
       moreThanOnePage: false,
+      banners: [
+        {
+          name: "Fresh & Natural",
+          image: "/images/banner/role1.jpg",
+          key: "fresh-vegetable",
+        },
+        {
+          name: "Fish & Meat",
+          image: "/images/banner/role2.jpg",
+          key: "fish-meat",
+        },
+        {
+          name: "Bread & Bakery",
+          image: "/images/banner/role3.jpg",
+          key: "biscuits--cakes",
+        },
+      ],
     };
   },
   created() {
@@ -127,13 +144,32 @@ export default {
   }
   .results {
     flex: 1;
+    position: relative;
+    .banner {
+      width: 100%;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 1rem;
+      background-color: rgb(249 250 251);
+      margin-bottom: 1rem;
+      @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media (max-width: 770px) {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       line-height: 1.75rem;
-      padding-bottom: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 0.3rem;
       font-size: 0.9rem;
+      background-color: rgb(255 237 213);
+      margin-bottom: 1rem;
       span {
         font-weight: 600;
       }
@@ -165,7 +201,12 @@ export default {
     }
     .no-result {
       padding: 1.25rem;
-      margin: 1.25rem 0;
+      margin-top: 2rem;
+      svg {
+        max-width: 400px;
+        display: block;
+        margin: 0 auto;
+      }
       .image {
         margin: 0 auto;
         width: 100%;
@@ -180,6 +221,9 @@ export default {
         font-size: 1.5rem;
         font-weight: normal;
         font-family: sans-serif;
+        @media (max-width: 760px) {
+          font-size: 1.1rem;
+        }
       }
     }
   }

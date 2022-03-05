@@ -357,9 +357,6 @@ export default new Vuex.Store({
         .then((response) => {
           state.categories = response.data;
         })
-        .catch(function (error) {
-          alert("Có lỗi");
-        });
     },
     async getProducts({ commit, state }, page) {
       await axios
@@ -367,9 +364,6 @@ export default new Vuex.Store({
         .then((response) => {
           state.products = response.data;
         })
-        .catch(function (error) {
-          alert("Có lỗi");
-        });
     },
     async getDiscountProducts({ commit, state }, page) {
       await axios
@@ -377,9 +371,6 @@ export default new Vuex.Store({
         .then((response) => {
           state.discountProducts = response.data;
         })
-        .catch(function (error) {
-          alert("Có lỗi");
-        });
     },
     async search({ commit, state }, payload) {
       await axios

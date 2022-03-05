@@ -20,10 +20,11 @@
 </template>
 
 <script>
-import CouponOffer from "../components/CouponOffer.vue";
 export default {
   name: "aaaaaa",
-  components: { CouponOffer },
+  components: { 
+    CouponOffer: () => import('../components/CouponOffer.vue')
+    },
   data() {
     return {
       time: [

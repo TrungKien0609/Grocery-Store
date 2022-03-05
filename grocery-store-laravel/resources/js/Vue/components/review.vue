@@ -67,11 +67,10 @@
   </div>
 </template>
 <script>
-import StarRating from "vue-star-rating";
 export default {
   name: "review",
   components: {
-    StarRating,
+    StarRating : () => import('vue-star-rating')
   },
   data() {
     return {

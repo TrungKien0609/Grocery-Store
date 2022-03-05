@@ -9,7 +9,7 @@
           :image="item.image"
           :title="item.title"
           :description="item.description"
-          :link="item.link"
+          :keyword="item.key"
           :visibility="visibility"
           :direction="direction"
         />
@@ -23,14 +23,18 @@
         </div>
       </div>
       <div class="static-banner">
-        <router-link to="#">
+        <router-link
+          :to="{ name: 'Search', query: { category: 'fresh-vegetable' } }"
+        >
           <div class="image first">
             <img src="/images/banner/banner-1.jpg" alt="banner1" />
           </div>
         </router-link>
-        <router-link to="#">
+        <router-link
+          :to="{ name: 'Search', query: { category: 'organic-food' } }"
+        >
           <div class="image">
-            <img src="/images/banner/banner-2.jpg" alt="banner2" />
+            <img src="/images/banner/banner-2.jpg" alt="banner1" />
           </div>
         </router-link>
       </div>
@@ -68,11 +72,10 @@
   </div>
 </template>
 <script>
-import Banner from "./slide_landing/banner.vue";
 export default {
   name: "Landing",
   components: {
-    Banner,
+    Banner: () => import("./slide_landing/banner.vue"),
   },
   data() {
     return {
@@ -83,7 +86,7 @@ export default {
           title: "The Best Quality Products Guaranteed!",
           description:
             "Dramatically facilitate effective total linkage for go forward processes...",
-          link: "#",
+          key: "biscuits-cakes",
         },
         {
           id: 1,
@@ -91,7 +94,7 @@ export default {
           title: "Best Different Type of Grocery Store",
           description:
             "Quickly aggregate empowered networks after emerging products...",
-          link: "#",
+          key: "fish-meat",
         },
         {
           id: 2,
@@ -99,7 +102,7 @@ export default {
           title: "Quality Freshness Guaranteed!",
           description:
             "Intrinsicly fashion performance based products rather than accurate benefits...",
-          link: "#",
+          key: "fresh-vegetable",
         },
       ],
       visibility: 0,
@@ -147,6 +150,7 @@ export default {
       position: relative;
       margin-right: 1.5rem;
       overflow-x: hidden;
+      min-height: 16rem;
       @media (max-width: 1024px) {
         margin-right: 0;
       }
@@ -196,6 +200,8 @@ export default {
       .image {
         border-radius: 5px;
         overflow: hidden;
+        height: 8rem;
+        min-width: 500px;
         &.first {
           margin-bottom: 1rem;
         }
@@ -226,7 +232,7 @@ export default {
         max-width: 24px;
         height: auto;
         color: #10b981;
-        ::v-deep path{
+        ::v-deep path {
           fill: none;
         }
       }

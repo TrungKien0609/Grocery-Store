@@ -31,12 +31,11 @@
   </div>
 </template>
 <script>
-import CartItem from "./CartItem.vue";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "Cart",
   components: {
-    CartItem,
+    CartItem : () => import('./CartItem.vue')
   },
   methods: {
     toggleCart() {

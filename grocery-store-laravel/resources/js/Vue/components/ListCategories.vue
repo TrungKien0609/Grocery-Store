@@ -10,12 +10,11 @@
   </div>
 </template>
 <script>
-import Category from "./Category.vue";
 import { mapState } from "vuex";
 export default {
   name: "ListCategories",
   components: {
-    Category,
+    Category : () => import('./Category.vue')
   },
   data() {
     return {};
