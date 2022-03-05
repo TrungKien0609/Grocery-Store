@@ -165,9 +165,10 @@ export default {
     subtract() {
       this.hasAdd--;
       this.startBuy = this.hasAdd === 0 ? false : true;
-      this.action(false);
       if (this.hasAdd === 0) {
         this.deleteCartItem(this.product.id);
+      } else {
+        this.action(false);
       }
     },
     checkExist(product_id) {
@@ -183,6 +184,7 @@ export default {
           hasAdd: this.hasAdd,
           math: math, // add or subtract
           price: this.product.price,
+          product_id: this.product.id,
         });
       } else {
         this.setItems({
@@ -195,6 +197,7 @@ export default {
             },
           ],
           price: this.product.price,
+          product_id: this.product.id,
         });
       }
     },

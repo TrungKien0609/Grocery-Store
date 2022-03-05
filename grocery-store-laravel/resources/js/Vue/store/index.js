@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from '../router/index.js'
 Vue.use(Vuex);
-import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG, UPDATE_USER_CONFIG } from '../config/index.js'
+import { PRODUCT_CONFIG, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG, UPDATE_USER_CONFIG, CART } from '../config/index.js'
 
 function getCookie(cname) {
   let name = cname + "=";
@@ -42,6 +42,7 @@ export default new Vuex.Store({
     userPhone: "",
     userAddress: "",
     userAvatar: "",
+    userProvider: null
   },
   mutations: {
     setCookie(state, payload) {
@@ -70,6 +71,18 @@ export default new Vuex.Store({
         state.totalUniqueItems = state.items.length;
         state.cartTotal -= payload.price;
       }
+      if (state.isLogin) {
+        let inputs = {
+          total_unique_items: state.totalUniqueItems,
+          cart_total: state.cartTotal,
+          total_items: state.totalItems,
+          product_id: payload.product_id,
+          item_quantity: payload.hasAdd
+        }
+        axios.post(CART.link, inputs).catch(res => {
+          alert("Can't save product to database");
+        });
+      }
 
       localStorage.setItem('items', JSON.stringify(state.items));
       localStorage.setItem('totalUniqueItems', state.totalUniqueItems);
@@ -83,7 +96,18 @@ export default new Vuex.Store({
       state.cartTotal += payload.price;
       state.totalItems++;
       state.isEmpty = false;
-
+      if (state.isLogin) {
+        let inputs = {
+          total_unique_items: state.totalUniqueItems,
+          cart_total: state.cartTotal,
+          total_items: state.totalItems,
+          product_id: payload.product_id,
+          item_quantity: 1
+        }
+        axios.post(CART.link, inputs).catch(res => {
+          alert("Can't save product to database");
+        });;
+      }
       localStorage.setItem('items', JSON.stringify(state.items));
       localStorage.setItem('totalUniqueItems', state.totalUniqueItems);
       localStorage.setItem('cartTotal', state.cartTotal);
@@ -95,10 +119,24 @@ export default new Vuex.Store({
         return item.id === id;
       })
       if (index !== -1) {
-        state.items.splice(index, 1);
         state.totalUniqueItems = state.items.length;
+        state.totalItems--;
+        state.cartTotal -= state.items[index].price;
+        state.items.splice(index, 1);
+        let inputs = {
+          total_unique_items: state.totalUniqueItems,
+          cart_total: state.cartTotal,
+          total_items: state.totalItems,
+          product_id: id,
+        }
+        axios.post(CART.link + 'delete', inputs).catch(res => {
+          alert("Can't delete product to database");
+        });;
       }
+
       state.isEmpty = state.items.length > 0 ? false : true;
+
+
 
       localStorage.setItem('items', JSON.stringify(state.items));
       localStorage.setItem('totalUniqueItems', state.totalUniqueItems);
@@ -108,7 +146,6 @@ export default new Vuex.Store({
     },
     setCartOnLoad(state) {
       state.items = localStorage.getItem('items') !== null ? JSON.parse(localStorage.getItem('items')) : [];
-
       state.isEmpty = localStorage.getItem('isEmpty') !== null ? JSON.parse(localStorage.getItem('isEmpty')) : true;
 
       state.totalItems = localStorage.getItem('totalItems') !== null ? JSON.parse(localStorage.getItem('totalItems')) : 0;
@@ -126,9 +163,62 @@ export default new Vuex.Store({
         state.userPhone = res.data.user.phone,
         state.userAddress = res.data.user.address,
         state.userAvatar = res.data.user.image,
-        router.push({ name: 'Home' }).catch(err => {
-        });
-    }
+        state.userProvider = res.data.user.provider;
+
+      // sync cart between database and localstorage
+      axios.get(CART.link).then(res => {
+
+        let databaseItems = res.data.cartItem.reduce((prev, curent) => {
+          return [...prev, {
+            hasAdd: curent.quantity,
+            itemTotal: curent.quantity * curent.product.price,
+            ...curent.product
+          }]
+        }, []);
+
+        // merge items in local and databse
+        let merge = [...state.items, ...databaseItems];
+        for (let i = 0; i < merge.length; i++) {
+          for (let j = i + 1; j < merge.length; j++) {
+            if (merge[i].name === merge[j].name) {
+              Object.assign(merge[i], merge[j]);
+              merge.splice(j, 1)
+            }
+          }
+        }
+
+        state.items = merge;
+
+        state.totalUniqueItems = state.items.length;
+
+        state.totalItems = state.items.reduce((prev, current) => {
+          return prev + current.hasAdd;
+        }, 0);
+        state.cartTotal = state.items.reduce((prev, current) => {
+          return prev + current.hasAdd * current.price;
+        }, 0)
+
+        state.isEmpty = state.totalItems > 0 ? false : true;
+
+        let inputs = {
+          total_unique_items: state.totalUniqueItems,
+          cart_total: state.cartTotal,
+          total_items: state.totalItems,
+          items: state.items
+        }
+        axios.post(CART.link + 'sync', inputs).catch(err => {
+          alert('Some thing wrong')
+        })
+        localStorage.setItem('items', JSON.stringify(state.items));
+        localStorage.setItem('totalUniqueItems', state.totalUniqueItems);
+        localStorage.setItem('cartTotal', state.cartTotal);
+        localStorage.setItem('totalItems', state.totalItems);
+        localStorage.setItem('isEmpty', state.isEmpty);
+      })
+
+      router.push({ name: 'Home' }).catch(err => {
+      });
+    },
   },
   actions: {
     async login({ commit, dispatch, state }, inputs) {
@@ -166,6 +256,11 @@ export default new Vuex.Store({
         commit('setCookie', {
           name: 'useraddress',
           value: response.data.user.address,
+          date: 30
+        });
+        commit('setCookie', {
+          name: 'userprovider',
+          value: response.data.user.provider,
           date: 30
         });
         commit('setDataAfterAuth', response);
@@ -208,6 +303,11 @@ export default new Vuex.Store({
           value: response.data.user.address,
           date: 30
         });
+        commit('setCookie', {
+          name: 'userprovider',
+          value: response.data.user.provider,
+          date: 30
+        });
         commit('setDataAfterAuth', response);
       })
     },
@@ -221,7 +321,8 @@ export default new Vuex.Store({
         commit('eraseCookie', 'userphone');
         commit('eraseCookie', 'useraddress');
         commit('eraseCookie', 'userid');
-        state.isLogin = true,
+        commit('eraseCookie', 'userprovider');
+        state.isLogin = false,
           router.go();
       })
     },
@@ -233,6 +334,7 @@ export default new Vuex.Store({
       let userAddress = getCookie('useraddress');
       let userName = getCookie('username');
       let userId = getCookie('userid');
+      let userProvider = getCookie('userprovider');
       if (userToken !== "" && userAvatar !== "" && userEmail !== "" && userName !== "") {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + userToken;
         state.userEmail = userEmail;
@@ -242,6 +344,7 @@ export default new Vuex.Store({
         state.userName = userName;
         state.userPhone = userPhone;
         state.isLogin = true;
+        state.userProvider = userProvider;
       }
     },
     async changePassword({ commit, dispatch, state }, payload) {
@@ -311,7 +414,6 @@ export default new Vuex.Store({
           },
         })
     },
-
   },
   modules: {},
 });

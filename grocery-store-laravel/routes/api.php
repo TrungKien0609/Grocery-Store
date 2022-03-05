@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use Laravel\Socialite\Facades\Socialite;
 
 /*
@@ -49,4 +50,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/sub-category', SubCategoryController::class)->middleware('ensure.isadmin')->except(['index', 'show']);
     Route::apiResource('/product', ProductController::class)->middleware('ensure.isadmin')->except(['show']);
     Route::post('user/logout', [UserController::class, 'logout']);
+
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/delete', [CartController::class, 'destroy']);
+    Route::post('/cart/sync', [CartController::class, 'syncCart']);
 });

@@ -64,9 +64,10 @@ export default {
     },
     subtract() {
       this.hasAdd--;
-      this.action(false);
       if (this.hasAdd === 0) {
         this.deleteCartItem(this.item.id);
+      } else {
+        this.action(false);
       }
     },
     deleteOne() {
@@ -87,6 +88,7 @@ export default {
           hasAdd: this.hasAdd,
           math: math, // add or subtract
           price: this.item.price,
+          product_id: this.item.id,
         });
       } else {
         this.setItems({
@@ -99,6 +101,7 @@ export default {
             },
           ],
           price: this.item.price,
+          product_id: this.item.id,
         });
       }
     },

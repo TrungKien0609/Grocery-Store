@@ -530,6 +530,7 @@ export default {
           hasAdd: this.hasAdd,
           math: math, // add or subtract
           price: this.specificProduct.price,
+          product_id: this.specificProduct.id,
         });
       } else {
         this.setItems({
@@ -542,6 +543,7 @@ export default {
             },
           ],
           price: this.specificProduct.price,
+          product_id: this.specificProduct.id,
         });
       }
     },

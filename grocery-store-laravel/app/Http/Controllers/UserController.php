@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -16,6 +18,16 @@ use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
+    public $user;
+    public $cart;
+    public $order;
+    public function __construct(User $user, Cart $cart, Order $order)
+    {
+        $this->user =  $user;
+        $this->cart = $cart;
+        $this->order = $order;
+    }
+
     public function register(Request $request)
     {
         $fields = $request->validate([
@@ -41,6 +53,22 @@ class UserController extends Controller
         ]);
         $user->image = '/storage/uploads/default/avatar.png';
         $token = $user->createToken('user-token')->plainTextToken;
+        // create cart
+        $cart = $this->cart->create([
+            'user_id' => $user->id,
+            'total_unique_items' => 0,
+            'cart_total' =>  0,
+            'total_items' => 0,
+            'is_emty' => true,
+        ]);
+        //create order
+        $order = $this->order->create([
+            'user_id' => $user->id,
+            'total_orders' => 0,
+            'pending_orders' =>  0,
+            'processing_orders' => 0,
+            'complete_orders' => 0,
+        ]);
         $respone = [
             'user' => $user,
             'token' => $token
@@ -63,6 +91,7 @@ class UserController extends Controller
             ], 422);
         }
         $token = $user->createToken('user-token')->plainTextToken;
+
         $respone = [
             'user' => $user,
             'token' => $token
@@ -280,6 +309,21 @@ class UserController extends Controller
                 'password' => null
             ]);
             $token = $newUser->createToken('user-token')->plainTextToken;
+            $cart = $this->cart->create([
+                'user_id' => $newUser->id,
+                'total_unique_items' => 0,
+                'cart_total' =>  0,
+                'total_items' => 0,
+                'is_emty' => true,
+            ]);
+            //create order
+            $order = $this->order->create([
+                'user_id' => $newUser->id,
+                'total_orders' => 0,
+                'pending_orders' =>  0,
+                'processing_orders' => 0,
+                'complete_orders' => 0,
+            ]);
             $respone = [
                 'user' => $newUser,
                 'token' => $token

@@ -37,5 +37,6 @@ const CART = {
     totalItems: 0,
     totalUniqueItems: 0,
     cartTotal: 0,
+    link : '/api/cart/'
 }
 export { CATEGORIES_CONFIG, PRODUCT_CONFIG, CART, SOCIALITE, DISCOUNT_PRODUCT_CONFIG, SEARCH_PRODUCT_CONFIG, SHOW_PRODUCT_CONFIG,UPDATE_USER_CONFIG }

@@ -23,7 +23,7 @@
         </div>
       </router-link>
       <router-link :to="{ name: 'ChangePassword' }" class="link-dark">
-        <div class="name">
+        <div class="name" v-if="!userProvider">
           <svg-vue icon="change-password" class="dark-icon"></svg-vue>
           Change Password
         </div>
@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "UserDashBoard",
   methods: {
@@ -48,6 +48,9 @@ export default {
         this.$toaster.error("Some thing went wrong. Try again later on");
       });
     },
+  },
+  computed: {
+    ...mapState(["userProvider"]),
   },
 };
 </script>
