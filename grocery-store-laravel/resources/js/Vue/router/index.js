@@ -1,69 +1,54 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import AboutUs from "../views/AboutUs.vue";
-import ContactUs from "../views/ContactUs.vue";
-import PrivacyPolicy from "../views/PrivacyPolicy.vue";
-import TermCondition from "../views/TermCondition.vue";
-import Offer from "../views/Offer.vue";
-import NotFound from "../views/404.vue";
-import FAQ from "../views/FAQ.vue";
-import UserDashBoard from "../views/UserDashBoard.vue";
-import CommonInfo from "../views/User/CommonInfo.vue";
-import MyOrders from "../views/User/MyOrders.vue";
-import UpdateProfile from "../views/User/UpdateProfile.vue";
-import ChangePassword from "../views/User/ChangePassword.vue";
-import Search from "../views/Search.vue";
-import Product from "../views/Product.vue";
-import Checkout from "../views/Checkout.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import('../views/Home.vue')
   },
   {
     path: "/about-us",
     name: "AboutUs",
-    component: AboutUs,
+    component: () => import('../views/AboutUs.vue')
   },
   {
     path: "/contact-us",
     name: "ContactUs",
-    component: ContactUs,
+    component: () => import('../views/ContactUs.vue')
   },
   {
     path: "/privacy-policy",
     name: "PrivacyPolicy",
-    component: PrivacyPolicy,
+    component: () => import('../views/PrivacyPolicy.vue')
   },
   {
     path: "/term-condition",
     name: "TermCondition",
-    component: TermCondition,
+    component: () => import('../views/TermCondition.vue')
   },
   {
     path: "/offer",
     name: "Offer",
-    component: Offer,
+    component: () => import('../views/Offer.vue')
   },
   {
     path: "*",
     name: "NotFound",
-    component: NotFound,
+    component: () => import('../views/404.vue')
   },
   {
     path: "/faq",
     name: "FAQ",
-    component: FAQ,
+    component: () => import('../views/FAQ.vue')
   },
   {
     path: "/user",
     redirect: { name: "CommonInfo" },
     name: "UserDashBoard",
-    component: UserDashBoard,
+    component: () => import('../views/UserDashBoard.vue'),
     meta: {
       requiresAuth: true,
     },
@@ -71,7 +56,7 @@ const routes = [
       {
         path: "dashboard",
         name: "CommonInfo",
-        component: CommonInfo,
+        component: () => import('../views/User/CommonInfo.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -79,7 +64,7 @@ const routes = [
       {
         path: "my-orders",
         name: "MyOrders",
-        component: MyOrders,
+        component: () => import('../views/User/MyOrders.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -87,7 +72,7 @@ const routes = [
       {
         path: "update-profile",
         name: "UpdateProfile",
-        component: UpdateProfile,
+        component: () => import('../views/User/UpdateProfile.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -95,7 +80,7 @@ const routes = [
       {
         path: "change-password",
         name: "ChangePassword",
-        component: ChangePassword,
+        component: () => import('../views/User/ChangePassword.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -105,20 +90,20 @@ const routes = [
   {
     path: "/search",
     name: "Search",
-    component: Search,
+    component: () => import('../views/Search.vue'),
   },
   {
     path: "/product/:slug?",
     name: "Product",
-    component: Product,
+    component: () => import('../views/Product.vue'),
   },
   {
     path: "/checkout",
     name: "Checkout",
-    component: Checkout,
-    // meta: {
-    //   requiresAuth: true,
-    // },
+    component: () => import('../views/Checkout.vue'),
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 const router = new VueRouter({
