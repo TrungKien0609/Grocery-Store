@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="support">
-      <div class="image">
+      <div class="image" style="max-height: 500px">
         <img src="/images/banner/contact-us.png" alt="contact-us" />
       </div>
       <div class="form">
@@ -40,28 +40,75 @@
           directed alignments via plagiarize strategic users and standardized
           infrastructures.
         </p>
-        <form action="#">
-          <div class="block1">
+        <ValidationObserver v-slot="{ handleSubmit }">
+          <form @submit.prevent="handleSubmit(onSubmit)">
+            <div class="block1">
+              <label
+                >Your Name
+                <ValidationProvider
+                  name="Name"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <input
+                    type="text"
+                    placeholder="Enter Your Name"
+                    v-model="name"
+                  />
+                  <span class="error">{{ errors[0] }}</span>
+                </ValidationProvider></label
+              >
+
+              <label
+                >Your Email
+                <ValidationProvider
+                  name="Email"
+                  rules="required|email"
+                  v-slot="{ errors }"
+                >
+                  <input
+                    type="text"
+                    placeholder="Enter Your Email"
+                    v-model="email"
+                  />
+                  <span class="error">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </label>
+            </div>
             <label
-              >Your Name <input type="text" placeholder="Enter Your Name"
-            /></label>
+              >Subject
+              <ValidationProvider
+                name="Subject"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <input
+                  type="text"
+                  placeholder="Enter Your Subject"
+                  v-model="subject"
+                />
+                <span class="error">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </label>
             <label
-              >Your Email <input type="text" placeholder="Enter Your Email"
-            /></label>
-          </div>
-          <label
-            >Subject <input type="text" placeholder="Enter Your Subject"
-          /></label>
-          <label
-            >Message
-            <textarea
-              rows="5"
-              placeholder="Wirte your message here"
-              ref="message"
-            ></textarea>
-          </label>
-          <button>Send Message</button>
-        </form>
+              >Message
+              <ValidationProvider
+                name="Message"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <textarea
+                  rows="5"
+                  placeholder="Wirte your message here"
+                  ref="message"
+                  v-model="message"
+                ></textarea>
+                <span class="error">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </label>
+            <button type="submit">Send Message</button>
+          </form>
+        </ValidationObserver>
       </div>
     </div>
   </div>
@@ -70,6 +117,21 @@
 <script>
 export default {
   name: "ContactUs",
+  data() {
+    return {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    };
+  },
+  methods: {
+    onSubmit() {
+      this.$toaster.success(
+        "Your message sent successfully. we'll contact you soon."
+      );
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -187,6 +249,12 @@ export default {
       }
       form {
         margin: 3rem 0;
+        .error {
+          color: rgb(248 113 113);
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          margin-top: 0.5rem;
+        }
         @media (max-width: 1024px) {
           margin: 0;
         }

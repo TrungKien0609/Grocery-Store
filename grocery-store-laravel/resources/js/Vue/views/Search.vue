@@ -83,6 +83,11 @@ export default {
       this.moreThanOnePage = this.searchResult.last_page > 1 ? true : false;
     });
   },
+  updated() {
+    if (this.searchResult.data.length === 0) {
+      this.result = false;
+    }
+  },
   methods: {
     sortAction() {
       this.sort = true;

@@ -96,7 +96,7 @@
             <input
               type="password"
               v-model="signupPassword"
-              placeholder="Password"
+              placeholder="Password ( similar with Trungkien_98 )"
             />
           </div>
           <p>Confimation</p>

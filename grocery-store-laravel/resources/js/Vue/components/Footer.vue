@@ -5,7 +5,7 @@
         <h1>Get Your Daily Needs From Our Neik Store</h1>
         <p>
           There are many products you will find our shop, Choose your daily
-          necessary product from our KachaBazar shop and get some special offer
+          necessary product from our Neik shop and get some special offer
         </p>
         <div class="app-dowload">
           <a href="https://www.apple.com/app-store/" target="blank">
@@ -29,7 +29,7 @@
         </div>
         <p>
           There are many popular products you will find our shop, Choose your
-          daily necessary product from our KachaBazar shop and get some special
+          daily necessary product from our Neik shop and get some special
           offer.
         </p>
         <p>Follow Us</p>

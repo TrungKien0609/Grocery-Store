@@ -141,6 +141,9 @@ export default {
     @media (max-width: 1024px) {
       padding: 2.5rem;
     }
+    @media (max-width: 600px) {
+      padding: 2.5rem 1rem;
+    }
   }
 }
 </style>

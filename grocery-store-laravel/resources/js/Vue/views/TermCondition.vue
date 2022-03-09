@@ -10,12 +10,12 @@
       <h1 class="page-header">Term & Conditions</h1>
     </div>
     <div class="content">
-      <h1 class="title">Welcome to KachaBazar!</h1>
+      <h1 class="title">Welcome to Neik Shop!</h1>
       <p>
         These terms and conditions outline the rules and regulations for the use
-        of KachaBazar's Website, located at https://kachabazar.com/. By
+        of Neik's Website, located at https://neik.com/. By
         accessing this website we assume you accept these terms and conditions.
-        Do not continue to use KachaBazar if you do not agree to take all of the
+        Do not continue to use Neik Store if you do not agree to take all of the
         terms and conditions stated on this page.
       </p>
       <p>
@@ -36,8 +36,8 @@
       </p>
       <h1 class="title">Cookies</h1>
       <p>
-        We employ the use of cookies. By accessing KachaBazar, you agreed to use
-        cookies in agreement with the KachaBazar's Privacy Policy. Most
+        We employ the use of cookies. By accessing Neik, you agreed to use
+        cookies in agreement with the Neik's Privacy Policy. Most
         interactive websites use cookies to let us retrieve the user’s details
         for each visit. Cookies are used by our website to enable the
         functionality of certain areas to make it easier for people visiting our
@@ -46,10 +46,10 @@
       </p>
       <h1 class="title">License</h1>
       <p>
-        Unless otherwise stated, KachaBazar and/or its licensors own the
-        intellectual property rights for all material on KachaBazar. All
+        Unless otherwise stated, Neik and/or its licensors own the
+        intellectual property rights for all material on Neik. All
         intellectual property rights are reserved. You may access this from
-        KachaBazar for your own personal use subjected to restrictions set in
+        Neik for your own personal use subjected to restrictions set in
         these terms and conditions.This Agreement shall begin on the date
         hereof. Our Terms and Conditions were created with the help of the Terms
         And Conditions Generator.
@@ -80,11 +80,11 @@
       <p>
         Parts of this website offer an opportunity for users to post and
         exchange opinions and information in certain areas of the website.
-        KachaBazar does not filter, edit, publish or review Comments prior to
+        Neik does not filter, edit, publish or review Comments prior to
         their presence on the website. Comments do not reflect the views and
-        opinions of KachaBazar,its agents and/or affiliates. Comments reflect
+        opinions of Neik,its agents and/or affiliates. Comments reflect
         the views and opinions of the person who post their views and opinions.
-        To the extent permitted by applicable laws, KachaBazar shall not be
+        To the extent permitted by applicable laws, Neik shall not be
         liable for the Comments or for any liability, damages or expenses caused
         and/or suffered as a result of any use of and/or posting of and/or
         appearance of the Comments on this website.

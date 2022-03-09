@@ -222,7 +222,7 @@
     <div class="cart">
       <div class="drawer" v-show="showCart" @click="toggleCart"></div>
       <transition name="cart">
-        <CartCheckOut @toggleCart="toggleCart" v-show="showCart" />
+        <CartCheckOut @toggleCart="toggleCart" v-show="showCart" @toggleAccount="toggleAccount"/>
       </transition>
     </div>
     <div class="summary-cart" v-if="!mobile">
