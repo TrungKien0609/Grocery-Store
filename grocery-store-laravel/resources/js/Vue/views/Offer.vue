@@ -2,51 +2,30 @@
   <div class="offer-container">
     <div class="header">
       <div class="image">
-        <img
-          src="/images/banner/page-header-bg.jpg"
-          alt="page-header"
-        />
+        <img src="/images/banner/page-header-bg.jpg" alt="page-header" />
       </div>
       <h1 class="page-header">Mega Offer</h1>
     </div>
     <div class="content">
       <CouponOffer
-        v-for="(item, index) in time"
+        v-for="(item, index) in offers"
         :key="index"
-        :date="item.date"
+        :item="item"
       />
     </div>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: "aaaaaa",
-  components: { 
-    CouponOffer: () => import('../components/CouponOffer.vue')
-    },
-  data() {
-    return {
-      time: [
-        {
-          id: 0,
-          date: "2022-1-25 00:00:00",
-        },
-        {
-          id: 2,
-          date: "2022-1-30 00:00:00",
-        },
-        {
-          id: 3,
-          date: "2022-1-24 00:00:00",
-        },
-        {
-          id: 4,
-          date: "2022-1-23 00:00:00",
-        },
-      ],
-    };
+  components: {
+    CouponOffer: () => import("../components/CouponOffer.vue"),
   },
+  computed:{
+    ...mapState(['offers'])
+  }
 };
 </script>
 <style lang="scss" scoped>

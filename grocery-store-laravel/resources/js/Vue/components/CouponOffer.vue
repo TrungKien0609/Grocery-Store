@@ -2,14 +2,16 @@
   <div class="coupon-offer-container">
     <div class="left">
       <div class="image">
-        <img src="/images/productOffer/offer1.jpg" alt="Offer" />
+        <img :src="item.image" alt="Offer" />
       </div>
       <div class="info">
         <div class="time-for-expired">
-          <TimeExpired :date="date" :active="active" />
+          <TimeExpired :date="item.date" :active="active" />
         </div>
-        <p class="name">October Gift Voucher</p>
-        <p class="number-off"><span>10%</span> Off</p>
+        <p class="name">{{ item.name }}</p>
+        <p class="number-off">
+          <span>{{ item.discount }}%</span> Off
+        </p>
       </div>
     </div>
     <div class="right">
@@ -18,17 +20,13 @@
         <span class="active" v-show="active">Active</span>
       </p>
       <div class="copy-area">
-        <p
-          v-show="!copy"
-          @click="copyAction"
-          v-clipboard:copy="'blackfriday22'"
-        >
-          blackfriday22
+        <p v-show="!copy" @click="copyAction" v-clipboard:copy="item.code">
+          {{ item.code }}
         </p>
         <p v-show="copy">Copied</p>
       </div>
       <p class="note">
-        * This coupon code apply when you shopping more then $300
+        * This coupon code apply when you shopping more then ${{item.rule}}
       </p>
     </div>
   </div>
@@ -37,14 +35,24 @@
 export default {
   name: "CouponOffer",
   components: {
-    TimeExpired : () => import('../components/TimeExpired.vue')
+    TimeExpired: () => import("../components/TimeExpired.vue"),
   },
-  props: ["date"],
+  props: ["item"],
   data() {
     return {
       copy: false,
       active: true,
     };
+  },
+  created() {
+    if (Date.parse(this.item.date) / 1000 < new Date().getTime() / 1000) {
+      this.active = false;
+    }
+  },
+  updated() {
+    if (Date.parse(this.item.date) / 1000 < new Date().getTime() / 1000) {
+      this.active = false;
+    }
   },
   methods: {
     copyAction() {

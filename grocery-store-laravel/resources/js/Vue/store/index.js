@@ -42,7 +42,51 @@ export default new Vuex.Store({
     userPhone: "",
     userAddress: "",
     userAvatar: "",
-    userProvider: null
+    userProvider: null,
+
+    // offer
+    offers: [
+      {
+        id: 0,
+        name: "January Gift Voucher",
+        date: "2022-4-20 00:00:00",
+        code: "JAN2022",
+        discount: "10",
+        image: "/images/productOffer/offer1.jpg",
+        rule: "300",
+      },
+      {
+        id: 2,
+        name: "Winter Gift Voucher",
+        rule: "350",
+        discount: "12",
+        code: "WINTER22",
+        image: "/images/productOffer/offer2.jpg",
+        date: "2022-4-25 00:00:00",
+      },
+      {
+        id: 3,
+        name: "Summer Gift Voucher",
+        rule: "350",
+        discount: "12",
+        code: "SUMMER21",
+        image: "/images/productOffer/offer3.jpg",
+        date: "2022-2-24 00:00:00",
+      },
+      {
+        id: 4,
+        name: "Black Friday Voucher",
+        rule: "500",
+        discount: "15",
+        code: "BLACKFRIDAY21",
+        image: "/images/productOffer/offer4.jpg",
+        date: "2022-2-23 00:00:00",
+      },
+    ],
+
+    //
+
+    orders: {}
   },
   mutations: {
     setCookie(state, payload) {
@@ -206,9 +250,7 @@ export default new Vuex.Store({
           total_items: state.totalItems,
           items: state.items
         }
-        axios.post(CART.link + 'sync', inputs).catch(err => {
-          alert('Some thing wrong')
-        })
+        axios.post(CART.link + 'sync', inputs)
         localStorage.setItem('items', JSON.stringify(state.items));
         localStorage.setItem('totalUniqueItems', state.totalUniqueItems);
         localStorage.setItem('cartTotal', state.cartTotal);
@@ -219,6 +261,18 @@ export default new Vuex.Store({
       router.push({ name: 'Home' }).catch(err => {
       });
     },
+    deleteCartAfterCheckout(state) {
+      state.items = [];
+      state.isEmpty = true;
+      state.totalItems = 0;
+      state.totalUniqueItems = 0;
+      state.cartTotal = 0;
+      localStorage.setItem('items', JSON.stringify(state.items));
+      localStorage.setItem('totalUniqueItems', state.totalUniqueItems);
+      localStorage.setItem('cartTotal', state.cartTotal);
+      localStorage.setItem('totalItems', state.totalItems);
+      localStorage.setItem('isEmpty', state.isEmpty);
+    }
   },
   actions: {
     async login({ commit, dispatch, state }, inputs) {
@@ -404,6 +458,11 @@ export default new Vuex.Store({
             "Content-Type": "multipart/form-data",
           },
         })
+    },
+    async getOrderInfo({ state }) {
+      await axios.get("/api/order").then((res) => {
+        state.orders = res.data;
+      });
     },
   },
   modules: {},
