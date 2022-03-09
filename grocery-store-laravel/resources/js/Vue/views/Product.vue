@@ -12,20 +12,22 @@
         <div class="image">
           <img :src="specificProduct.image" alt="image" />
           <div class="discount-info" v-if="specificProduct.discount">
-            17% Off
+            {{ specificProduct.discount }}% Off
           </div>
         </div>
         <div class="text-info">
           <h3 class="title">{{ specificProduct.name }}</h3>
           <div class="ratting">
             <star-rating
-              :rating="3.5"
+              :rating="Number(averageStar)"
               :read-only="true"
               :increment="0.01"
               :star-size="15"
               :show-rating="false"
             />
-            <a href="#scroll-to-replies">( watch 4 reviews )</a>
+            <a href="#scroll-to-replies"
+              >( watch {{ totalStars.length }} reviews )</a
+            >
           </div>
           <div class="price">
             ${{ specificProduct.price }}
@@ -33,7 +35,14 @@
               >${{ specificProduct.original_price }}</span
             >
           </div>
-          <div class="stock">{{ specificProduct.stock_info }}</div>
+          <div
+            :class="[
+              specificProduct.stock_info === 'out stock' ? 'out-stock' : '',
+              'stock',
+            ]"
+          >
+            {{ specificProduct.stock_info }}
+          </div>
           <div class="description">
             {{ specificProduct.description }}
           </div>
@@ -145,17 +154,17 @@
       <h3 class="title">Reviews From Customers</h3>
       <div class="replies">
         <div class="no-reviews" v-show="!hasReviews">
-          <svg-vue icon="smile-star" class="dark-icon"></svg-vue>
+          <svg-vue icon="smile-star"></svg-vue>
           <p>Has no reviews for this product yet</p>
         </div>
         <div class="left" v-show="hasReviews">
           <div class="chart">
             <div class="item total">
-              <p>4.6</p>
+              <p>{{ averageStar }}</p>
               <div class="total-review-point">
                 <star-rating
                   :star-size="15"
-                  :rating="3.5"
+                  :rating="Number(averageStar)"
                   :read-only="true"
                   :show-rating="false"
                   :increment="0.01"
@@ -168,7 +177,7 @@
                     46, 19, 31, 17,
                   ]"
                 />
-                14 Reviews
+                {{ reviews.total }} Reviews
               </div>
             </div>
             <div class="item">
@@ -186,9 +195,12 @@
                 ]"
               />
               <small class="full">
-                <small class="part"></small>
+                <small
+                  class="part"
+                  :style="'width : ' + fiveStarPercent + '%'"
+                ></small>
               </small>
-              <p>10</p>
+              <p>{{ fiveStarAmount }}</p>
             </div>
             <div class="item">
               <star-rating
@@ -204,9 +216,12 @@
                 ]"
               />
               <small class="full">
-                <small class="part"></small>
+                <small
+                  class="part"
+                  :style="'width : ' + fourStarPercent + '%'"
+                ></small>
               </small>
-              <p>5</p>
+              <p>{{ fourStarAmount }}</p>
             </div>
             <div class="item">
               <star-rating
@@ -222,9 +237,12 @@
                 ]"
               />
               <small class="full">
-                <small class="part"></small>
+                <small
+                  class="part"
+                  :style="'width : ' + threeStarPercent + '%'"
+                ></small>
               </small>
-              <p>0</p>
+              <p>{{ threeStarAmount }}</p>
             </div>
             <div class="item">
               <star-rating
@@ -240,9 +258,12 @@
                 ]"
               />
               <small class="full">
-                <small class="part"></small>
+                <small
+                  class="part"
+                  :style="'width : ' + twoStarPercent + '%'"
+                ></small>
               </small>
-              <p>0</p>
+              <p>{{ twoStarAmount }}</p>
             </div>
             <div class="item">
               <star-rating
@@ -258,30 +279,17 @@
                 ]"
               />
               <small class="full">
-                <small class="part"></small>
+                <small
+                  class="part"
+                  :style="'width : ' + oneStarPercent + '%'"
+                ></small>
               </small>
-              <p>0</p>
+              <p>{{ oneStarAmount }}</p>
             </div>
           </div>
           <div class="sort">
             <h3 class="fill-with">Filter with:</h3>
             <div class="option">
-              <label id="latest" :class="{ active: latest }">
-                <svg-vue
-                  icon="correct"
-                  class="dark-icon"
-                  viewBox="-100 -50 500 500"
-                  v-show="latest"
-                ></svg-vue>
-                Latest
-                <input
-                  @click="toggleLatest"
-                  type="checkbox"
-                  v-model="userOptions"
-                  id="latest"
-                  value="latest"
-                />
-              </label>
               <label id="5stars" :class="{ active: fiveStars }">
                 <svg-vue
                   icon="correct"
@@ -441,11 +449,19 @@
           </div>
         </div>
         <div class="right" v-show="hasReviews">
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Pagination />
+          <div class="list-reviews">
+            <Review
+              :review="item"
+              v-for="(item, index) in reviews.data"
+              :key="index"
+            />
+            <loading v-if="isShowLoading" />
+          </div>
+          <Pagination
+            v-if="moreThanOnePage"
+            @paginate="paginate"
+            :pageNumber="Number(reviews.last_page)"
+          />
         </div>
       </div>
     </div>
@@ -453,39 +469,44 @@
 </template>
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import { REVIEW } from "../config/index.js";
 export default {
   name: "ProductView",
   components: {
     StarRating: () => import("vue-star-rating"),
     Review: () => import("../components/review.vue"),
     Pagination: () => import("../components/Pagination.vue"),
+    Loading: () => import("../components/LoadingEffect.vue"),
   },
   data() {
     return {
       userOptions: [],
-      latest: null,
       fiveStars: null,
       fourStars: null,
       threeStars: null,
       twoStars: null,
       oneStars: null,
-      hasReviews: true,
+      hasReviews: false,
       hasAdd: 0,
+      reviews: {},
+      totalStars: [],
+      isShowLoading: null,
+      moreThanOnePage: false,
     };
   },
   created() {
     this.showSpecificProduct(this.$route.params);
     this.hasAdd = this.result;
     this.startBuy = this.result === 0 ? false : true;
+    this.loadReviews(1).then((res) => {
+      this.moreThanOnePage = this.reviews.last_page > 1 ? true : false;
+    });
   },
   updated() {
     this.hasAdd = this.result;
     this.startBuy = this.result === 0 ? false : true;
   },
   methods: {
-    toggleLatest() {
-      this.latest = !this.latest;
-    },
     toggleFiveStars() {
       this.fiveStars = !this.fiveStars;
     },
@@ -544,7 +565,35 @@ export default {
         });
       }
     },
+    loadReviews(page) {
+      return axios
+        .post(
+          REVIEW.link +
+            this.$route.params.slug +
+            "?page=" +
+            page +
+            "&per_page=" +
+            REVIEW.perPage,
+          {
+            option: this.userOptions,
+          }
+        )
+        .then((res) => {
+          this.reviews = res.data.reviews;
+          this.filterReview = res.data.reviews;
+          this.hasReviews = res.data.stars.length > 0 ? true : false;
+          this.totalStars = res.data.stars;
+        });
+    },
+    paginate(pageNum) {
+      this.isShowLoading = true;
+      this.loadReviews(pageNum).then((res) => {
+        this.isShowLoading = false;
+        this.moreThanOnePage = this.reviews.last_page > 1 ? true : false;
+      });
+    },
   },
+  mounted() {},
   computed: {
     ...mapState(["specificProduct", "items"]),
     result() {
@@ -555,7 +604,73 @@ export default {
         return this.$store.state.items[index].hasAdd;
       } else return 0;
     },
+    averageStar() {
+      return (
+        Math.round(
+          (this.totalStars.reduce((old, current) => {
+            return old + current.star;
+          }, 0) /
+            this.totalStars.length) *
+            10
+        ) / 10
+      ).toFixed(1);
+    },
+    oneStarAmount() {
+      return this.totalStars.filter((el) => {
+        return el.star === 1;
+      }).length;
+    },
+    twoStarAmount() {
+      return this.totalStars.filter((el) => {
+        return el.star === 2;
+      }).length;
+    },
+    threeStarAmount() {
+      return this.totalStars.filter((el) => {
+        return el.star === 3;
+      }).length;
+    },
+    fourStarAmount() {
+      return this.totalStars.filter((el) => {
+        return el.star === 4;
+      }).length;
+    },
+    fiveStarAmount() {
+      return this.totalStars.filter((el) => {
+        return el.star === 5;
+      }).length;
+    },
+    fiveStarPercent() {
+      return this.totalStars.length === 0
+        ? 0
+        : (this.fiveStarAmount / this.totalStars.length) * 100;
+    },
+    fourStarPercent() {
+      return this.totalStars.length === 0
+        ? 0
+        : (this.fourStarAmount / this.totalStars.length) * 100;
+    },
+    threeStarPercent() {
+      return this.totalStars.length === 0
+        ? 0
+        : (this.threeStarAmount / this.totalStars.length) * 100;
+    },
+    twoStarPercent() {
+      return this.totalStars.length === 0
+        ? 0
+        : (this.twoStarAmount / this.totalStars.length) * 100;
+    },
+    oneStarPercent() {
+      return this.totalStars.length === 0
+        ? 0
+        : (this.oneStarAmount / this.totalStars.length) * 100;
+    },
   },
+  watch : {
+    userOptions(){
+      this.loadReviews(1);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -618,9 +733,9 @@ export default {
         max-height: 500px;
       }
       img {
-        width: 100%;
-        max-height: 200px;
-        margin-top: 3rem;
+        width: 70%;
+        margin: 0 auto;
+        height: auto;
         @media (max-width: 1200px) {
           transform: scale(1);
         }
@@ -831,14 +946,13 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      .icon {
-        max-width: 100px;
-        ::v-deep path {
-          fill: #ccc;
-        }
+      min-height: 200px;
+      svg {
+        width: 50px;
+        fill: #ccc;
       }
       p {
-        margin: 2rem 0;
+        margin: 1rem 0;
         color: #4b5563;
         font-size: 0.9rem;
       }
@@ -888,7 +1002,7 @@ export default {
             .part {
               display: block;
               height: 100%;
-              width: 50%;
+              width: 0%;
               background-color: #4b5563;
               border-radius: 9999px;
             }
@@ -968,6 +1082,10 @@ export default {
     .right {
       flex: 1;
       padding: 2rem;
+      .list-reviews {
+        position: relative;
+        min-height: 325px;
+      }
       @media (max-width: 600px) {
         padding: 1rem;
       }

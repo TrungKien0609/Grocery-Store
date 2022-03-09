@@ -2,22 +2,17 @@
   <div class="review-container">
     <div class="header">
       <div class="image">
-        <img
-          src="/images/products/Green-Leaf.jpg"
-          alt="image"
-          style="display: none"
-        />
-        <p class="userName">TK</p>
+        <img :src="review.user.image" alt="image" />
       </div>
       <div class="info">
-        <p class="name">Trung Kien</p>
+        <p class="name">{{ review.user.name }}</p>
         <div class="rating">
           <StarRating
             :star-size="10"
             :read-only="true"
             :show-rating="false"
             :max-rating="5"
-            :rating="3"
+            :rating="Number(review.star)"
             :border-width="3"
             border-color="#bbb"
             active-border-color="orange"
@@ -33,34 +28,28 @@
             class="dark-icon"
             viewBox="-100 -50 500 500"
           ></svg-vue>
-          <p class="text">Purchased</p>
+          <p class="text">{{ review.state }}</p>
         </div>
       </div>
     </div>
     <div class="content">
       <p class="text">
-        Vải mát. Có điều bị dính ngay hàng lỗi (bị rách 1 chút phần cổ áo). Mong
-        shop xem kỹ hàng trước khi giao cho khách
+        {{ review.description }}
       </p>
       <div class="images">
-        <div class="image">
-          <img src="/images/products/Green-Leaf.jpg" alt="" />
-        </div>
-        <div class="image">
-          <img src="/images/products/Green-Leaf.jpg" alt="" />
-        </div>
-        <div class="image">
-          <img src="/images/products/Green-Leaf.jpg" alt="" />
-        </div>
-        <div class="image">
-          <img src="/images/products/Green-Leaf.jpg" alt="" />
+        <div
+          class="image"
+          v-for="(item, index) in review.reviewImages"
+          :key="index"
+        >
+          <img :src="item.image" alt="image" />
         </div>
       </div>
-      <div class="time">Review <span>a month ago</span></div>
+      <div class="time">{{ new Date(review.created_at).toDateString() }}</div>
       <div class="action">
         <div :class="[likeAction ? 'active' : '', 'like']" @click="toggleLike">
           <svg-vue icon="like" class="dark-icon"></svg-vue>
-          <span>10</span>
+          <span>{{ review.like_amount }}</span>
         </div>
       </div>
     </div>
@@ -70,7 +59,7 @@
 export default {
   name: "review",
   components: {
-    StarRating : () => import('vue-star-rating')
+    StarRating: () => import("vue-star-rating"),
   },
   data() {
     return {
@@ -78,9 +67,15 @@ export default {
       commentAction: null,
     };
   },
+  props: ["review"],
   methods: {
     toggleLike() {
       this.likeAction = !this.likeAction;
+      if (this.likeAction) {
+        this.review.like_amount++;
+      } else {
+        this.review.like_amount--;
+      }
     },
   },
 };
@@ -160,12 +155,12 @@ export default {
       flex-wrap: wrap;
       margin-top: 0.5rem;
       .image {
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
-        height: 150px;
-        min-height: 150px;
-        max-height: 150px;
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        height: 100px;
+        min-height: 100px;
+        max-height: 100px;
         border-radius: 10px;
         border: 1px solid #eee;
         overflow: hidden;

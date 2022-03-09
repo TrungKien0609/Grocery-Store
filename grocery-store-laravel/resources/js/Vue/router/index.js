@@ -54,6 +54,14 @@ const routes = [
     },
     children: [
       {
+        path: "ratting/:slug",
+        name: "Rating",
+        component: () => import('../views/Ratting.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "dashboard",
         name: "CommonInfo",
         component: () => import('../views/User/CommonInfo.vue'),
@@ -110,6 +118,9 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior() {
+    document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+  }
 });
 function getCookie(cname) {
   let name = cname + "=";

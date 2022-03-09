@@ -8,7 +8,7 @@
       <p class="name">{{ product.name }}</p>
       <p class="rating">
         <star-rating
-          :rating="3.5"
+          :rating="Number(averageStar)"
           :read-only="true"
           :increment="0.01"
           :star-size="15"
@@ -36,8 +36,8 @@
       <div class="discount-info" v-show="product.discount">
         {{ product.discount }}% Off
       </div>
-      <div class="stock-info" v-show="product.stockInfo">
-        {{ product.stockInfo }}
+      <div class="stock-info" v-show="product.stock_info === 'out stock'">
+        {{ product.stock_info }}
       </div>
     </div>
     <div class="go-detail" v-show="FullProduct">
@@ -60,10 +60,17 @@
                 <h3 class="title">{{ product.name }}</h3>
               </router-link>
             </div>
-            <div class="stock-info">{{ product.stock_info }}</div>
+            <div
+              :class="[
+                product.stock_info === 'out stock' ? 'stock-out' : '',
+                'stock-info',
+              ]"
+            >
+              {{ product.stock_info }}
+            </div>
             <div class="rating">
               <star-rating
-                :rating="3.8"
+                :rating="Number(averageStar)"
                 :read-only="true"
                 :increment="0.01"
                 :star-size="20"
@@ -236,6 +243,17 @@ export default {
         return this.$store.state.items[index].hasAdd;
       } else return 0;
     },
+    averageStar() {
+      return (
+        Math.round(
+          (this.product.reviews.reduce((old, current) => {
+            return old + current.star;
+          }, 0) /
+            this.product.reviews.length) *
+            10
+        ) / 10
+      ).toFixed(1);
+    },
   },
 };
 </script>
@@ -386,6 +404,7 @@ export default {
         width: 100%;
         max-width: 900px;
         min-height: 450px;
+        max-height: 95vh;
         background-color: #fff;
         border-radius: 20px;
         overflow: hidden;
@@ -393,6 +412,26 @@ export default {
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 2rem;
         padding: 1.5rem;
+        margin: 0 1rem;
+        overflow: auto;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(1, 1fr);
+        }
+        .image {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            width: 90%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            margin: 0 auto;
+          }
+        }
         .product-info {
           overflow-y: auto;
           .title {

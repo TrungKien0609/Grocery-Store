@@ -7,6 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
+
 use Laravel\Socialite\Facades\Socialite;
 
 /*
@@ -55,4 +58,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart/delete', [CartController::class, 'destroy']);
     Route::post('/cart/sync', [CartController::class, 'syncCart']);
+
+    Route::post('/order', [OrderController::class, 'store']);
+    Route::get('/order', [OrderController::class, 'index']);
+
+    Route::post('/review', [ReviewController::class, 'store']);
+    Route::post('/review/check', [ReviewController::class, 'checkAlreadyRatted']);
+    Route::post('/review/{product_slug}', [ReviewController::class, 'index']);
 });
