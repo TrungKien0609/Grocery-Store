@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
-    protected $fillable = ['star', 'state', 'description', 'like_amount', 'product_id', 'user_id '];
-    protected $appends = ['reviewImages'];
+    protected $fillable = ['star', 'state', 'description', 'like_amount', 'product_id', 'user_id'];
+    protected $appends = ['reviewImages', 'user'];
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
@@ -25,5 +25,9 @@ class Review extends Model
     public function getReviewImagesAttribute()
     {
         return $this->reviewImage()->get();
+    }
+    public function getUserAttribute()
+    {
+        return $this->user()->first();
     }
 }
