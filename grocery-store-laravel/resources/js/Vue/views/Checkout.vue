@@ -1,144 +1,235 @@
 <template>
   <div class="checkout-container">
-    <div class="form">
-      <div class="index fisrt">01. Personal Details</div>
-      <div class="personal-info">
-        <div class="block">
-          <label for="personal-first-name">First Name</label>
-          <input type="text" placeholder="Kien" id="personal-first-name" />
-        </div>
-        <div class="block">
-          <label for="personal-last-name">Last Name</label>
-          <input type="text" placeholder="Trung" id="personal-last-name" />
-        </div>
-        <div class="block">
-          <label for="personal-email">Email address</label>
-          <input
-            type="email"
-            placeholder="yourmail@gmail.com"
-            id="personal-email"
-          />
-        </div>
-        <div class="block">
-          <label for="personal-phone">Phone number</label>
-          <input
-            type="tel"
-            placeholder="039-961-0609"
-            id="personal-phone"
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-          />
-        </div>
-      </div>
-      <div class="index">02. Shipping Details</div>
-      <div class="shipping-detail">
-        <div class="block">
-          <label for="personal-address">Street address</label>
-          <input
-            type="text"
-            placeholder="43 Phạm Như Xương"
-            id="personal-address"
-          />
-        </div>
-        <div class="small-field">
+    <ValidationObserver class="form" v-slot="{ handleSubmit }">
+      <form @submit.prevent="handleSubmit(onSubmit)">
+        <div class="index fisrt">01. Personal Details</div>
+        <div class="personal-info">
           <div class="block">
-            <label for="personal-city">City</label>
-            <input type="text" placeholder="Đà Nẵng" id="personal-city" />
+            <label for="personal-first-name">First Name</label>
+            <ValidationProvider
+              name="First Name"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <input
+                type="text"
+                placeholder="Kien"
+                v-model="firstName"
+                id="personal-first-name"
+              />
+              <span class="error">{{ errors[0] }}</span>
+            </ValidationProvider>
           </div>
           <div class="block">
-            <label for="personal-country">Country</label>
-            <input type="text" placeholder="Việt Nam" id="personal-country" />
+            <label for="personal-last-name">Last Name</label>
+            <ValidationProvider
+              name="Last Name"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <input
+                type="text"
+                placeholder="Trung"
+                v-model="lastName"
+                id="personal-last-name"
+              />
+              <span class="error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </div>
+          <div class="block">
+            <label for="personal-email">Email address</label>
+            <ValidationProvider
+              name="email"
+              rules="required|email"
+              v-slot="{ errors }"
+            >
+              <input
+                type="email"
+                placeholder="yourmail@gmail.com"
+                id="personal-email"
+                v-model="email"
+              />
+              <span class="error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </div>
+          <div class="block">
+            <label for="personal-phone">Phone number</label>
+            <ValidationProvider
+              name="Phone"
+              rules="required|integer"
+              v-slot="{ errors }"
+            >
+              <input
+                type="tel"
+                placeholder="039-961-0609"
+                id="personal-phone"
+                v-model="phone"
+              />
+              <span class="error">{{ errors[0] }}</span>
+            </ValidationProvider>
           </div>
         </div>
-        <div class="small-field">
-          <label class="except">Shipping Cost</label>
-          <div class="block shipping">
-            <label class="radio-label" for="personal-shipping-fast">
-              <svg-vue icon="truck" class="dark-icon"></svg-vue>
-              <div class="mini">
-                <h3>FedEx</h3>
-                <p>Delivery: Today Cost : $60.00</p>
-              </div>
-            </label>
-            <input
-              type="radio"
-              name="personal-shipping-cost"
-              style="height: 18px; width: 18px; vertical-align: middle"
-              id="personal-shipping-fast"
-            />
+        <div class="index">02. Shipping Details</div>
+        <div class="shipping-detail">
+          <div class="block">
+            <label for="personal-address">Street address</label>
+            <ValidationProvider
+              name="Address"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <input
+                type="text"
+                placeholder="43 Phạm Như Xương"
+                v-model="address"
+                id="personal-address"
+              />
+              <span class="error">{{ errors[0] }}</span>
+            </ValidationProvider>
           </div>
-          <div class="block shipping">
-            <label class="radio-label" for="personal-shipping-slow">
-              <svg-vue icon="truck" class="dark-icon"></svg-vue>
-              <div class="mini">
-                <h3>UPS</h3>
-                <p>Delivery: 7 Days Cost : $20.00</p>
-              </div>
-            </label>
-            <input
-              type="radio"
-              name="personal-shipping-cost"
-              id="personal-shipping-slow"
-              style="height: 18px; width: 18px; vertical-align: middle"
-            />
+          <div class="small-field">
+            <div class="block">
+              <label for="personal-city">City</label>
+              <ValidationProvider
+                name="City"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <input
+                  type="text"
+                  placeholder="Đà Nẵng"
+                  v-model="city"
+                  id="personal-city"
+                />
+                <span class="error">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </div>
+            <div class="block">
+              <label for="personal-country">Country</label>
+              <ValidationProvider
+                name="Country"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <input
+                  type="text"
+                  placeholder="Việt Nam"
+                  v-model="country"
+                  id="personal-country"
+                />
+                <span class="error">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="index">03. Payment Details</div>
-      <div class="small-field">
-        <div class="block">
-          <div class="payment-method">
-            <div class="small-field" style="margin-top: 0">
+          <ValidationProvider
+            name="Shipping Option"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <div class="small-field">
+              <label class="except">Shipping Cost</label>
               <div class="block shipping">
-                <label class="radio-label" for="personal-cash-service">
-                  <svg-vue icon="cash" style="height: 20px"></svg-vue>
+                <label class="radio-label" for="personal-shipping-fast">
+                  <svg-vue icon="truck" class="dark-icon"></svg-vue>
                   <div class="mini">
-                    <h3>Cash On Delivery</h3>
+                    <h3>FedEx</h3>
+                    <p>Delivery: Today Cost : $60.00</p>
+                  </div>
+                </label>
+                <input
+                  name="personal-shipping-cost"
+                  type="radio"
+                  style="height: 18px; width: 18px; vertical-align: middle"
+                  id="personal-shipping-fast"
+                  v-model="shoppingCost"
+                  value="60"
+                />
+              </div>
+              <div class="block shipping">
+                <label class="radio-label" for="personal-shipping-slow">
+                  <svg-vue icon="truck" class="dark-icon"></svg-vue>
+                  <div class="mini">
+                    <h3>UPS</h3>
+                    <p>Delivery: 7 Days Cost : $20.00</p>
                   </div>
                 </label>
                 <input
                   type="radio"
-                  name="personal-payment-service"
+                  name="personal-shipping-cost"
+                  id="personal-shipping-slow"
                   style="height: 18px; width: 18px; vertical-align: middle"
-                  id="personal-cash-service"
+                  v-model="shoppingCost"
+                  value="20"
                 />
               </div>
-              <div class="block shipping">
-                <label class="radio-label" for="personal-credit-service">
-                  <svg-vue icon="credit" style="height: 20px"></svg-vue>
-                  <div class="mini">
-                    <h3>Credit Card</h3>
-                  </div>
-                </label>
-                <input
-                  type="radio"
-                  name="personal-payment-service"
-                  id="personal-credit-service"
-                  style="height: 18px; width: 18px; vertical-align: middle"
-                />
+            </div>
+            <span class="error">{{ errors[0] }}</span>
+          </ValidationProvider>
+        </div>
+        <div class="index">03. Payment Details</div>
+        <div class="small-field">
+          <div class="block">
+            <div class="payment-method">
+              <div class="small-field" style="margin-top: 0">
+                <div class="block shipping">
+                  <label class="radio-label" for="personal-cash-service">
+                    <svg-vue icon="cash" style="height: 20px"></svg-vue>
+                    <div class="mini">
+                      <h3>Cash On Delivery</h3>
+                    </div>
+                  </label>
+                  <input
+                    type="radio"
+                    name="personal-payment-service"
+                    style="height: 18px; width: 18px; vertical-align: middle"
+                    id="personal-cash-service"
+                    checked
+                  />
+                </div>
+                <!-- not aplly for demo -->
+                <div
+                  class="block shipping"
+                  style="filter: blur(1px); pointer-events: none"
+                >
+                  <label class="radio-label" for="personal-credit-service">
+                    <svg-vue icon="credit" style="height: 20px"></svg-vue>
+                    <div class="mini">
+                      <h3>Credit Card</h3>
+                    </div>
+                  </label>
+                  <input
+                    type="radio"
+                    name="personal-payment-service"
+                    id="personal-credit-service"
+                    style="height: 18px; width: 18px; vertical-align: middle"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="submit">
-        <button class="btn back-btn">
-          <svg-vue
-            icon="back"
-            class="dark-icon"
-            style="margin-right: 0.5rem"
-          ></svg-vue>
-          Continue Shopping
-        </button>
-        <button class="btn next-btn">
-          Confirm Order
-          <svg-vue
-            icon="next"
-            class="dark-icon"
-            style="margin-left: 0.5rem"
-          ></svg-vue>
-        </button>
-      </div>
-    </div>
+        <div class="submit">
+          <router-link :to="{ name: 'Home' }">
+            <button class="btn back-btn">
+              <svg-vue
+                icon="back"
+                class="dark-icon"
+                style="margin-right: 0.5rem"
+              ></svg-vue>
+              Continue Shopping
+            </button>
+          </router-link>
+          <button class="btn next-btn" type="submit">
+            Confirm Order
+            <svg-vue
+              icon="next"
+              class="dark-icon"
+              style="margin-left: 0.5rem"
+            ></svg-vue>
+          </button>
+        </div>
+      </form>
+    </ValidationObserver>
     <div class="order-summary">
       <h3 class="tittle">Order Summary</h3>
       <div class="list">
@@ -153,8 +244,12 @@
         <CartItem v-for="(item, index) in items" :key="index" :item="item" />
       </div>
       <div class="coupon">
-        <input type="text" placeholder="Input your coupon code" />
-        <button class="btn apply-btn">Apply</button>
+        <input
+          type="text"
+          v-model="code"
+          placeholder="Input your coupon code"
+        />
+        <button @click.prevent="checkCode" class="btn apply-btn">Apply</button>
       </div>
       <div class="block">
         <div class="label">Subtotal</div>
@@ -162,15 +257,15 @@
       </div>
       <div class="block">
         <div class="label">Shipping Cost</div>
-        <p>$20</p>
+        <p>${{ shoppingCost === "" ? 0 : shoppingCost }}</p>
       </div>
       <div class="block">
         <div class="label">Discount</div>
-        <p>$0</p>
+        <p>${{ discountCost }}</p>
       </div>
       <div class="total">
         TOTAL COST
-        <p>$302.00</p>
+        <p>${{ totalCost }}</p>
       </div>
     </div>
   </div>
@@ -180,11 +275,78 @@
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "Checkout",
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      country: "",
+      shoppingCost: "",
+      paymentMethod: "",
+      discountCost: 0,
+      code: "",
+    };
+  },
   components: {
     CartItem: () => import("../components/CartItem.vue"),
   },
+  methods: {
+    onSubmit() {
+      axios
+        .post("/api/order", {
+          orders: this.totalUniqueItems,
+          cart_items: this.items,
+        })
+        .then((res) => {
+          this.deleteCartAfterCheckout();
+          this.$toaster.success("Successfully checkout");
+        });
+    },
+    ...mapMutations(["deleteCartAfterCheckout"]),
+    checkCode() {
+      if (this.code === "") {
+        this.$toaster.error("Please input a Coupon code !");
+      } else {
+        let index = this.offers.findIndex((item) => {
+          return (
+            item.code === this.code &&
+            Date.parse(item.date) / 1000 > new Date().getTime() / 1000
+          );
+        });
+        if (index === -1) {
+          this.$toaster.error("Please input a valid Coupon code !");
+        } else {
+          if (this.offers[index].rule > this.cartTotal) {
+            this.$toaster.error(
+              "Minimum " +
+                this.offers[index].rule +
+                " USD for Apply this coupon!"
+            );
+          } else {
+            this.discountCost = Math.round(
+              (this.offers[index].discount / 100) * this.totalCost
+            );
+          }
+        }
+      }
+    },
+  },
   computed: {
-    ...mapState(["items", "isEmpty", "cartTotal"]),
+    ...mapState([
+      "items",
+      "isEmpty",
+      "cartTotal",
+      "offers",
+      "totalUniqueItems",
+    ]),
+    totalCost() {
+      return (
+        this.cartTotal + Number(this.shoppingCost) - Number(this.discountCost)
+      );
+    },
   },
 };
 </script>
@@ -219,6 +381,12 @@ input[type="radio"] {
   }
   .form {
     width: 60%;
+    .error {
+      color: rgb(248 113 113);
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      margin-top: 0.5rem;
+    }
     @media (max-width: 768px) {
       width: 100%;
     }

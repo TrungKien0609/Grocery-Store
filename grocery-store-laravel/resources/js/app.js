@@ -7,7 +7,8 @@ import store from './Vue/store/index';
 import VueClipboard from "vue-clipboard2";
 import Toaster from 'v-toaster';
 import 'v-toaster/dist/v-toaster.css';
-
+import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
+import * as rules from 'vee-validate/dist/rules';
 
 import axios from 'axios';
 import VueAxios from 'vue-axios'
@@ -31,6 +32,13 @@ Vue.use(VueSocialauth, {
         }
     }
 })
+
+Object.keys(rules).forEach(rule => {
+    extend(rule, rules[rule]);
+});
+
+Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('ValidationProvider', ValidationProvider);
 
 const app = new Vue({
     router,

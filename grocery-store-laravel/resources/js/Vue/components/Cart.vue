@@ -11,7 +11,12 @@
       </div>
     </div>
     <div class="body">
-      <CartItem v-for="(item, index) in items" :key="index" :item="item" @toggleCart="toggleCart"/>
+      <CartItem
+        v-for="(item, index) in items"
+        :key="index"
+        :item="item"
+        @toggleCart="toggleCart"
+      />
       <div class="cart-empty" v-if="isEmpty">
         <div class="icon">
           <svg-vue icon="solid-cart"></svg-vue>
@@ -22,8 +27,14 @@
         </p>
       </div>
     </div>
-    <router-link to="#" class="link-light">
-      <div class="footer">
+    <router-link :to="{ name: 'Checkout' }" class="link-light">
+      <div
+        class="footer"
+        @click="
+          toggleAccount();
+          toggleCart();
+        "
+      >
         <p>Proceed To Checkout</p>
         <p>${{ cartTotal }}</p>
       </div>
@@ -35,15 +46,18 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "Cart",
   components: {
-    CartItem : () => import('./CartItem.vue')
+    CartItem: () => import("./CartItem.vue"),
   },
   methods: {
     toggleCart() {
       this.$emit("toggleCart");
     },
+    toggleAccount() {
+      if (!this.isLogin) this.$emit("toggleAccount");
+    },
   },
   computed: {
-    ...mapState(["items", "isEmpty", "cartTotal"]),
+    ...mapState(["items", "isEmpty", "cartTotal", "isLogin"]),
   },
 };
 </script>
