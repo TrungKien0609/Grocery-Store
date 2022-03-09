@@ -41,8 +41,14 @@
 import { mapActions, mapState } from "vuex";
 export default {
   name: "UserDashBoard",
+  created() {
+    this.getOrderInfo();
+  },
+  updated() {
+    this.getOrderInfo();
+  },
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions(["logout", "getOrderInfo"]),
     logoutUser() {
       this.logout().catch((err) => {
         this.$toaster.error("Some thing went wrong. Try again later on");

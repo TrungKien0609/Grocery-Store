@@ -5,7 +5,6 @@
       <thead>
         <tr>
           <th>STT</th>
-          <th>ID</th>
           <th>NAME</th>
           <th>ORDERTIME</th>
           <th>METHOD</th>
@@ -15,73 +14,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td label-name="STT">1</td>
-          <td label-name="ID">7C7F</td>
-          <td label-name="NAME">Trung Kien</td>
-          <td label-name="ORDERTIME">January 17, 2022</td>
-          <td label-name="METHOD">COD</td>
-          <td label-name="STATUS" class="processing">Processing</td>
-          <td label-name="TOTAL">$72.0</td>
-          <td label-name="ACTION">
-            <router-link to="" class="dark-link"
-              ><button>Detail</button></router-link
-            >
+        <tr v-for="(item, index) in orders.orderItem" :key="index">
+          <td label-name="STT">{{ index + 1 }}</td>
+          <td label-name="NAME">{{ item.product.name }}</td>
+          <td label-name="ORDERTIME">
+            {{ new Date(item.created_at).toDateString() }}
           </td>
-        </tr>
-        <tr>
-          <td label-name="STT">1</td>
-          <td label-name="ID">7C7F</td>
-          <td label-name="NAME">Trung Kien</td>
-          <td label-name="ORDERTIME">January 17, 2022</td>
-          <td label-name="METHOD">COD</td>
-          <td label-name="STATUS" class="processing">Processing</td>
-          <td label-name="TOTAL">$72.0</td>
+          <td label-name="METHOD">{{ item.method }}</td>
+          <td label-name="STATUS" :class="item.status">{{ item.status }}</td>
+          <td label-name="TOTAL">${{ item.total }}</td>
           <td label-name="ACTION">
-            <router-link to="" class="dark-link"
-              ><button>Detail</button></router-link
-            >
-          </td>
-        </tr>
-        <tr>
-          <td label-name="STT">1</td>
-          <td label-name="ID">7C7F</td>
-          <td label-name="NAME">Trung Kien</td>
-          <td label-name="ORDERTIME">January 17, 2022</td>
-          <td label-name="METHOD">COD</td>
-          <td label-name="STATUS" class="processing">Processing</td>
-          <td label-name="TOTAL">$72.0</td>
-          <td label-name="ACTION">
-            <router-link to="" class="dark-link"
-              ><button>Detail</button></router-link
-            >
-          </td>
-        </tr>
-        <tr>
-          <td label-name="STT">1</td>
-          <td label-name="ID">7C7F</td>
-          <td label-name="NAME">Trung Kien</td>
-          <td label-name="ORDERTIME">January 17, 2022</td>
-          <td label-name="METHOD">COD</td>
-          <td label-name="STATUS" class="processing">Processing</td>
-          <td label-name="TOTAL">$72.0</td>
-          <td label-name="ACTION">
-            <router-link to="" class="dark-link"
-              ><button>Detail</button></router-link
-            >
-          </td>
-        </tr>
-        <tr>
-          <td label-name="STT">1</td>
-          <td label-name="ID">7C7F</td>
-          <td label-name="NAME">Trung Kien</td>
-          <td label-name="ORDERTIME">January 17, 2022</td>
-          <td label-name="METHOD">COD</td>
-          <td label-name="STATUS" class="processing">Processing</td>
-          <td label-name="TOTAL">$72.0</td>
-          <td label-name="ACTION">
-            <router-link to="" class="dark-link"
-              ><button>Detail</button></router-link
+            <router-link
+              :to="{ name: 'Rating', params: { slug: item.product.slug } }"
+              class="dark-link"
+              ><button>Ratting</button></router-link
             >
           </td>
         </tr>
@@ -91,7 +37,12 @@
 </template>
 
 <script>
-export default {};
+import { mapActions, mapState } from "vuex";
+export default {
+  computed: {
+    ...mapState(["orders"]),
+  },
+};
 </script>
 <style lang="scss" scoped>
 .my-orders-container {
@@ -150,17 +101,15 @@ export default {};
         &:last-child {
           font-weight: bold;
         }
-        &:nth-child(6) {
-          &.pending,
-          &.cancel {
-            color: rgba(249, 115, 22, 1);
-          }
-          &.processing {
-            color: rgba(99, 102, 241, 1);
-          }
-          &.delivered {
-            columns: rgba(16, 185, 129, 1);
-          }
+        &.pending,
+        &.cancel {
+          color: rgba(249, 115, 22, 1);
+        }
+        &.processing {
+          color: rgba(99, 102, 241, 1);
+        }
+        &.delivered {
+          columns: rgba(16, 185, 129, 1);
         }
       }
     }
