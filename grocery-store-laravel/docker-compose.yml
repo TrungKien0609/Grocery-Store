@@ -3,19 +3,19 @@ networks:
   grocery_store:
     driver: bridge
 services:
-  #Frontend
-  grocery_store_app_frontend:
-    container_name: grocery_store_frontend_container
+  grocery_store_app:
+    container_name: grocery_store_container
     build: 
       context: .
       dockerfile: Dockerfile
-    command: php artisan serve --host=0.0.0.0 && npm run watch
+    command: >
+      sh -c "php artisan serve --host=0.0.0.0; npm run watch"
     ports:
       - ${APP_PORT}:8000
     volumes:
       - ./:/grocery-store-app
-      - ./vendor
-      - ./node_modules
+      - /vendor
+      - /node_modules
     depends_on:
       - db
     networks:
@@ -26,7 +26,7 @@ services:
     ports:
       - ${DB_PORT}:3306
     volumes:
-      - ./grocery-store-laravel/docker-volumes-data/db:/var/lib/mysql
+      - ./docker-volumes-data/db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_USER=${DB_USERNAME}
