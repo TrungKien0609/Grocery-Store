@@ -92,6 +92,10 @@ a {
   display: flex;
   flex-direction: column;
   position: relative;
+  .app-content {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
 }
 .link-light {
   text-decoration: none;

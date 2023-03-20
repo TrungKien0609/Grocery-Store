@@ -386,7 +386,6 @@ export default {
       padding: 0.9rem 1rem;
     }
     width: 100%;
-    max-width: 1400px;
     .branding {
       width: 125px;
       min-width: 100px;
@@ -419,7 +418,6 @@ export default {
     font-weight: 600;
     margin: 0 auto;
     padding: 0.9rem 2.5rem;
-    max-width: 1400px;
     background-color: #fff;
     .nav-links {
       ul {

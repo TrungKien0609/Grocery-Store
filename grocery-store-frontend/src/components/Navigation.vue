@@ -325,7 +325,6 @@ export default {
       padding: 0.9rem 1rem;
     }
     width: 100%;
-    max-width: 1400px;
     .branding {
       width: 125px;
       min-width: 100px;
