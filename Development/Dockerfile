@@ -10,7 +10,13 @@ RUN apk add --no-cache \
     libzip-dev \
     git \
     zip \
-    unzip
+    unzip \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev
+# Install GD extension
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
 # Install PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
