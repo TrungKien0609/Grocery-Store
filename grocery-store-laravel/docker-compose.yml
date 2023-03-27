@@ -14,8 +14,8 @@ services:
       - ${APP_PORT}:8000
     volumes:
       - ./:/grocery-store-app
-      - /vendor
-      - /node_modules
+      - /grocery-store-app/vendor
+      - /grocery-store-app/node_modules
     depends_on:
       - db
     networks:
