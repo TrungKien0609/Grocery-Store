@@ -5,26 +5,15 @@
   - Order review
   - Sync cart orders on all machines
   - Search for reviews following stars like Shopee 
+  - Store image with GoogleDrive
 + This project currently is not available on https://neik-store.herokuapp.com/  because starting November 28th, 2022, free Heroku Dynos will no longer be available so I use docker instead.
 
 ## Steps to run the app on container
-+ `cd grocery-store-laravel`
++ `cd Development`
 + `docker-compose up --build`
-+ if the app is available at http://localhost:8000 then 
-  - `docker exec -it <grocery_store_container id> sh`
-  - `php artisan migrate`
-  - `php artisan db:seed --class=UserSeeder`
-  -  Go to http://localhost:8000/admin and login with 'admin@gmail.com' email and 'password' password then create your own data to look
-+ else 
-  - `docker run -it --name temp_grocery_store_container --volumes-from grocery_store_container grocery-store-laravel_grocery_store_app  sh
-` 
-  - `composer update`
-  - `npm install`
-  -  Exit current container ( `Ctrl D` )
-  - `docker-compose restart`
-  - `docker exec -it <grocery_store_container id> sh`
-  - `php artisan serve`
-  - `npm run build`
-  - `php artisan migrate`
-  - `php artisan db:seed --class=UserSeeder`
-  -  Go to http://localhost:8000/admin and login with 'admin@gmail.com' email and 'password' password then create your own data to look
++ `docker exec -it <grocery_store_container id> sh`
++ `php artisan migrate`
++ `php artisan db:seed --class=UserSeeder`
++ `php artisan storage:link`
++ `npm run watch` hot reload for development
++  Go to http://localhost:8000/admin and login with 'admin@gmail.com' email and 'password' password then create your own data to look
