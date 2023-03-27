@@ -17,3 +17,5 @@
 + `php artisan storage:link`
 + `npm run watch` hot reload for development
 +  Go to http://localhost:8000/admin and login with 'admin@gmail.com' email and 'password' password then create your own data to look
+
+Note: If you would like to use FaceBook and Google login feature. You need to provide all Google and Facebook configs by yourself in  `resources/js/vue/config/index.js` and `.env` file. Storing images in GoogleDrive feature is'nt available in local instead I use with File Storage.
