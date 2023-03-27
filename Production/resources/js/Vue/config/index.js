@@ -1,7 +1,7 @@
 const SOCIALITE = {
-    redirect: 'https://neik-store.herokuapp.com', // redirectUri for socialite //
-    googleClientId: '570872392783-9d2vuru01velvi9l3kor4vqell7petom.apps.googleusercontent.com',
-    facebookClientId: '628286444903129',
+    redirect: 'your redirectURI', // redirectUri for socialite //
+    googleClientId: 'your googleClientId',
+    facebookClientId: 'your facebookClientId',
 }
 const CATEGORIES_CONFIG = {
     link: '/api/category/all',
