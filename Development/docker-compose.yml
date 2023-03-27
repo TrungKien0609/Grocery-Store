@@ -1,0 +1,35 @@
+version: '3'
+networks:
+  grocery_store:
+    driver: bridge
+services:
+  grocery_store_app:
+    container_name: grocery_store_container
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: php artisan serve --host=0.0.0.0
+    ports:
+      - ${APP_PORT}:8000
+    volumes:
+      - ./:/grocery-store-app
+      - /grocery-store-app/vendor
+      - /grocery-store-app/node_modules
+    depends_on:
+      - db
+    networks:
+      - grocery_store
+  db:
+    container_name: grocery_store_database_container
+    image: mariadb:${MARIA_DB_VERSION}
+    ports:
+      - ${DB_PORT}:3306
+    volumes:
+      - ./docker-volumes-data/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    networks:
+      - grocery_store
