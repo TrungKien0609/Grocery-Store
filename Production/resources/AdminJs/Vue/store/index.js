@@ -49,7 +49,8 @@ export default new Vuex.Store({
         },
         login({ commit, dispatch, state }, inputs) {
             axios.post('/api/user/login', inputs).then(response => {
-                if (response.statusText === "OK" && response.data.user.role === 'admin') {
+                console.log("response truoc", response)
+                if (response.status === 200 && response.data.user.role === 'admin') {
                     commit('setCookie', {
                         name: 'usertoken',
                         value: response.data.token,
@@ -64,8 +65,10 @@ export default new Vuex.Store({
                     state.userName = response.data.user.name;
                     router.push({ name: 'Home' });
                 }
-                else
+                else {
+                    console.log("response sau", response)
                     alert('Bạn không đủ quyền hạn để vào trang này');
+                }
             }).catch(err => {
                 alert(err.response.data.message);
             })

@@ -1,11 +1,11 @@
 const SOCIALITE = {
-    redirect: 'your redirectURI', // redirectUri for socialite //
-    googleClientId: 'your googleClientId',
-    facebookClientId: 'your facebookClientId',
+    redirect: 'https://neik-store.freeoda.com', // redirectUri for socialite //
+    googleClientId: '570872392783-9d2vuru01velvi9l3kor4vqell7petom.apps.googleusercontent.com',
+    facebookClientId: '628286444903129',
 }
 const CATEGORIES_CONFIG = {
     link: '/api/category/all',
-    // perPage: 5,
+    perPage: 5,
     saveWith: 'categories',
     name: 'Category'
 }
