@@ -1,5 +1,5 @@
 const SOCIALITE = {
-    redirect: 'https://neik-store.freeoda.com', // redirectUri for socialite //
+    redirect: 'http://localhost:8000', // redirectUri for socialite //
     googleClientId: '570872392783-9d2vuru01velvi9l3kor4vqell7petom.apps.googleusercontent.com',
     facebookClientId: '628286444903129',
 }
