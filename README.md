@@ -11,11 +11,11 @@
 ## Steps to run the app on container
 + `cd Development`
 + `docker-compose up --build`
-+ `docker exec -it <grocery_store_container id> sh`
-+ `php artisan migrate`
-+ `php artisan db:seed --class=UserSeeder`
++ `docker exec -i grocery_store_database_container mysql -uroot -p123456 laravel < dump.sql` import db
++ `docker exec -it grocery_store_container sh`
 + `php artisan storage:link`
 + `npm run watch` hot reload for development
-+  Go to http://localhost:8000/admin and login with 'admin@gmail.com' email and 'password' password then create your own data to look
++  App will be ready at http://localhost:8000
++  You could go to http://localhost:8000/admin and login with 'admin@gmail.com' email and 'password' password then create your own data to look
 
-Note: If you would like to use FaceBook and Google login feature. You need to provide all Google and Facebook configs by yourself in  `resources/js/vue/config/index.js` and `.env` file. Storing images in GoogleDrive feature is'nt available in local instead I use with File Storage.
+Note: If you would like to use FaceBook and Google login feature. You need to provide all Google and Facebook configs by yourself ( It's currently  in  `resources/js/vue/config/index.js` and `.env` file. Storing images in GoogleDrive feature is'nt available in local instead I use with File Storage.
