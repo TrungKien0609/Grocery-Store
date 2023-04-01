@@ -89,8 +89,7 @@ class ReviewController extends Controller
                 'message' => 'Already ratted this product'
             ], 403);
         } else {
-            $message = "sddasfassaf"; // hearrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-            // $message = $fields['message'] !== "" ? $fields['message'] : "";
+            $message = $fields['message'] !== "" ? $fields['message'] : "";
 
             $review = $this->review->create([
                 'star' =>  $fields['ratting'],

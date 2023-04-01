@@ -318,11 +318,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onSubmit: function onSubmit() {
       var _this = this;
 
-      if (this.isEmpty) {
-        this.$toaster.error("Cart is currently empty!");
-        return;
-      }
-
       axios.post("/api/order", {
         orders: this.totalUniqueItems,
         cart_items: this.items

@@ -455,9 +455,9 @@ var render = function () {
       _vm._v(" "),
       _c("p", { staticClass: "price" }, [
         _vm._v("\n      $" + _vm._s(_vm.product.price) + "\n      "),
-        _vm.product.discountPrice
+        _vm.product.discount
           ? _c("span", { staticClass: "product-discount" }, [
-              _vm._v("\n        $" + _vm._s(_vm.product.discountPrice)),
+              _vm._v("\n        $" + _vm._s(_vm.product.original_price)),
             ])
           : _vm._e(),
       ]),

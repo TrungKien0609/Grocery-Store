@@ -41,6 +41,7 @@ Route::get('/product/info/{slug}', [ProductController::class, 'showWithSlug']);
 
 
 Route::post('/login/socialite/{provider}', [UserController::class, 'SocialSignup']); // login with google and facebook
+Route::post('/review/{product_slug}', [ReviewController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -64,5 +65,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/review', [ReviewController::class, 'store']);
     Route::post('/review/check', [ReviewController::class, 'checkAlreadyRatted']);
-    Route::post('/review/{product_slug}', [ReviewController::class, 'index']);
 });
