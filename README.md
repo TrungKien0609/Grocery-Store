@@ -1,5 +1,7 @@
 ## NeikStore 
 ![image](https://user-images.githubusercontent.com/80587980/226278807-f7faddc0-7795-44da-910d-829558129ed5.png)
+![image](https://user-images.githubusercontent.com/80587980/229304114-bce062b3-ba43-4de7-a051-e407ad8a1c27.png)
+
 + This project is the complete clone technology part of https://kachabazar-store.vercel.app/ Website but added some features
   - Login with Google and Facebook
   - Order review
