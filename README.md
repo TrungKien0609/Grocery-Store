@@ -6,7 +6,7 @@
   - Sync cart orders on all machines
   - Search for reviews following stars like Shopee 
   - Store image with GoogleDrive
-+ This project currently is not available on https://neik-store.herokuapp.com/  because starting November 28th, 2022, free Heroku Dynos will no longer be available so I use docker instead.
++ This project currently is not available on https://neik-store.herokuapp.com/  because starting November 28th, 2022, free Heroku Dynos will no longer be available. It's current on https://neik-store.freeoda.com but not fully completed. you could use docker instead.
 
 ## Steps to run the app on container
 + `cd Development`

@@ -53,12 +53,12 @@ export default new Vuex.Store({
                     commit('setCookie', {
                         name: 'usertoken',
                         value: response.data.token,
-                        date: 30
+                        days: 30
                     });
                     commit('setCookie', {
                         name: 'username',
                         value: response.data.user.name,
-                        date: 30
+                        days: 30
                     });
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
                     state.userName = response.data.user.name;

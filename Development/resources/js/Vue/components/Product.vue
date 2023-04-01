@@ -17,8 +17,8 @@
       </p>
       <p class="price">
         ${{ product.price }}
-        <span class="product-discount" v-if="product.discountPrice">
-          ${{ product.discountPrice }}</span
+        <span class="product-discount" v-if="product.discount">
+          ${{ product.original_price }}</span
         >
       </p>
       <div class="action" v-if="startBuy && hasAdd > 0">

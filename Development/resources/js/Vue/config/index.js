@@ -1,7 +1,7 @@
 const SOCIALITE = {
     redirect: 'http://localhost:8000', // redirectUri for socialite //
-    googleClientId: 'your googleClientId',
-    facebookClientId: 'your facebookClientId',
+    googleClientId: '570872392783-9d2vuru01velvi9l3kor4vqell7petom.apps.googleusercontent.com',
+    facebookClientId: '628286444903129',
 }
 const CATEGORIES_CONFIG = {
     link: '/api/category/all',

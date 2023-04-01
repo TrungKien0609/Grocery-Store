@@ -102,6 +102,8 @@ export default {
       transition: 0.25s;
       cursor: pointer;
       font-size: 0.9rem;
+      display: flex;
+      align-items: center;
       &:hover {
         color: #10b981;
       }
